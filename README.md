@@ -132,7 +132,3 @@ aadhya-web/
 - **Vite** - Build tool
 - **Docker** - Containerization
 - **ESLint** - Code linting
-
-## License
-
-MIT License
