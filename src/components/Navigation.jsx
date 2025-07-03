@@ -2,13 +2,13 @@ import { Link, useLocation } from 'react-router-dom'
 
 function Navigation() {
     const location = useLocation()
-    
+
     const routes = [
         { name: 'Home', path: '/' },
         { name: 'About', path: '/about' },
         { name: 'Contact', path: '/contact' },
     ]
-    
+
     return (
         <div style={{
             position: 'fixed',
@@ -24,7 +24,7 @@ function Navigation() {
             padding: '0 24px',
             zIndex: 1000
         }}>
-            <nav style={{display: 'flex', gap: '24px'}}>
+            <nav style={{ display: 'flex', gap: '24px' }}>
                 {routes.map((route) => (
                     <Link
                         key={route.path}
@@ -40,8 +40,8 @@ function Navigation() {
                     </Link>
                 ))}
             </nav>
-            
-            <div style={{fontSize: '24px', fontWeight: 'bold', color: '#111827'}}>
+
+            <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#111827' }}>
                 Aadhya
             </div>
         </div>
