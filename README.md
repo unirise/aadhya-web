@@ -131,7 +131,6 @@ aadhya-web/
 - **React 18** - UI library
 - **Vite** - Build tool
 - **Docker** - Containerization
-- **Nginx** - Production web server
 - **ESLint** - Code linting
 
 ## License
