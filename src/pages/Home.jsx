@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { formatDateTime, formatRelativeTime, now } from '../lib/dateUtils'
 // import { useStats } from '../hooks/useQueries'
 // import { ChartWrapper } from '../components/charts'
 
@@ -15,6 +16,23 @@ function Home() {
             <p style={{ lineHeight: '1.6', marginBottom: '32px' }}>
                 {t('home.description')}
             </p>
+
+            {/* Current DateTime Display */}
+            <div style={{
+                marginBottom: '32px',
+                padding: '16px',
+                backgroundColor: '#eff6ff',
+                borderRadius: '8px',
+                border: '1px solid #dbeafe'
+            }}>
+                <h3 style={{ marginBottom: '8px' }}>Current Date & Time</h3>
+                <p style={{ margin: '4px 0', fontSize: '16px' }}>
+                    <strong>Now:</strong> {formatDateTime(now())}
+                </p>
+                <p style={{ margin: '4px 0', fontSize: '14px', color: '#6b7280' }}>
+                    Powered by Day.js • <a href="/datetime" style={{ color: '#2563eb' }}>View DateTime Demo</a>
+                </p>
+            </div>
 
             {/* TanStack Query integration ready - will show data when API is connected */}
             <div style={{ marginTop: '20px', padding: '16px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>

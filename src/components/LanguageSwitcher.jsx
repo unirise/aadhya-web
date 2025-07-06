@@ -68,10 +68,10 @@ function LanguageSwitcher() {
                 ))}
             </div>
 
-            <div style={{ 
-                marginTop: '24px', 
-                padding: '16px', 
-                backgroundColor: '#f3f4f6', 
+            <div style={{
+                marginTop: '24px',
+                padding: '16px',
+                backgroundColor: '#f3f4f6',
                 borderRadius: '8px',
                 border: '1px solid #e5e7eb'
             }}>

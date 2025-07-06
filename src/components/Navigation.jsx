@@ -11,6 +11,7 @@ function Navigation() {
         { name: t('navigation.contact'), path: '/contact' },
         { name: t('common.login'), path: '/login' },
         { name: t('common.language'), path: '/language' },
+        { name: 'DateTime', path: '/datetime' },
     ]
 
     return (

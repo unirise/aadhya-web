@@ -5,22 +5,26 @@ This application has been integrated with **react-i18next** for comprehensive in
 ## Features Implemented
 
 ### 1. Core i18n Setup
+
 - ✅ **react-i18next** and **i18next** installed
 - ✅ **i18next-browser-languagedetector** for automatic language detection
 - ✅ i18n configuration file with language detection and fallback support
 
 ### 2. Language Support
+
 - ✅ **English (EN)** - Default language
 - ✅ **Spanish (ES)** - Complete translation
 - ✅ **French (FR)** - Complete translation
 - ✅ **Hindi (HI)** - Complete translation
 
 ### 3. Translation Context
+
 - ✅ Translation context provided at the app level
 - ✅ All components can access translations using `useTranslation` hook
 - ✅ Automatic browser language detection with localStorage persistence
 
 ### 4. Translated Components
+
 - ✅ **Navigation** - All menu items and brand name
 - ✅ **Home Page** - Title, subtitle, description, and feature list
 - ✅ **About Page** - Title and description
@@ -29,6 +33,7 @@ This application has been integrated with **react-i18next** for comprehensive in
 - ✅ **Language Switcher** - Interactive language selection component
 
 ### 5. Language Switcher Component
+
 - ✅ Visual language selector with country flags
 - ✅ Current language indicator
 - ✅ Instant language switching
@@ -37,42 +42,41 @@ This application has been integrated with **react-i18next** for comprehensive in
 ## Usage
 
 ### Accessing the Language Switcher
+
 1. Navigate to the application
 2. Click on "Language" in the navigation menu
 3. Select your preferred language from the available options
 
 ### Using Translations in Components
+
 ```javascript
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
 
 function MyComponent() {
-    const { t } = useTranslation()
-    
-    return (
-        <div>
-            <h1>{t('page.title')}</h1>
-            <p>{t('page.description')}</p>
-        </div>
-    )
+  const { t } = useTranslation();
+
+  return (
+    <div>
+      <h1>{t("page.title")}</h1>
+      <p>{t("page.description")}</p>
+    </div>
+  );
 }
 ```
 
 ### Changing Language Programmatically
+
 ```javascript
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
 
 function MyComponent() {
-    const { i18n } = useTranslation()
-    
-    const changeToSpanish = () => {
-        i18n.changeLanguage('es')
-    }
-    
-    return (
-        <button onClick={changeToSpanish}>
-            Switch to Spanish
-        </button>
-    )
+  const { i18n } = useTranslation();
+
+  const changeToSpanish = () => {
+    i18n.changeLanguage("es");
+  };
+
+  return <button onClick={changeToSpanish}>Switch to Spanish</button>;
 }
 ```
 
@@ -91,13 +95,16 @@ src/i18n/
 ## Configuration Details
 
 ### Language Detection
+
 The application automatically detects the user's preferred language using:
+
 1. **localStorage** - Previously selected language
 2. **Browser navigator** - Browser language settings
 3. **HTML lang attribute** - Document language
 4. **Fallback** - English (default)
 
 ### Translation Keys Organization
+
 - `common.*` - Common UI elements (buttons, labels, etc.)
 - `navigation.*` - Navigation menu items
 - `home.*` - Home page content
@@ -117,6 +124,7 @@ The application automatically detects the user's preferred language using:
 ## Testing
 
 The internationalization setup includes:
+
 - ✅ Component tests for the LanguageSwitcher
 - ✅ Mock i18n setup for testing environments
 - ✅ Translation key verification
@@ -124,6 +132,7 @@ The internationalization setup includes:
 ## Live Demo
 
 Visit the application and test the internationalization features:
+
 1. **Language Switcher**: [http://localhost:3000/language](http://localhost:3000/language)
 2. **Home Page**: [http://localhost:3000/](http://localhost:3000/)
 3. **Contact Form**: [http://localhost:3000/contact](http://localhost:3000/contact)

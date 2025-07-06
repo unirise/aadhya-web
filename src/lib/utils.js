@@ -1,5 +1,6 @@
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { formatDate as formatDateDayjs, formatDateTime, formatRelativeTime } from './dateUtils'
 
 /**
  * Combines class names using clsx and merges Tailwind CSS classes
@@ -11,17 +12,13 @@ export function cn(...inputs) {
 }
 
 /**
- * Formats a date to a readable string
+ * Formats a date to a readable string using Day.js
  * @param {Date|string} date - Date to format
- * @param {string} locale - Locale for formatting (default: 'en-US')
+ * @param {string} format - Format string (default: 'MMM D, YYYY')
  * @returns {string} Formatted date string
  */
-export function formatDate(date, locale = 'en-US') {
-    return new Date(date).toLocaleDateString(locale, {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    })
+export function formatDate(date, format = 'MMM D, YYYY') {
+    return formatDateDayjs(date, format)
 }
 
 /**

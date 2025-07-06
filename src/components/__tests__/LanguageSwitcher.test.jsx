@@ -27,14 +27,14 @@ const renderWithProviders = (component) => {
 describe('LanguageSwitcher', () => {
     it('renders language switcher component', () => {
         renderWithProviders(<LanguageSwitcher />)
-        
+
         expect(screen.getByText('languageSwitcher.title')).toBeInTheDocument()
         expect(screen.getByText('languageSwitcher.description')).toBeInTheDocument()
     })
 
     it('displays language options', () => {
         renderWithProviders(<LanguageSwitcher />)
-        
+
         expect(screen.getByText('English')).toBeInTheDocument()
         expect(screen.getByText('Español')).toBeInTheDocument()
         expect(screen.getByText('Français')).toBeInTheDocument()
@@ -43,10 +43,10 @@ describe('LanguageSwitcher', () => {
 
     it('calls changeLanguage when language button is clicked', () => {
         renderWithProviders(<LanguageSwitcher />)
-        
+
         const spanishButton = screen.getByText('Español')
         fireEvent.click(spanishButton)
-        
+
         expect(mockI18n.changeLanguage).toHaveBeenCalledWith('es')
     })
 })
