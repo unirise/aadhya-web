@@ -134,6 +134,7 @@ aadhya-web/
 - **TanStack Query** - Server state management
 - **React Hook Form** - Form handling
 - **Zod** - Schema validation
+- **Recharts** - Data visualization
 - **Docker** - Containerization
 - **Nginx** - Production web server
 - **ESLint** - Code linting

@@ -9,8 +9,12 @@ function About() {
             <h1>About</h1>
             <p>Learn more about our mission and values.</p>
 
-            {/* Login Form Demo */}
-            <div style={{ marginTop: '20px', marginBottom: '40px' }}>
+            {/* Sample Form Integration */}
+            <div style={{ marginTop: '40px' }}>
+                <h2>Sample Login Form</h2>
+                <p style={{ color: '#6b7280', marginBottom: '24px' }}>
+                    Demo of React Hook Form + Zod validation
+                </p>
                 <LoginForm />
             </div>
 
