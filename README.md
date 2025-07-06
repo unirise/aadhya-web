@@ -132,6 +132,8 @@ aadhya-web/
 - **Vite** - Build tool
 - **React Router** - Client-side routing
 - **TanStack Query** - Server state management
+- **React Hook Form** - Form handling
+- **Zod** - Schema validation
 - **Docker** - Containerization
 - **Nginx** - Production web server
 - **ESLint** - Code linting

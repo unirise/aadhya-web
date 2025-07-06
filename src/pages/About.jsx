@@ -1,4 +1,5 @@
 import { usePosts } from '../hooks/useQueries'
+import LoginForm from '../components/forms/LoginForm'
 
 function About() {
     const { data: posts, isLoading, error } = usePosts()
@@ -7,6 +8,11 @@ function About() {
         <div style={{ marginTop: '60px', padding: '32px' }}>
             <h1>About</h1>
             <p>Learn more about our mission and values.</p>
+
+            {/* Login Form Demo */}
+            <div style={{ marginTop: '20px', marginBottom: '40px' }}>
+                <LoginForm />
+            </div>
 
             {/* TanStack Query integration ready - will show data when API is connected */}
             <div style={{ marginTop: '20px', padding: '16px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>

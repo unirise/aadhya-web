@@ -1,4 +1,5 @@
 import { useUsers } from '../hooks/useQueries'
+import ContactForm from '../components/forms/ContactForm'
 
 function Contact() {
     const { data: users, isLoading, error } = useUsers()
@@ -7,6 +8,11 @@ function Contact() {
         <div style={{ marginTop: '60px', padding: '32px' }}>
             <h1>Contact</h1>
             <p>Get in touch with us!</p>
+
+            {/* Contact Form */}
+            <div style={{ marginTop: '20px', marginBottom: '40px' }}>
+                <ContactForm />
+            </div>
 
             {/* TanStack Query integration ready - will show data when API is connected */}
             <div style={{ marginTop: '20px', padding: '16px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
