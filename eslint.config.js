@@ -206,7 +206,7 @@ export default [
             'comma-spacing': 'error',
             'no-multi-spaces': 'error',
             'key-spacing': 'error',
-            
+
             // Prettier integration
             'prettier/prettier': 'error',
         },

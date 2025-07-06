@@ -13,7 +13,9 @@ This project uses Prettier for consistent code formatting across the entire code
 ### Configuration Files
 
 #### `.prettierrc`
+
 Main Prettier configuration with the following settings:
+
 - **Semi**: false (no semicolons)
 - **Single Quotes**: true (use single quotes)
 - **Tab Width**: 2 (2 spaces for indentation)
@@ -24,7 +26,9 @@ Main Prettier configuration with the following settings:
 - **End of Line**: lf (Unix line endings)
 
 #### `.prettierignore`
+
 Excludes files and directories from formatting:
+
 - `node_modules/`, `dist/`, `build/`
 - Package lock files
 - Generated files and documentation
@@ -46,12 +50,15 @@ npm run lint:check && npm run format:check
 ## Integration
 
 ### ESLint Integration
+
 Prettier is fully integrated with ESLint:
+
 - Uses `eslint-config-prettier` to disable conflicting rules
 - Uses `eslint-plugin-prettier` to run Prettier as an ESLint rule
 - Both tools work together without conflicts
 
 ### VS Code Integration
+
 For automatic formatting on save, add to your VS Code settings:
 
 ```json
@@ -68,6 +75,7 @@ For automatic formatting on save, add to your VS Code settings:
 ```
 
 ### Pre-commit Hooks
+
 Consider adding Prettier to your pre-commit hooks:
 
 ```json
@@ -83,6 +91,7 @@ Consider adding Prettier to your pre-commit hooks:
 ## Usage
 
 ### Formatting Files
+
 ```bash
 # Format all files
 npm run format:fix
@@ -95,6 +104,7 @@ npx prettier --write "src/**/*.{js,jsx}"
 ```
 
 ### Checking Formatting
+
 ```bash
 # Check all files
 npm run format:check
@@ -104,6 +114,7 @@ npx prettier --check src/components/MyComponent.jsx
 ```
 
 ### Integration with Development Workflow
+
 ```bash
 # Before committing
 npm run lint:check && npm run format:check
@@ -126,6 +137,7 @@ npm run lint:fix && npm run format:fix
 - **`endOfLine: 'lf'`**: Use Unix line endings
 
 ### File Extensions Supported
+
 - JavaScript (`.js`, `.jsx`)
 - TypeScript (`.ts`, `.tsx`)
 - JSON (`.json`)
@@ -173,6 +185,7 @@ npx prettier --debug-check src/components/MyComponent.jsx
 ## Migration Notes
 
 When migrating to Prettier:
+
 1. Run `npm run format:fix` to format existing code
 2. Update any custom formatting rules in ESLint
 3. Train team members on new formatting standards
