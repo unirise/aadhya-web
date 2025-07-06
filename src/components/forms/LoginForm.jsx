@@ -10,6 +10,7 @@ function LoginForm() {
         reset,
     } = useForm({
         resolver: zodResolver(loginFormSchema),
+        mode: 'onChange',
         defaultValues: {
             email: '',
             password: '',

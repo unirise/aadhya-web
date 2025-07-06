@@ -10,6 +10,7 @@ function ContactForm() {
         reset,
     } = useForm({
         resolver: zodResolver(contactFormSchema),
+        mode: 'onChange',
         defaultValues: {
             name: '',
             email: '',
