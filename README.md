@@ -130,5 +130,8 @@ aadhya-web/
 
 - **React 18** - UI library
 - **Vite** - Build tool
+- **React Router** - Client-side routing
+- **TanStack Query** - Server state management
 - **Docker** - Containerization
+- **Nginx** - Production web server
 - **ESLint** - Code linting
