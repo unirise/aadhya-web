@@ -43,7 +43,7 @@ export const userRegistrationSchema = z.object({
     phone: z
         .string()
         .optional()
-        .refine((val) => !val || /^\+?[\d\s\-\(\)]+$/.test(val), 'Please enter a valid phone number'),
+        .refine((val) => !val || /^\+?[\d\s\-()]+$/.test(val), 'Please enter a valid phone number'),
     age: z
         .number()
         .min(18, 'You must be at least 18 years old')

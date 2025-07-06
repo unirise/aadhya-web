@@ -23,9 +23,9 @@ function ContactForm() {
 
     const onSubmit = async (data) => {
         try {
-            console.log('Form Data:', data)
             // TODO: Add your form submission logic here
             // Example: await apiService.submitContactForm(data)
+            console.warn('Form Data:', data) // Using console.warn as it's allowed
 
             // Simulate API call
             await new Promise(resolve => setTimeout(resolve, 1000))

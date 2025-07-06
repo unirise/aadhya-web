@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import {
     formatDate,
     formatDateTime,
@@ -13,7 +12,6 @@ import {
 } from '../lib/dateUtils'
 
 function DateTimeDemo() {
-    const { t } = useTranslation()
     const [currentTime, setCurrentTime] = useState(now())
     const [selectedDate, setSelectedDate] = useState(today())
 
@@ -72,10 +70,11 @@ function DateTimeDemo() {
                     Interactive Date Formatting
                 </h3>
                 <div style={{ marginBottom: '16px' }}>
-                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
+                    <label htmlFor="date-input" style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
                         Select Date:
                     </label>
                     <input
+                        id="date-input"
                         type="date"
                         value={formatDate(selectedDate, DATE_FORMATS.ISO)}
                         onChange={(e) => setSelectedDate(new Date(e.target.value))}

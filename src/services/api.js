@@ -61,9 +61,9 @@ export const apiService = {
     },
 
     // Placeholder for user posts fetching
-    fetchUserPosts: async (userId) => {
+    fetchUserPosts: async (_userId) => {
         // TODO: Replace with your actual API call
-        // return await fetch(`YOUR_API_ENDPOINT/users/${userId}/posts`).then(res => res.json())
+        // return await fetch(`YOUR_API_ENDPOINT/users/${_userId}/posts`).then(res => res.json())
 
         // Simulate API call delay
         await new Promise(resolve => setTimeout(resolve, 100))

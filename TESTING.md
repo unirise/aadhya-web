@@ -1,6 +1,6 @@
 # Testing Guide
 
-This project uses **Vitest** for unit and component testing with React Testing Library.
+This project uses **Vitest** for unit and component testing with React Testing Library, and **ESLint** for code quality and linting.
 
 ## 🧪 Test Setup
 
@@ -17,6 +17,44 @@ This project uses **Vitest** for unit and component testing with React Testing L
 - `vitest.config.js` - Vitest configuration
 - `src/test/setup.js` - Global test setup
 - `src/test/utils.js` - Custom testing utilities
+
+## 🔍 Code Quality & Linting
+
+### ESLint Configuration
+
+This project uses ESLint with a comprehensive set of rules and plugins:
+
+- **eslint-config-prettier**: Prettier compatibility
+- **eslint-plugin-react**: React-specific rules
+- **eslint-plugin-react-hooks**: React Hooks rules
+- **eslint-plugin-import**: Import/export validation
+- **eslint-plugin-jsx-a11y**: Accessibility rules
+- **eslint-plugin-unused-imports**: Unused imports detection
+
+### Linting Scripts
+
+```bash
+# Check for linting errors
+npm run lint:check
+
+# Fix auto-fixable linting errors
+npm run lint:fix
+
+# Basic lint command
+npm run lint
+```
+
+### ESLint Features
+
+- Modern flat config format (ESLint 9+)
+- React and JSX support with latest best practices
+- Import/export validation and ordering
+- Accessibility rules for inclusive development
+- Comprehensive code quality rules
+- Automatic unused import removal
+- Prettier integration for consistent formatting
+
+See `ESLINT_SETUP.md` for detailed configuration information.
 
 ## 🎯 Running Tests
 

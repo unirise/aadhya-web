@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { renderHook, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useUsers, usePosts, useStats } from '../useQueries'
-
+import { apiService } from '../../services/api'
 // Mock the API service
 vi.mock('../../services/api', () => ({
     apiService: {
@@ -11,8 +11,6 @@ vi.mock('../../services/api', () => ({
         fetchStats: vi.fn(),
     },
 }))
-
-import { apiService } from '../../services/api'
 
 describe('TanStack Query Hooks', () => {
     let queryClient

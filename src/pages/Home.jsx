@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { formatDateTime, formatRelativeTime, now } from '../lib/dateUtils'
+import { formatDateTime, now } from '../lib/dateUtils'
 // import { useStats } from '../hooks/useQueries'
 // import { ChartWrapper } from '../components/charts'
 

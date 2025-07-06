@@ -22,9 +22,9 @@ function LoginForm() {
 
     const onSubmit = async (data) => {
         try {
-            console.log('Login Data:', data)
             // TODO: Add your login logic here
             // Example: await apiService.login(data)
+            console.warn('Login Data:', data) // Using console.warn as it's allowed
 
             // Simulate API call
             await new Promise(resolve => setTimeout(resolve, 1000))

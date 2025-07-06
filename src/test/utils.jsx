@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 // Create a custom render function that includes providers
 export function renderWithProviders(ui, options = {}) {
-  const { initialEntries = ['/'], ...renderOptions } = options
+  const { initialEntries: _initialEntries = ['/'], ...renderOptions } = options
 
   // Create a new QueryClient for each test
   const queryClient = new QueryClient({
