@@ -1,8 +1,10 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslation } from 'react-i18next'
 import { contactFormSchema } from '../../schemas/formSchemas'
 
 function ContactForm() {
+    const { t } = useTranslation()
     const {
         register,
         handleSubmit,
@@ -28,26 +30,26 @@ function ContactForm() {
             // Simulate API call
             await new Promise(resolve => setTimeout(resolve, 1000))
 
-            alert('Form submitted successfully!')
+            alert(t('contact.form.success'))
             reset()
         } catch (error) {
             console.error('Form submission error:', error)
-            alert('Error submitting form. Please try again.')
+            alert(t('contact.form.error'))
         }
     }
 
     return (
         <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
-            <h2>Contact Form</h2>
+            <h2>{t('contact.title')}</h2>
             <p style={{ color: '#6b7280', marginBottom: '24px' }}>
-                This is a sample form with React Hook Form + Zod validation
+                {t('contact.description')}
             </p>
 
             <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 {/* Name Field */}
                 <div>
                     <label htmlFor="name" style={{ display: 'block', marginBottom: '4px', fontWeight: '500' }}>
-                        Name *
+                        {t('contact.form.name')} *
                     </label>
                     <input
                         id="name"
@@ -62,7 +64,7 @@ function ContactForm() {
                             outline: 'none',
                             boxSizing: 'border-box',
                         }}
-                        placeholder="Enter your name"
+                        placeholder={t('contact.form.namePlaceholder')}
                     />
                     {errors.name && (
                         <span style={{ color: '#ef4444', fontSize: '14px', marginTop: '4px', display: 'block' }}>
@@ -169,7 +171,7 @@ function ContactForm() {
                         transition: 'background-color 0.2s',
                     }}
                 >
-                    {isSubmitting ? 'Submitting...' : 'Submit'}
+                    {isSubmitting ? t('contact.form.submitting') : t('contact.form.submit')}
                 </button>
             </form>
         </div>

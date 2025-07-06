@@ -1,13 +1,15 @@
+import { useTranslation } from 'react-i18next'
 import { useUsers } from '../hooks/useQueries'
 import ContactForm from '../components/forms/ContactForm'
 
 function Contact() {
+    const { t } = useTranslation()
     const { data: users, isLoading, error } = useUsers()
 
     return (
         <div style={{ marginTop: '60px', padding: '32px' }}>
-            <h1>Contact</h1>
-            <p>Get in touch with us!</p>
+            <h1>{t('contact.title')}</h1>
+            <p>{t('contact.description')}</p>
 
             {/* Contact Form */}
             <div style={{ marginTop: '20px', marginBottom: '40px' }}>

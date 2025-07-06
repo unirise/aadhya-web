@@ -1,13 +1,16 @@
 import { Link, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 function Navigation() {
     const location = useLocation()
+    const { t } = useTranslation()
 
     const routes = [
-        { name: 'Home', path: '/' },
-        { name: 'About', path: '/about' },
-        { name: 'Contact', path: '/contact' },
-        { name: 'Login', path: '/login' },
+        { name: t('navigation.home'), path: '/' },
+        { name: t('navigation.about'), path: '/about' },
+        { name: t('navigation.contact'), path: '/contact' },
+        { name: t('common.login'), path: '/login' },
+        { name: t('common.language'), path: '/language' },
     ]
 
     return (
@@ -43,7 +46,7 @@ function Navigation() {
             </nav>
 
             <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#111827' }}>
-                Aadhya
+                {t('navigation.brand')}
             </div>
         </div>
     )

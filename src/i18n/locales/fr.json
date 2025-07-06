@@ -1,0 +1,95 @@
+{
+    "common": {
+        "welcome": "Bienvenue",
+        "home": "Accueil",
+        "about": "À propos",
+        "contact": "Contact",
+        "login": "Connexion",
+        "logout": "Déconnexion",
+        "submit": "Soumettre",
+        "cancel": "Annuler",
+        "loading": "Chargement...",
+        "error": "Erreur",
+        "success": "Succès",
+        "language": "Langue",
+        "email": "Email",
+        "password": "Mot de passe",
+        "name": "Nom",
+        "message": "Message",
+        "subject": "Sujet"
+    },
+    "navigation": {
+        "brand": "Aadhya Web",
+        "home": "Accueil",
+        "about": "À propos",
+        "contact": "Contact"
+    },
+    "home": {
+        "title": "Bienvenue sur Aadhya Web",
+        "subtitle": "Application React Moderne avec TanStack Query, React Router et Plus",
+        "description": "Il s'agit d'une application de démonstration complète présentant les pratiques modernes de développement React avec TypeScript, TanStack Query pour la récupération de données, React Router pour la navigation, React Hook Form avec validation Zod, et Recharts pour la visualisation des données.",
+        "quickStats": "Statistiques Rapides",
+        "dataVisualization": "Visualisation des Données",
+        "features": {
+            "title": "Fonctionnalités",
+            "reactRouter": "React Router pour la navigation",
+            "tanstackQuery": "TanStack Query pour la récupération de données",
+            "reactHookForm": "React Hook Form avec validation Zod",
+            "recharts": "Recharts pour la visualisation des données",
+            "testing": "Configuration complète de tests"
+        }
+    },
+    "about": {
+        "title": "À Propos de Nous",
+        "description": "Découvrez notre application et ses fonctionnalités."
+    },
+    "contact": {
+        "title": "Formulaire de Contact",
+        "description": "Il s'agit d'un formulaire d'exemple avec React Hook Form + validation Zod",
+        "form": {
+            "name": "Nom",
+            "email": "Email",
+            "subject": "Sujet",
+            "message": "Message",
+            "namePlaceholder": "Entrez votre nom",
+            "emailPlaceholder": "Entrez votre email",
+            "subjectPlaceholder": "Entrez le sujet",
+            "messagePlaceholder": "Entrez votre message",
+            "submit": "Soumettre",
+            "submitting": "Envoi en cours...",
+            "success": "Formulaire soumis avec succès !",
+            "error": "Erreur lors de l'envoi du formulaire. Veuillez réessayer."
+        }
+    },
+    "login": {
+        "title": "Formulaire de Connexion",
+        "description": "Formulaire de connexion d'exemple avec validation",
+        "form": {
+            "email": "Email",
+            "password": "Mot de passe",
+            "rememberMe": "Se souvenir de moi",
+            "emailPlaceholder": "Entrez votre email",
+            "passwordPlaceholder": "Entrez votre mot de passe",
+            "login": "Connexion",
+            "loggingIn": "Connexion en cours...",
+            "success": "Connexion réussie !",
+            "error": "Échec de la connexion. Veuillez réessayer."
+        }
+    },
+    "languageSwitcher": {
+        "title": "Sélecteur de Langue",
+        "description": "Basculer entre différentes langues",
+        "currentLanguage": "Langue Actuelle : {{language}}",
+        "switchTo": "Basculer vers {{language}}"
+    },
+    "validation": {
+        "required": "Ce champ est obligatoire",
+        "email": "Veuillez entrer une adresse email valide",
+        "minLength": "Doit contenir au moins {{min}} caractères",
+        "maxLength": "Ne doit pas dépasser {{max}} caractères",
+        "passwordRequired": "Le mot de passe est obligatoire",
+        "nameMin": "Le nom doit contenir au moins 2 caractères",
+        "subjectMin": "Le sujet doit contenir au moins 5 caractères",
+        "messageMin": "Le message doit contenir au moins 10 caractères"
+    }
+}

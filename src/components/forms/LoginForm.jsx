@@ -1,8 +1,10 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslation } from 'react-i18next'
 import { loginFormSchema } from '../../schemas/formSchemas'
 
 function LoginForm() {
+    const { t } = useTranslation()
     const {
         register,
         handleSubmit,
@@ -27,19 +29,19 @@ function LoginForm() {
             // Simulate API call
             await new Promise(resolve => setTimeout(resolve, 1000))
 
-            alert('Login successful!')
+            alert(t('login.form.success'))
             reset()
         } catch (error) {
             console.error('Login error:', error)
-            alert('Login failed. Please try again.')
+            alert(t('login.form.error'))
         }
     }
 
     return (
         <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
-            <h2>Login Form</h2>
+            <h2>{t('login.title')}</h2>
             <p style={{ color: '#6b7280', marginBottom: '24px' }}>
-                Sample login form with validation
+                {t('login.description')}
             </p>
 
             <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
