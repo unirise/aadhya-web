@@ -8,17 +8,17 @@ import DateTimeDemo from '../components/DateTimeDemo'
 import NotFound from '../pages/NotFound'
 
 function AppRouter() {
-    return (
-        <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/language" element={<LanguageSwitcher />} />
-            <Route path="/datetime" element={<DateTimeDemo />} />
-            <Route path="*" element={<NotFound />} />
-        </Routes>
-    )
+  return (
+    <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='/about' element={<About />} />
+      <Route path='/contact' element={<Contact />} />
+      <Route path='/login' element={<Login />} />
+      <Route path='/language' element={<LanguageSwitcher />} />
+      <Route path='/datetime' element={<DateTimeDemo />} />
+      <Route path='*' element={<NotFound />} />
+    </Routes>
+  )
 }
 
 export default AppRouter

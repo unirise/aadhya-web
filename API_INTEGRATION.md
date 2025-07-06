@@ -1,6 +1,7 @@
 # API Integration Guide
 
-This project is set up with TanStack Query and ready for your API integration. Here's how to add your API when ready:
+This project is set up with TanStack Query and ready for your API integration. Here's how to add
+your API when ready:
 
 ## 🚀 Quick Start
 
@@ -18,11 +19,11 @@ VITE_API_BASE_URL=https://your-api-server.com/api
 export const apiService = {
   fetchUsers: async () => {
     return withRetry(async () => {
-      return await apiRequest(`${API_CONFIG.BASE_URL}/users`);
-    });
+      return await apiRequest(`${API_CONFIG.BASE_URL}/users`)
+    })
   },
   // ... other methods
-};
+}
 ```
 
 ### Step 3: Test Your Integration
@@ -81,12 +82,8 @@ The hooks expect these response formats:
 
 ## 🎯 Current Status
 
-✅ TanStack Query configured
-✅ QueryClient set up with optimal defaults
-✅ Custom hooks ready
-✅ Pages ready to display data
-✅ Error handling implemented
-✅ Loading states implemented
-⏳ Waiting for your API integration
+✅ TanStack Query configured ✅ QueryClient set up with optimal defaults ✅ Custom hooks ready ✅
+Pages ready to display data ✅ Error handling implemented ✅ Loading states implemented ⏳ Waiting
+for your API integration
 
 Just add your API endpoint and update the service methods when ready!

@@ -78,27 +78,27 @@ src/components/charts/
 ### Colors
 
 ```javascript
-import { CHART_COLORS } from "./components/charts";
+import { CHART_COLORS } from './components/charts'
 
 // Available colors
-CHART_COLORS.primary; // #3b82f6 (blue)
-CHART_COLORS.secondary; // #10b981 (green)
-CHART_COLORS.accent; // #f59e0b (yellow)
-CHART_COLORS.danger; // #ef4444 (red)
+CHART_COLORS.primary // #3b82f6 (blue)
+CHART_COLORS.secondary // #10b981 (green)
+CHART_COLORS.accent // #f59e0b (yellow)
+CHART_COLORS.danger // #ef4444 (red)
 ```
 
 ### Themes
 
 ```javascript
-import { CHART_THEMES } from "./components/charts";
+import { CHART_THEMES } from './components/charts'
 
 // Light theme
-CHART_THEMES.light.background; // #ffffff
-CHART_THEMES.light.text; // #1f2937
+CHART_THEMES.light.background // #ffffff
+CHART_THEMES.light.text // #1f2937
 
 // Dark theme
-CHART_THEMES.dark.background; // #1f2937
-CHART_THEMES.dark.text; // #f9fafb
+CHART_THEMES.dark.background // #1f2937
+CHART_THEMES.dark.text // #f9fafb
 ```
 
 ### Custom Chart
@@ -112,20 +112,20 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts";
+} from 'recharts'
 
 function CustomChart({ data }) {
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width='100%' height={400}>
       <LineChart data={data}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
+        <CartesianGrid strokeDasharray='3 3' />
+        <XAxis dataKey='name' />
         <YAxis />
         <Tooltip />
-        <Line type="monotone" dataKey="value" stroke="#3b82f6" />
+        <Line type='monotone' dataKey='value' stroke='#3b82f6' />
       </LineChart>
     </ResponsiveContainer>
-  );
+  )
 }
 ```
 
@@ -134,45 +134,42 @@ function CustomChart({ data }) {
 ### With TanStack Query
 
 ```javascript
-import { useStats } from "../hooks/useQueries";
-import { ChartWrapper } from "../components/charts";
+import { useStats } from '../hooks/useQueries'
+import { ChartWrapper } from '../components/charts'
 
 function Dashboard() {
-  const { data: stats, isLoading, error } = useStats();
+  const { data: stats, isLoading, error } = useStats()
 
   return (
     <ChartWrapper
-      type="line"
+      type='line'
       data={stats}
       isLoading={isLoading}
       error={error?.message}
-      title="Real-time Analytics"
+      title='Real-time Analytics'
     />
-  );
+  )
 }
 ```
 
 ### Sample Data Generator
 
 ```javascript
-import { generateSampleData } from "./components/charts";
+import { generateSampleData } from './components/charts'
 
 // Generate sample data for testing
-const lineData = generateSampleData("line", 7); // 7 months of line data
-const barData = generateSampleData("bar", 6); // 6 months of bar data
-const pieData = generateSampleData("pie"); // Pie chart data
+const lineData = generateSampleData('line', 7) // 7 months of line data
+const barData = generateSampleData('bar', 6) // 6 months of bar data
+const pieData = generateSampleData('pie') // Pie chart data
 ```
 
 ## 🔧 Features
 
-✅ **Responsive Design** - Charts adapt to screen size
-✅ **Interactive Tooltips** - Hover for detailed information
-✅ **Loading States** - Built-in loading indicators
-✅ **Error Handling** - Graceful error display
-✅ **Chart Controls** - Switch between chart types
-✅ **Customizable Colors** - Predefined color schemes
-✅ **Animation Support** - Smooth transitions
-✅ **Accessibility** - Screen reader friendly
+✅ **Responsive Design** - Charts adapt to screen size ✅ **Interactive Tooltips** - Hover for
+detailed information ✅ **Loading States** - Built-in loading indicators ✅ **Error Handling** -
+Graceful error display ✅ **Chart Controls** - Switch between chart types ✅ **Customizable
+Colors** - Predefined color schemes ✅ **Animation Support** - Smooth transitions ✅
+**Accessibility** - Screen reader friendly
 
 ## 📱 Responsive Behavior
 
@@ -182,13 +179,8 @@ const pieData = generateSampleData("pie"); // Pie chart data
 
 ## 🎯 Current Status
 
-✅ Recharts installed and configured
-✅ Sample charts implemented (Line, Bar, Pie)
-✅ Chart wrapper with controls ready
-✅ Loading and error states
-✅ Responsive design
-✅ Color themes and utilities
-✅ Sample data generators
-✅ Documentation complete
+✅ Recharts installed and configured ✅ Sample charts implemented (Line, Bar, Pie) ✅ Chart wrapper
+with controls ready ✅ Loading and error states ✅ Responsive design ✅ Color themes and utilities
+✅ Sample data generators ✅ Documentation complete
 
 Your charts are ready to use! Visit the Home page to see them in action.

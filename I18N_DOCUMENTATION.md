@@ -1,6 +1,7 @@
 # Internationalization (i18n) Implementation
 
-This application has been integrated with **react-i18next** for comprehensive internationalization and localization support.
+This application has been integrated with **react-i18next** for comprehensive internationalization
+and localization support.
 
 ## Features Implemented
 
@@ -50,33 +51,33 @@ This application has been integrated with **react-i18next** for comprehensive in
 ### Using Translations in Components
 
 ```javascript
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next'
 
 function MyComponent() {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   return (
     <div>
-      <h1>{t("page.title")}</h1>
-      <p>{t("page.description")}</p>
+      <h1>{t('page.title')}</h1>
+      <p>{t('page.description')}</p>
     </div>
-  );
+  )
 }
 ```
 
 ### Changing Language Programmatically
 
 ```javascript
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next'
 
 function MyComponent() {
-  const { i18n } = useTranslation();
+  const { i18n } = useTranslation()
 
   const changeToSpanish = () => {
-    i18n.changeLanguage("es");
-  };
+    i18n.changeLanguage('es')
+  }
 
-  return <button onClick={changeToSpanish}>Switch to Spanish</button>;
+  return <button onClick={changeToSpanish}>Switch to Spanish</button>
 }
 ```
 

@@ -1,6 +1,7 @@
 # ESLint Configuration
 
-This project uses ESLint for code linting and maintaining code quality with a comprehensive set of rules and plugins.
+This project uses ESLint for code linting and maintaining code quality with a comprehensive set of
+rules and plugins.
 
 ## Setup Overview
 
@@ -144,7 +145,7 @@ To disable specific rules for certain files or lines:
 // eslint-disable-next-line rule-name
 
 // Disable for specific line
-const code = "example"; // eslint-disable-line rule-name
+const code = 'example' // eslint-disable-line rule-name
 ```
 
 ### File-specific Configuration
@@ -176,7 +177,8 @@ The configuration includes special rules for test files with more relaxed constr
 
 ## Migration Notes
 
-This project uses the new ESLint flat config format. If migrating from the legacy `.eslintrc` format:
+This project uses the new ESLint flat config format. If migrating from the legacy `.eslintrc`
+format:
 
 1. Remove old `.eslintrc.*` files
 2. Update scripts to remove `--ext` flag

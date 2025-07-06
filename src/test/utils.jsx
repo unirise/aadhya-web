@@ -20,9 +20,7 @@ export function renderWithProviders(ui, options = {}) {
   function Wrapper({ children }) {
     return (
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          {children}
-        </BrowserRouter>
+        <BrowserRouter>{children}</BrowserRouter>
       </QueryClientProvider>
     )
   }

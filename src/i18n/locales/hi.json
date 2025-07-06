@@ -1,95 +1,95 @@
 {
-    "common": {
-        "welcome": "स्वागत है",
-        "home": "होम",
-        "about": "हमारे बारे में",
-        "contact": "संपर्क",
-        "login": "लॉगिन",
-        "logout": "लॉगआउट",
-        "submit": "जमा करें",
-        "cancel": "रद्द करें",
-        "loading": "लोड हो रहा है...",
-        "error": "त्रुटि",
-        "success": "सफलता",
-        "language": "भाषा",
-        "email": "ईमेल",
-        "password": "पासवर्ड",
-        "name": "नाम",
-        "message": "संदेश",
-        "subject": "विषय"
-    },
-    "navigation": {
-        "brand": "Aadhya Web",
-        "home": "होम",
-        "about": "हमारे बारे में",
-        "contact": "संपर्क"
-    },
-    "home": {
-        "title": "Aadhya Web में आपका स्वागत है",
-        "subtitle": "TanStack Query, React Router और अधिक के साथ आधुनिक React एप्लिकेशन",
-        "description": "यह एक व्यापक डेमो एप्लिकेशन है जो TypeScript, डेटा प्राप्त करने के लिए TanStack Query, नेवीगेशन के लिए React Router, Zod वैलिडेशन के साथ React Hook Form, और डेटा विज़ुअलाइज़ेशन के लिए Recharts के साथ आधुनिक React विकास प्रथाओं को प्रदर्शित करता है।",
-        "quickStats": "त्वरित आंकड़े",
-        "dataVisualization": "डेटा विज़ुअलाइज़ेशन",
-        "features": {
-            "title": "विशेषताएं",
-            "reactRouter": "नेवीगेशन के लिए React Router",
-            "tanstackQuery": "डेटा प्राप्त करने के लिए TanStack Query",
-            "reactHookForm": "Zod वैलिडेशन के साथ React Hook Form",
-            "recharts": "डेटा विज़ुअलाइज़ेशन के लिए Recharts",
-            "testing": "व्यापक टेस्टिंग सेटअप"
-        }
-    },
-    "about": {
-        "title": "हमारे बारे में",
-        "description": "हमारे एप्लिकेशन और इसकी विशेषताओं के बारे में और जानें।"
-    },
-    "contact": {
-        "title": "संपर्क फॉर्म",
-        "description": "यह React Hook Form + Zod वैलिडेशन के साथ एक नमूना फॉर्म है",
-        "form": {
-            "name": "नाम",
-            "email": "ईमेल",
-            "subject": "विषय",
-            "message": "संदेश",
-            "namePlaceholder": "अपना नाम दर्ज करें",
-            "emailPlaceholder": "अपना ईमेल दर्ज करें",
-            "subjectPlaceholder": "विषय दर्ज करें",
-            "messagePlaceholder": "अपना संदेश दर्ज करें",
-            "submit": "जमा करें",
-            "submitting": "जमा हो रहा है...",
-            "success": "फॉर्म सफलतापूर्वक जमा किया गया!",
-            "error": "फॉर्म जमा करने में त्रुटि। कृपया पुनः प्रयास करें।"
-        }
-    },
-    "login": {
-        "title": "लॉगिन फॉर्म",
-        "description": "वैलिडेशन के साथ नमूना लॉगिन फॉर्म",
-        "form": {
-            "email": "ईमेल",
-            "password": "पासवर्ड",
-            "rememberMe": "मुझे याद रखें",
-            "emailPlaceholder": "अपना ईमेल दर्ज करें",
-            "passwordPlaceholder": "अपना पासवर्ड दर्ज करें",
-            "login": "लॉगिन",
-            "loggingIn": "लॉगिन हो रहा है...",
-            "success": "लॉगिन सफल!",
-            "error": "लॉगिन असफल। कृपया पुनः प्रयास करें।"
-        }
-    },
-    "languageSwitcher": {
-        "title": "भाषा चयनकर्ता",
-        "description": "विभिन्न भाषाओं के बीच स्विच करें",
-        "currentLanguage": "वर्तमान भाषा: {{language}}",
-        "switchTo": "{{language}} में स्विच करें"
-    },
-    "validation": {
-        "required": "यह फील्ड आवश्यक है",
-        "email": "कृपया एक वैध ईमेल पता दर्ज करें",
-        "minLength": "कम से कम {{min}} अक्षर होने चाहिए",
-        "maxLength": "{{max}} अक्षरों से अधिक नहीं होना चाहिए",
-        "passwordRequired": "पासवर्ड आवश्यक है",
-        "nameMin": "नाम कम से कम 2 अक्षर का होना चाहिए",
-        "subjectMin": "विषय कम से कम 5 अक्षर का होना चाहिए",
-        "messageMin": "संदेश कम से कम 10 अक्षर का होना चाहिए"
+  "common": {
+    "welcome": "स्वागत है",
+    "home": "होम",
+    "about": "हमारे बारे में",
+    "contact": "संपर्क",
+    "login": "लॉगिन",
+    "logout": "लॉगआउट",
+    "submit": "जमा करें",
+    "cancel": "रद्द करें",
+    "loading": "लोड हो रहा है...",
+    "error": "त्रुटि",
+    "success": "सफलता",
+    "language": "भाषा",
+    "email": "ईमेल",
+    "password": "पासवर्ड",
+    "name": "नाम",
+    "message": "संदेश",
+    "subject": "विषय"
+  },
+  "navigation": {
+    "brand": "Aadhya Web",
+    "home": "होम",
+    "about": "हमारे बारे में",
+    "contact": "संपर्क"
+  },
+  "home": {
+    "title": "Aadhya Web में आपका स्वागत है",
+    "subtitle": "TanStack Query, React Router और अधिक के साथ आधुनिक React एप्लिकेशन",
+    "description": "यह एक व्यापक डेमो एप्लिकेशन है जो TypeScript, डेटा प्राप्त करने के लिए TanStack Query, नेवीगेशन के लिए React Router, Zod वैलिडेशन के साथ React Hook Form, और डेटा विज़ुअलाइज़ेशन के लिए Recharts के साथ आधुनिक React विकास प्रथाओं को प्रदर्शित करता है।",
+    "quickStats": "त्वरित आंकड़े",
+    "dataVisualization": "डेटा विज़ुअलाइज़ेशन",
+    "features": {
+      "title": "विशेषताएं",
+      "reactRouter": "नेवीगेशन के लिए React Router",
+      "tanstackQuery": "डेटा प्राप्त करने के लिए TanStack Query",
+      "reactHookForm": "Zod वैलिडेशन के साथ React Hook Form",
+      "recharts": "डेटा विज़ुअलाइज़ेशन के लिए Recharts",
+      "testing": "व्यापक टेस्टिंग सेटअप"
     }
+  },
+  "about": {
+    "title": "हमारे बारे में",
+    "description": "हमारे एप्लिकेशन और इसकी विशेषताओं के बारे में और जानें।"
+  },
+  "contact": {
+    "title": "संपर्क फॉर्म",
+    "description": "यह React Hook Form + Zod वैलिडेशन के साथ एक नमूना फॉर्म है",
+    "form": {
+      "name": "नाम",
+      "email": "ईमेल",
+      "subject": "विषय",
+      "message": "संदेश",
+      "namePlaceholder": "अपना नाम दर्ज करें",
+      "emailPlaceholder": "अपना ईमेल दर्ज करें",
+      "subjectPlaceholder": "विषय दर्ज करें",
+      "messagePlaceholder": "अपना संदेश दर्ज करें",
+      "submit": "जमा करें",
+      "submitting": "जमा हो रहा है...",
+      "success": "फॉर्म सफलतापूर्वक जमा किया गया!",
+      "error": "फॉर्म जमा करने में त्रुटि। कृपया पुनः प्रयास करें।"
+    }
+  },
+  "login": {
+    "title": "लॉगिन फॉर्म",
+    "description": "वैलिडेशन के साथ नमूना लॉगिन फॉर्म",
+    "form": {
+      "email": "ईमेल",
+      "password": "पासवर्ड",
+      "rememberMe": "मुझे याद रखें",
+      "emailPlaceholder": "अपना ईमेल दर्ज करें",
+      "passwordPlaceholder": "अपना पासवर्ड दर्ज करें",
+      "login": "लॉगिन",
+      "loggingIn": "लॉगिन हो रहा है...",
+      "success": "लॉगिन सफल!",
+      "error": "लॉगिन असफल। कृपया पुनः प्रयास करें।"
+    }
+  },
+  "languageSwitcher": {
+    "title": "भाषा चयनकर्ता",
+    "description": "विभिन्न भाषाओं के बीच स्विच करें",
+    "currentLanguage": "वर्तमान भाषा: {{language}}",
+    "switchTo": "{{language}} में स्विच करें"
+  },
+  "validation": {
+    "required": "यह फील्ड आवश्यक है",
+    "email": "कृपया एक वैध ईमेल पता दर्ज करें",
+    "minLength": "कम से कम {{min}} अक्षर होने चाहिए",
+    "maxLength": "{{max}} अक्षरों से अधिक नहीं होना चाहिए",
+    "passwordRequired": "पासवर्ड आवश्यक है",
+    "nameMin": "नाम कम से कम 2 अक्षर का होना चाहिए",
+    "subjectMin": "विषय कम से कम 5 अक्षर का होना चाहिए",
+    "messageMin": "संदेश कम से कम 10 अक्षर का होना चाहिए"
+  }
 }

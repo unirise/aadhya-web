@@ -8,7 +8,7 @@ import { formatDate as formatDateDayjs } from './dateUtils'
  * @returns {string} Combined class names
  */
 export function cn(...inputs) {
-    return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs))
 }
 
 /**
@@ -18,7 +18,7 @@ export function cn(...inputs) {
  * @returns {string} Formatted date string
  */
 export function formatDate(date, format = 'MMM D, YYYY') {
-    return formatDateDayjs(date, format)
+  return formatDateDayjs(date, format)
 }
 
 /**
@@ -27,7 +27,7 @@ export function formatDate(date, format = 'MMM D, YYYY') {
  * @returns {string} Capitalized string
  */
 export function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1)
+  return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
 /**
@@ -38,8 +38,8 @@ export function capitalize(str) {
  * @returns {string} Truncated string
  */
 export function truncate(str, length, suffix = '...') {
-    if (str.length <= length) return str
-    return str.slice(0, length) + suffix
+  if (str.length <= length) return str
+  return str.slice(0, length) + suffix
 }
 
 /**
@@ -49,9 +49,9 @@ export function truncate(str, length, suffix = '...') {
  * @returns {Function} Debounced function
  */
 export function debounce(func, delay) {
-    let timeoutId
-    return function (...args) {
-        clearTimeout(timeoutId)
-        timeoutId = setTimeout(() => func.apply(this, args), delay)
-    }
+  let timeoutId
+  return function (...args) {
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(() => func.apply(this, args), delay)
+  }
 }

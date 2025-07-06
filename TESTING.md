@@ -1,6 +1,7 @@
 # Testing Guide
 
-This project uses **Vitest** for unit and component testing with React Testing Library, and **ESLint** for code quality and linting.
+This project uses **Vitest** for unit and component testing with React Testing Library, and
+**ESLint** for code quality and linting.
 
 ## 🧪 Test Setup
 
@@ -55,6 +56,38 @@ npm run lint
 - Prettier integration for consistent formatting
 
 See `ESLINT_SETUP.md` for detailed configuration information.
+
+### Prettier Configuration
+
+This project uses Prettier for consistent code formatting:
+
+- **prettier**: Core code formatting engine
+- **eslint-plugin-prettier**: ESLint integration
+- **eslint-config-prettier**: Prevents ESLint/Prettier conflicts
+
+### Formatting Scripts
+
+```bash
+# Check formatting without fixing
+npm run format:check
+
+# Fix formatting issues
+npm run format:fix
+
+# Combined check
+npm run lint:check && npm run format:check
+```
+
+### Prettier Features
+
+- Consistent code style across the entire project
+- Integration with ESLint for seamless workflow
+- Support for JavaScript, JSX, JSON, Markdown, and more
+- Automatic formatting on save (with proper editor setup)
+- No semicolons, single quotes, 2-space indentation
+- 80-character line length limit
+
+See `PRETTIER_SETUP.md` for detailed configuration information.
 
 ## 🎯 Running Tests
 
@@ -118,33 +151,33 @@ src/
 ### Component Testing
 
 ```javascript
-import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
-import userEvent from "@testing-library/user-event";
-import LoginForm from "../components/forms/LoginForm";
+import { render, screen } from '@testing-library/react'
+import { describe, it, expect } from 'vitest'
+import userEvent from '@testing-library/user-event'
+import LoginForm from '../components/forms/LoginForm'
 
-describe("LoginForm", () => {
-  it("renders login form", () => {
-    render(<LoginForm />);
-    expect(screen.getByText("Login Form")).toBeInTheDocument();
-  });
-});
+describe('LoginForm', () => {
+  it('renders login form', () => {
+    render(<LoginForm />)
+    expect(screen.getByText('Login Form')).toBeInTheDocument()
+  })
+})
 ```
 
 ### Schema Testing
 
 ```javascript
-import { loginFormSchema } from "../schemas/formSchemas";
+import { loginFormSchema } from '../schemas/formSchemas'
 
-describe("loginFormSchema", () => {
-  it("validates correct data", () => {
+describe('loginFormSchema', () => {
+  it('validates correct data', () => {
     const result = loginFormSchema.safeParse({
-      email: "test@example.com",
-      password: "password123",
-    });
-    expect(result.success).toBe(true);
-  });
-});
+      email: 'test@example.com',
+      password: 'password123',
+    })
+    expect(result.success).toBe(true)
+  })
+})
 ```
 
 ### Testing with Providers
@@ -152,14 +185,14 @@ describe("loginFormSchema", () => {
 For components that use React Router or TanStack Query:
 
 ```javascript
-const renderWithProviders = (component) => {
-  const queryClient = new QueryClient();
+const renderWithProviders = component => {
+  const queryClient = new QueryClient()
   return render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>{component}</BrowserRouter>
     </QueryClientProvider>
-  );
-};
+  )
+}
 ```
 
 ## 🛠️ Configuration

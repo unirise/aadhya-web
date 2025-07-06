@@ -6,6 +6,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import importPlugin from 'eslint-plugin-import'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 import unusedImports from 'eslint-plugin-unused-imports'
+import prettierPlugin from 'eslint-plugin-prettier'
 import prettier from 'eslint-config-prettier'
 
 export default [
@@ -58,6 +59,7 @@ export default [
             'import': importPlugin,
             'jsx-a11y': jsxA11y,
             'unused-imports': unusedImports,
+            'prettier': prettierPlugin,
         },
         rules: {
             // ESLint recommended rules
@@ -204,6 +206,9 @@ export default [
             'comma-spacing': 'error',
             'no-multi-spaces': 'error',
             'key-spacing': 'error',
+            
+            // Prettier integration
+            'prettier/prettier': 'error',
         },
     },
     // Test files configuration

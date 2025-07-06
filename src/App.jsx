@@ -5,27 +5,27 @@ import AppRouter from './router/AppRouter'
 
 // Create a client
 const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            staleTime: 5 * 60 * 1000, // 5 minutes
-            cacheTime: 10 * 60 * 1000, // 10 minutes
-            retry: 1,
-            refetchOnWindowFocus: false,
-        },
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      cacheTime: 10 * 60 * 1000, // 10 minutes
+      retry: 1,
+      refetchOnWindowFocus: false,
     },
+  },
 })
 
 function App() {
-    return (
-        <QueryClientProvider client={queryClient}>
-            <Router>
-                <div>
-                    <Navigation />
-                    <AppRouter />
-                </div>
-            </Router>
-        </QueryClientProvider>
-    )
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <div>
+          <Navigation />
+          <AppRouter />
+        </div>
+      </Router>
+    </QueryClientProvider>
+  )
 }
 
 export default App
