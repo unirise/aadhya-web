@@ -1,0 +1,2490 @@
+{
+  "metadata": {
+    "title": "Multiple Intelligences Assessment",
+    "description": "Based on Howard Gardner's Theory of Multiple Intelligences",
+    "version": "1.0.0",
+    "totalQuestions": 64,
+    "intelligenceDomains": [
+      "INTRAPERSONAL",
+      "BODILY_KINESTHETIC",
+      "LOGICAL_MATHEMATICAL",
+      "LINGUISTIC",
+      "MUSICAL",
+      "SPATIAL",
+      "NATURALISTIC",
+      "INTERPERSONAL"
+    ]
+  },
+  "scoring": {
+    "baseScore": 50,
+    "scoreAdjustments": {
+      "1": 5,
+      "2": 2,
+      "3": 0,
+      "4": -2,
+      "5": -5
+    },
+    "description": "Each intelligence domain starts at 50. Scores are adjusted based on answer values: 1=+5, 2=+2, 3=0, 4=-2, 5=-5"
+  },
+  "answerOptions": [
+    {
+      "value": 1,
+      "label": "Completely agree",
+      "emoji": "\ud83d\ude0a"
+    },
+    {
+      "value": 2,
+      "label": "Somewhat agree",
+      "emoji": "\ud83d\ude42"
+    },
+    {
+      "value": 3,
+      "label": "Unsure",
+      "emoji": "\ud83d\ude10"
+    },
+    {
+      "value": 4,
+      "label": "Somewhat disagree",
+      "emoji": "\ud83d\ude15"
+    },
+    {
+      "value": 5,
+      "label": "Completely disagree",
+      "emoji": "\ud83d\ude22"
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "text": "I am a private person and I like my private inner world",
+      "intelligenceDomain": "INTRAPERSONAL",
+      "domainDisplayName": "Intrapersonal Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "I like to move, tap or fidget when sitting",
+      "intelligenceDomain": "BODILY_KINESTHETIC",
+      "domainDisplayName": "Bodily-Kinesthetic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "I work best in an organized work area",
+      "intelligenceDomain": "LOGICAL_MATHEMATICAL",
+      "domainDisplayName": "Logical-Mathematical Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "text": "I have a collection (e.g. shells, mugs, rocks, hockey cards)",
+      "intelligenceDomain": "NATURALISTIC",
+      "domainDisplayName": "Naturalistic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "text": "I work best through interaction with people",
+      "intelligenceDomain": "INTERPERSONAL",
+      "domainDisplayName": "Interpersonal Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "text": "I like puns and other wordplay",
+      "intelligenceDomain": "LINGUISTIC",
+      "domainDisplayName": "Linguistic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "text": "I play music in my head",
+      "intelligenceDomain": "MUSICAL",
+      "domainDisplayName": "Musical Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "text": "I understand colour combinations and what colours work well together",
+      "intelligenceDomain": "SPATIAL",
+      "domainDisplayName": "Spatial Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "text": "I feel comfortable and get positive reinforcement when dealing with language and words",
+      "intelligenceDomain": "LINGUISTIC",
+      "domainDisplayName": "Linguistic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "text": "I enjoy solving jigsaw, maze and/or other visual puzzles",
+      "intelligenceDomain": "SPATIAL",
+      "domainDisplayName": "Spatial Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "text": "I notice similarities and differences in trees, flowers and other things in nature",
+      "intelligenceDomain": "NATURALISTIC",
+      "domainDisplayName": "Naturalistic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "text": "I have a good understanding of my feelings and how I will react to situations",
+      "intelligenceDomain": "INTRAPERSONAL",
+      "domainDisplayName": "Intrapersonal Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "text": "I have a few close friends",
+      "intelligenceDomain": "INTERPERSONAL",
+      "domainDisplayName": "Interpersonal Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "text": "I enjoy team sports rather than individual sports",
+      "intelligenceDomain": "INTERPERSONAL",
+      "domainDisplayName": "Interpersonal Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "text": "I enjoy math and/or science",
+      "intelligenceDomain": "LOGICAL_MATHEMATICAL",
+      "domainDisplayName": "Logical-Mathematical Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "text": "I participate in extreme sports (e.g. sea kayaking, rock climbing, caving)",
+      "intelligenceDomain": "BODILY_KINESTHETIC",
+      "domainDisplayName": "Bodily-Kinesthetic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "text": "I enjoy completing crosswords and other word games",
+      "intelligenceDomain": "LINGUISTIC",
+      "domainDisplayName": "Linguistic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "text": "Being around people energizes me",
+      "intelligenceDomain": "INTERPERSONAL",
+      "domainDisplayName": "Interpersonal Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "text": "It is easy for me to follow the beat of music",
+      "intelligenceDomain": "MUSICAL",
+      "domainDisplayName": "Musical Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "text": "I often raise questions concerning values and beliefs",
+      "intelligenceDomain": "INTRAPERSONAL",
+      "domainDisplayName": "Intrapersonal Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "text": "I understand that I am responsible for my own behavior",
+      "intelligenceDomain": "INTRAPERSONAL",
+      "domainDisplayName": "Intrapersonal Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "text": "I am actively involved in protecting the environment",
+      "intelligenceDomain": "NATURALISTIC",
+      "domainDisplayName": "Naturalistic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "text": "I read charts and maps easily",
+      "intelligenceDomain": "SPATIAL",
+      "domainDisplayName": "Spatial Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "text": "I am curious as to how things feel and I tend to touch objects",
+      "intelligenceDomain": "BODILY_KINESTHETIC",
+      "domainDisplayName": "Bodily-Kinesthetic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "text": "I enjoy playing brainteasers and games that involve logical thinking",
+      "intelligenceDomain": "LOGICAL_MATHEMATICAL",
+      "domainDisplayName": "Logical-Mathematical Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "text": "I am well coordinated",
+      "intelligenceDomain": "BODILY_KINESTHETIC",
+      "domainDisplayName": "Bodily-Kinesthetic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "text": "I work best when the activity is self-paced",
+      "intelligenceDomain": "INTRAPERSONAL",
+      "domainDisplayName": "Intrapersonal Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "text": "I remember things exactly as they are said to me",
+      "intelligenceDomain": "LOGICAL_MATHEMATICAL",
+      "domainDisplayName": "Logical-Mathematical Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "text": "I like setting songs and poems to music",
+      "intelligenceDomain": "MUSICAL",
+      "domainDisplayName": "Musical Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "text": "I enjoy digging for and discovering artifacts and unusual items",
+      "intelligenceDomain": "NATURALISTIC",
+      "domainDisplayName": "Naturalistic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "text": "I prefer group activities rather than ones I do alone",
+      "intelligenceDomain": "INTERPERSONAL",
+      "domainDisplayName": "Interpersonal Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "text": "I have a good sense of direction",
+      "intelligenceDomain": "SPATIAL",
+      "domainDisplayName": "Spatial Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "text": "I like to take part in debates and/or discussions",
+      "intelligenceDomain": "LINGUISTIC",
+      "domainDisplayName": "Linguistic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "text": "I keep time when music is playing",
+      "intelligenceDomain": "MUSICAL",
+      "domainDisplayName": "Musical Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "text": "I like to watch the scenes and activities in movies",
+      "intelligenceDomain": "SPATIAL",
+      "domainDisplayName": "Spatial Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "text": "I like to ask \"why\" questions and seek clarification of issues and concerns",
+      "intelligenceDomain": "LOGICAL_MATHEMATICAL",
+      "domainDisplayName": "Logical-Mathematical Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "text": "I like working with my hands",
+      "intelligenceDomain": "BODILY_KINESTHETIC",
+      "domainDisplayName": "Bodily-Kinesthetic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "text": "I enjoy learning about different cultures",
+      "intelligenceDomain": "INTERPERSONAL",
+      "domainDisplayName": "Interpersonal Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "text": "I am not easily influenced by other people",
+      "intelligenceDomain": "INTRAPERSONAL",
+      "domainDisplayName": "Intrapersonal Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "text": "I prefer to be outdoors rather than indoors",
+      "intelligenceDomain": "NATURALISTIC",
+      "domainDisplayName": "Naturalistic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "text": "I work best when I have a day planner or timetable",
+      "intelligenceDomain": "LOGICAL_MATHEMATICAL",
+      "domainDisplayName": "Logical-Mathematical Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "text": "I have vivid dreams when sleeping",
+      "intelligenceDomain": "LINGUISTIC",
+      "domainDisplayName": "Linguistic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "text": "I prefer writing long- and short-answer responses rather than multiple-choice responses",
+      "intelligenceDomain": "LINGUISTIC",
+      "domainDisplayName": "Linguistic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "text": "I like planting and caring for a garden",
+      "intelligenceDomain": "NATURALISTIC",
+      "domainDisplayName": "Naturalistic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "text": "I can hear an off-key note",
+      "intelligenceDomain": "MUSICAL",
+      "domainDisplayName": "Musical Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "text": "I usually talk over my personal problems with a friend",
+      "intelligenceDomain": "INTERPERSONAL",
+      "domainDisplayName": "Interpersonal Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "text": "I like to think about abstract concepts",
+      "intelligenceDomain": "INTRAPERSONAL",
+      "domainDisplayName": "Intrapersonal Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "text": "I prefer to be physically involved rather than sitting and watching",
+      "intelligenceDomain": "BODILY_KINESTHETIC",
+      "domainDisplayName": "Bodily-Kinesthetic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "text": "I find it easy to engage in musical activities",
+      "intelligenceDomain": "MUSICAL",
+      "domainDisplayName": "Musical Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "text": "I understand best by doing (e.g. touching, moving and interacting)",
+      "intelligenceDomain": "BODILY_KINESTHETIC",
+      "domainDisplayName": "Bodily-Kinesthetic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "text": "I often raise questions concerning values and beliefs",
+      "intelligenceDomain": "MUSICAL",
+      "domainDisplayName": "Musical Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "text": "I quickly grasp cause and effect relationships",
+      "intelligenceDomain": "LOGICAL_MATHEMATICAL",
+      "domainDisplayName": "Logical-Mathematical Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "text": "I can anticipate the moves and consequences in a game plan (e.g. hockey sense, chess sense)",
+      "intelligenceDomain": "LOGICAL_MATHEMATICAL",
+      "domainDisplayName": "Logical-Mathematical Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "text": "I enjoy keeping a written journal and/or writing stories and articles",
+      "intelligenceDomain": "LINGUISTIC",
+      "domainDisplayName": "Linguistic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "text": "I enjoy fishing and tracking",
+      "intelligenceDomain": "SPATIAL",
+      "domainDisplayName": "Spatial Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "text": "I enjoy sharing my ideas and feelings with others",
+      "intelligenceDomain": "INTERPERSONAL",
+      "domainDisplayName": "Interpersonal Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "text": "I enjoy creating things with my hands",
+      "intelligenceDomain": "BODILY_KINESTHETIC",
+      "domainDisplayName": "Bodily-Kinesthetic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "text": "I like to read a lot",
+      "intelligenceDomain": "LINGUISTIC",
+      "domainDisplayName": "Linguistic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "text": "I feel proud of my musical accomplishments",
+      "intelligenceDomain": "MUSICAL",
+      "domainDisplayName": "Musical Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "text": "I learn best when I can go on field trips to explore and observe nature exhibits, museums, or the outdoors",
+      "intelligenceDomain": "NATURALISTIC",
+      "domainDisplayName": "Naturalistic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "text": "I am good at estimating",
+      "intelligenceDomain": "SPATIAL",
+      "domainDisplayName": "Spatial Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "text": "I work best in a co-operative group where I can discuss issues with others",
+      "intelligenceDomain": "NATURALISTIC",
+      "domainDisplayName": "Naturalistic Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "text": "I enjoy contemplating the big picture and universal questions",
+      "intelligenceDomain": "INTRAPERSONAL",
+      "domainDisplayName": "Intrapersonal Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    },
+    {
+      "id": 64,
+      "text": "I remember things best by seeing them",
+      "intelligenceDomain": "SPATIAL",
+      "domainDisplayName": "Spatial Intelligence",
+      "options": [
+        {
+          "value": 1,
+          "label": "Completely agree",
+          "emoji": "\ud83d\ude0a",
+          "scoreAdjustment": 5
+        },
+        {
+          "value": 2,
+          "label": "Somewhat agree",
+          "emoji": "\ud83d\ude42",
+          "scoreAdjustment": 2
+        },
+        {
+          "value": 3,
+          "label": "Unsure",
+          "emoji": "\ud83d\ude10",
+          "scoreAdjustment": 0
+        },
+        {
+          "value": 4,
+          "label": "Somewhat disagree",
+          "emoji": "\ud83d\ude15",
+          "scoreAdjustment": -2
+        },
+        {
+          "value": 5,
+          "label": "Completely disagree",
+          "emoji": "\ud83d\ude22",
+          "scoreAdjustment": -5
+        }
+      ]
+    }
+  ]
+}
