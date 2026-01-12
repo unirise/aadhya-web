@@ -31,7 +31,7 @@ export default [
         ]
     },
     {
-        files: ['**/*.{js,jsx}'],
+        files: ['**/*.{js,jsx,ts,tsx}'],
         languageOptions: {
             ecmaVersion: 2020,
             globals: {
@@ -48,7 +48,7 @@ export default [
             react: { version: '18.2' },
             'import/resolver': {
                 node: {
-                    extensions: ['.js', '.jsx'],
+                    extensions: ['.js', '.jsx', '.ts', '.tsx'],
                 },
             },
         },
@@ -213,7 +213,7 @@ export default [
     },
     // Test files configuration
     {
-        files: ['**/*.test.{js,jsx}', '**/*.spec.{js,jsx}', '**/test/**/*.{js,jsx}', 'src/test/**/*.{js,jsx}'],
+        files: ['**/*.test.{js,jsx,ts,tsx}', '**/*.spec.{js,jsx,ts,tsx}', '**/test/**/*.{js,jsx,ts,tsx}', 'src/test/**/*.{js,jsx,ts,tsx}'],
         languageOptions: {
             globals: {
                 ...globals.jest,
