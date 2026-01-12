@@ -6,9 +6,6 @@ import IntelligenceRadarChart from './charts/IntelligenceRadarChart'
 
 function Questionnaire() {
   const [activities, setActivities] = useState([])
-  const [answerOptions, setAnswerOptions] = useState([])
-  const [metadata, setMetadata] = useState(null)
-  const [scoring, setScoring] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
@@ -42,33 +39,17 @@ function Questionnaire() {
         setIsLoading(true)
         setError(null)
 
-        // Load metadata, scoring, answer options, activities, and intelligence scores in parallel
-        const [
-          metadataResponse,
-          scoringResponse,
-          answerOptionsResponse,
-          firstPageResponse,
-          intelligencesResponse,
-        ] = await Promise.all([
-          activitiesApi.fetchMetadata(),
-          activitiesApi.fetchScoring(),
-          activitiesApi.fetchAnswerOptions(),
+        // Load activities and intelligence scores in parallel
+        const [firstPageResponse, intelligencesResponse] = await Promise.all([
           activitiesApi.fetchActivities(5),
           activitiesApi.fetchIntelligences(PERSON_ID),
         ])
 
         // Unwrap responses (backend wraps them in { status, message, data, stack })
-        const metadataData = metadataResponse.data || metadataResponse
-        const scoringData = scoringResponse.data || scoringResponse
-        const answerOptionsData =
-          answerOptionsResponse.data || answerOptionsResponse
         const firstPageData = firstPageResponse.data || firstPageResponse
         const intelligencesData =
           intelligencesResponse.data || intelligencesResponse
 
-        setMetadata(metadataData)
-        setScoring(scoringData)
-        setAnswerOptions(answerOptionsData)
         setActivities(firstPageData.questions || [])
         setHasMorePages(firstPageData.pagination?.hasNext || false)
         setIntelligenceScores(intelligencesData.intelligences || {})
@@ -144,14 +125,9 @@ function Questionnaire() {
       return intelligenceScores
     }
     // Return base scores if no DB scores available yet
-    const baseScores = {}
-    if (metadata) {
-      metadata.intelligenceDomains.forEach(domain => {
-        baseScores[domain] = scoring?.baseScore || 50
-      })
-    }
-    return baseScores
-  }, [intelligenceScores, metadata, scoring])
+    // Base score is 50 for all domains
+    return {}
+  }, [intelligenceScores])
 
   // Get top intelligences from DB scores
   const realTimeTop3 = useMemo(() => {
@@ -345,10 +321,7 @@ function Questionnaire() {
 
           {/* Answer Options - Horizontal */}
           {(() => {
-            const optionsToDisplay =
-              answerOptions && answerOptions.length > 0
-                ? answerOptions
-                : currentActivity?.options || []
+            const optionsToDisplay = currentActivity?.options || []
 
             if (!optionsToDisplay || optionsToDisplay.length === 0) {
               return (
@@ -553,7 +526,7 @@ function Questionnaire() {
           <IntelligenceRadarChart
             scores={realTimeScores}
             domainDisplayNames={Object.fromEntries(
-              (metadata?.intelligenceDomains || []).map(domain => {
+              Object.keys(intelligenceScores || {}).map(domain => {
                 const activity = activities.find(
                   a => a.intelligenceDomain === domain
                 )

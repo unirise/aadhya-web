@@ -1,10 +1,10 @@
 // API Types
 export interface User {
-  id: number
+  id: string  // UUID from backend
   name: string
-  email: string
-  username?: string
-  yob?: number
+  email?: string
+  username: string
+  yob: number
 }
 
 export interface Post {

@@ -18,7 +18,6 @@ import { getIntelligenceIcon } from '../lib/intelligence-icons'
 
 function Sajag() {
   const [intelligenceScores, setIntelligenceScores] = useState(null)
-  const [metadata, setMetadata] = useState(null)
   const [activities, setActivities] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -56,20 +55,16 @@ function Sajag() {
         setIsLoading(true)
         setError(null)
 
-        // Load metadata and activities to get domain display names
-        const [metadataResponse, intelligencesResponse, firstPageResponse] =
-          await Promise.all([
-            activitiesApi.fetchMetadata(),
-            activitiesApi.fetchIntelligences(PERSON_ID),
-            activitiesApi.fetchActivities(100), // Get enough activities to find all domains
-          ])
+        // Load activities to get domain display names
+        const [intelligencesResponse, firstPageResponse] = await Promise.all([
+          activitiesApi.fetchIntelligences(PERSON_ID),
+          activitiesApi.fetchActivities(100), // Get enough activities to find all domains
+        ])
 
-        const metadataData = metadataResponse.data || metadataResponse
         const intelligencesData =
           intelligencesResponse.data || intelligencesResponse
         const firstPageData = firstPageResponse.data || firstPageResponse
 
-        setMetadata(metadataData)
         setIntelligenceScores(intelligencesData.intelligences || {})
         setActivities(firstPageData.questions || [])
       } catch (err) {
@@ -190,7 +185,7 @@ function Sajag() {
 
   // Get domain display names for chart
   const domainDisplayNames = useMemo(() => {
-    if (!metadata || !activities.length) return {}
+    if (!activities.length) return {}
     const domainNameMap = {
       INTERPERSONAL: 'Interpersonal Intelligence',
       BODILY_KINESTHETIC: 'Bodily-Kinesthetic Intelligence',
@@ -208,7 +203,7 @@ function Sajag() {
       ])
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [metadata, activities, intelligenceScores])
+  }, [activities, intelligenceScores])
 
   // Prepare all NSQF roles for chart (combining regular and hybrid)
   const allNSQFRoles = useMemo(() => {

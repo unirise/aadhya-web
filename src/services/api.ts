@@ -4,7 +4,7 @@
 import { authService } from './authService'
 import type { User, Post, Stats, FetchOptions } from '@/types'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1'
 
 // Helper function to make authenticated requests
 const fetchWithAuth = async <T>(url: string, options: FetchOptions = {}): Promise<T> => {

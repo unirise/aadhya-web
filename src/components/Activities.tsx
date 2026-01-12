@@ -1,32 +1,53 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import { activitiesApi } from '../services/activitiesApi'
 import { getTopIntelligences } from '../lib/mi-scoring'
-import { getIntelligenceIcon } from '../lib/intelligence-icons'
 import IntelligenceRadarChart from './charts/IntelligenceRadarChart'
+import MCQ from './activity-components/MCQ'
+
+type Activity = {
+  id: string
+  text: string
+  intelligenceDomain: string
+  domainDisplayName: string
+  options?: AnswerOption[]
+}
+
+type AnswerOption = {
+  value: number
+  label: string
+  emoji: string
+}
+
+type IntelligenceScores = {
+  [key: string]: number
+}
+
+type TopIntelligence = {
+  domain: string
+  score: number
+}
 
 function Activities() {
-  const [activities, setActivities] = useState([])
-  const [answerOptions, setAnswerOptions] = useState([])
-  const [metadata, setMetadata] = useState(null)
-  const [scoring, setScoring] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [_hasMorePages, setHasMorePages] = useState(true)
+  const { assessmentId, activityId } = useParams<{
+    assessmentId: string
+    activityId: string
+  }>()
+  const navigate = useNavigate()
 
-  const [currentStep, setCurrentStep] = useState(0)
-  const [answers, setAnswers] = useState({})
+  const [activities, setActivities] = useState<Activity[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  const [answers, setAnswers] = useState<Record<string, number>>({})
   const [isMobile, setIsMobile] = useState(false)
-  const [intelligenceScores, setIntelligenceScores] = useState(null)
-  const [sidebarOpen, setSidebarOpen] = useState(true)
-  // Hardcoded person ID
-  const PERSON_ID = '2cdaa500-7daf-44cd-a1bc-50fb77e86bd4'
+  const [intelligenceScores, setIntelligenceScores] = useState<IntelligenceScores | null>(null)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   // Fetch intelligence scores from DB
   const fetchIntelligenceScores = useCallback(async () => {
     try {
-      const intelligencesResponse =
-        await activitiesApi.fetchIntelligences(PERSON_ID)
+      const intelligencesResponse = await activitiesApi.fetchIntelligences()
       const intelligencesData =
         intelligencesResponse.data || intelligencesResponse
       setIntelligenceScores(intelligencesData.intelligences || {})
@@ -39,44 +60,52 @@ function Activities() {
   // Load initial data
   useEffect(() => {
     const loadInitialData = async () => {
+      if (!assessmentId) {
+        setError('Assessment ID is required')
+        setIsLoading(false)
+        return
+      }
+
       try {
         setIsLoading(true)
         setError(null)
 
-        // Load metadata, scoring, answer options, activities, and intelligence scores in parallel
-        const [
-          metadataResponse,
-          scoringResponse,
-          answerOptionsResponse,
-          firstPageResponse,
-          intelligencesResponse,
-        ] = await Promise.all([
-          activitiesApi.fetchMetadata(),
-          activitiesApi.fetchScoring(),
-          activitiesApi.fetchAnswerOptions(),
-          activitiesApi.fetchActivities(5),
-          activitiesApi.fetchIntelligences(PERSON_ID),
+        // Load activities, intelligence scores, and saved responses in parallel
+        const [activitiesResponse, intelligencesResponse, responsesResponse] = await Promise.all([
+          activitiesApi.fetchActivities(100, 1, assessmentId), // Load all activities for the assessment
+          activitiesApi.fetchIntelligences(),
+          activitiesApi.fetchMyResponses(), // Fetch saved responses
         ])
 
         // Unwrap responses (backend wraps them in { status, message, data, stack })
-        const metadataData = metadataResponse.data || metadataResponse
-        const scoringData = scoringResponse.data || scoringResponse
-        const answerOptionsData =
-          answerOptionsResponse.data || answerOptionsResponse
-        const firstPageData = firstPageResponse.data || firstPageResponse
+        const activitiesData = activitiesResponse.data || activitiesResponse
         const intelligencesData =
           intelligencesResponse.data || intelligencesResponse
+        const responsesData = responsesResponse.data || responsesResponse
 
-        setMetadata(metadataData)
-        setScoring(scoringData)
-        setAnswerOptions(answerOptionsData)
-        setActivities(firstPageData.questions || [])
-        setHasMorePages(firstPageData.pagination?.hasNext || false)
+        const loadedActivities = activitiesData.questions || activitiesData || []
+        setActivities(loadedActivities)
         setIntelligenceScores(intelligencesData.intelligences || {})
+
+        // Pre-populate answers from saved responses
+        if (Array.isArray(responsesData) && responsesData.length > 0) {
+          const savedAnswers: Record<string, number> = {}
+          responsesData.forEach((response: any) => {
+            if (response.activityId && response.responseData?.optionValue !== undefined) {
+              savedAnswers[response.activityId] = response.responseData.optionValue
+            }
+          })
+          setAnswers(savedAnswers)
+        }
+
+        // If no activityId in URL, navigate to first activity
+        if (!activityId && loadedActivities.length > 0) {
+          navigate(`/assessment/${assessmentId}/activity/${loadedActivities[0].id}`, { replace: true })
+        }
       } catch (err) {
         console.error('Error loading activities:', err)
         setError(
-          err.message || 'Failed to load activities. Please try again later.'
+          (err as Error).message || 'Failed to load activities. Please try again later.'
         )
       } finally {
         setIsLoading(false)
@@ -84,50 +113,14 @@ function Activities() {
     }
 
     loadInitialData()
-  }, [])
+  }, [assessmentId, navigate, activityId])
 
-  // Load more activities when needed
-  const loadMoreActivities = useCallback(async () => {
-    if (isLoading) return
-
-    try {
-      setIsLoading(true)
-      const nextPage = currentPage + 1
-      const pageResponse = await activitiesApi.fetchActivities(5, nextPage)
-
-      // Unwrap response (backend wraps it in { status, message, data, stack })
-      const pageData = pageResponse.data || pageResponse
-
-      const newActivities = pageData.questions || []
-      if (newActivities.length > 0) {
-        setActivities(prev => [...prev, ...newActivities])
-        setCurrentPage(nextPage)
-        // Backend returns random activities, so always allow loading more
-        // Only stop if we get no activities back
-        setHasMorePages(true)
-      } else {
-        // No more activities available
-        setHasMorePages(false)
-      }
-    } catch (err) {
-      console.error('Error loading more activities:', err)
-      setError(err.message || 'Failed to load more activities.')
-      setHasMorePages(false)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [currentPage, isLoading])
-
-  // Load more activities when approaching the end (infinite scroll)
-  useEffect(() => {
-    // Load more when we're at or past the last activity, or when we have 2 or fewer remaining
-    const needsMoreActivities =
-      currentStep >= activities.length - 1 ||
-      activities.length - currentStep <= 2
-    if (needsMoreActivities && !isLoading) {
-      loadMoreActivities()
-    }
-  }, [currentStep, activities.length, isLoading, loadMoreActivities])
+  // Calculate current step from activityId in URL
+  const currentStep = useMemo(() => {
+    if (!activityId || activities.length === 0) return 0
+    const index = activities.findIndex(a => a.id === activityId)
+    return index >= 0 ? index : 0
+  }, [activityId, activities])
 
   // Track window size for responsive design
   useEffect(() => {
@@ -150,18 +143,13 @@ function Activities() {
       return intelligenceScores
     }
     // Return base scores if no DB scores available yet
-    const baseScores = {}
-    if (metadata) {
-      metadata.intelligenceDomains.forEach(domain => {
-        baseScores[domain] = scoring?.baseScore || 50
-      })
-    }
-    return baseScores
-  }, [intelligenceScores, metadata, scoring])
+    // Base score is 50 for all domains
+    return {}
+  }, [intelligenceScores])
 
   // Get top intelligences from DB scores
-  const realTimeTop3 = useMemo(() => {
-    return getTopIntelligences(realTimeScores, 3)
+  const realTimeTop3 = useMemo<TopIntelligence[]>(() => {
+    return getTopIntelligences(realTimeScores, 3) as TopIntelligence[]
   }, [realTimeScores])
 
   // Loading state
@@ -210,7 +198,7 @@ function Activities() {
   const safeCurrentStep = Math.min(currentStep, activities.length - 1)
   const currentActivity = activities[safeCurrentStep]
 
-  const handleAnswerSelect = async value => {
+  const handleAnswerSelect = async (value: number) => {
     // Update local state immediately
     setAnswers({
       ...answers,
@@ -222,8 +210,7 @@ function Activities() {
       if (activitiesApi.submitAnswer) {
         const response = await activitiesApi.submitAnswer(
           currentActivity.id,
-          value,
-          PERSON_ID
+          value
         )
         // Update intelligence scores from the response
         const responseData = response.data || response
@@ -245,25 +232,39 @@ function Activities() {
     }
   }
 
-  const handleNext = async () => {
-    if (answers[currentActivity.id]) {
-      // If we're at the last activity, try to load more first
-      if (currentStep >= activities.length - 1 && !isLoading) {
-        await loadMoreActivities()
-      }
-      // Always advance to next activity (safety check will prevent out-of-bounds)
-      setCurrentStep(prev => prev + 1)
+  const handleNext = () => {
+    if (!assessmentId || !answers[currentActivity.id]) return
+
+    // Navigate to next activity
+    const nextIndex = currentStep + 1
+    if (nextIndex < activities.length) {
+      const nextActivity = activities[nextIndex]
+      navigate(`/assessment/${assessmentId}/activity/${nextActivity.id}`)
+    } else {
+      // Last activity completed - navigate to thank you page
+      navigate(`/assessment/${assessmentId}/thank-you`)
     }
   }
 
   const handlePrevious = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1)
+    if (!assessmentId) return
+
+    // If on first question, go to assessment start page
+    if (currentStep === 0) {
+      navigate(`/assessment/${assessmentId}/start`)
+      return
+    }
+
+    // Otherwise go to previous question
+    const previousIndex = currentStep - 1
+    if (previousIndex >= 0) {
+      const previousActivity = activities[previousIndex]
+      navigate(`/assessment/${assessmentId}/activity/${previousActivity.id}`)
     }
   }
 
   // Helper function to get domain display name
-  const getDomainDisplayName = domainCode => {
+  const getDomainDisplayName = (domainCode: string) => {
     const activity = activities.find(a => a.intelligenceDomain === domainCode)
     return activity ? activity.domainDisplayName : domainCode
   }
@@ -405,7 +406,7 @@ function Activities() {
               <IntelligenceRadarChart
                 scores={realTimeScores}
                 domainDisplayNames={Object.fromEntries(
-                  (metadata?.intelligenceDomains || []).map(domain => {
+                  Object.keys(intelligenceScores || {}).map((domain: string) => {
                     const activity = activities.find(
                       a => a.intelligenceDomain === domain
                     )
@@ -524,255 +525,22 @@ function Activities() {
         </button>
       )}
 
-      {/* Main Content Area - Full Screen */}
-      <div
-        style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          minWidth: 0,
-          padding: '20px',
-          maxWidth: sidebarOpen && !isMobile ? 'calc(100vw - 400px)' : '100%',
-          margin: '0 auto',
-          transition: 'max-width 0.3s ease',
-        }}
-      >
-        {/* Activity Card */}
-        <div
-          style={{
-            backgroundColor: '#ffffff',
-            borderRadius: '20px',
-            padding: '32px',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-            marginBottom: '24px',
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            minHeight: 0,
-          }}
-        >
-          {/* Intelligence Domain Icon */}
-          {(() => {
-            const IconComponent = getIntelligenceIcon(
-              currentActivity.intelligenceDomain
-            )
-            return IconComponent ? (
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  marginBottom: '24px',
-                }}
-              >
-                <div
-                  style={{
-                    padding: '16px',
-                    borderRadius: '16px',
-                    backgroundColor: '#eff6ff',
-                    border: '2px solid #3b82f6',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <IconComponent size={48} color='#3b82f6' />
-                </div>
-              </div>
-            ) : null
-          })()}
-
-          <h2
-            style={{
-              fontSize: '28px',
-              fontWeight: 'bold',
-              color: '#1f2937',
-              marginBottom: '32px',
-              lineHeight: '1.3',
-              textAlign: 'center',
-            }}
-          >
-            {currentActivity.text}
-          </h2>
-
-          {/* Answer Options - Horizontal */}
-          {(() => {
-            const optionsToDisplay =
-              answerOptions && answerOptions.length > 0
-                ? answerOptions
-                : currentActivity?.options || []
-
-            if (!optionsToDisplay || optionsToDisplay.length === 0) {
-              return (
-                <div
-                  style={{
-                    textAlign: 'center',
-                    padding: '20px',
-                    color: '#ef4444',
-                  }}
-                >
-                  No answer options available. Please refresh the page.
-                </div>
-              )
-            }
-
-            return (
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  gap: '12px',
-                  justifyContent: 'center',
-                  flexWrap: 'wrap',
-                  alignItems: 'stretch',
-                }}
-              >
-                {optionsToDisplay.map(option => {
-                  const isSelected =
-                    answers[currentActivity.id] === option.value
-                  return (
-                    <button
-                      key={option.value}
-                      type='button'
-                      onClick={() => handleAnswerSelect(option.value)}
-                      style={{
-                        flex: '1 1 0',
-                        minWidth: '140px',
-                        maxWidth: '200px',
-                        padding: '20px 16px',
-                        fontSize: '18px',
-                        fontWeight: 'bold',
-                        backgroundColor: isSelected ? '#3b82f6' : '#f3f4f6',
-                        color: isSelected ? 'white' : '#1f2937',
-                        border: isSelected
-                          ? '3px solid #2563eb'
-                          : '3px solid #e5e7eb',
-                        borderRadius: '12px',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '8px',
-                        textAlign: 'center',
-                        userSelect: 'none',
-                        WebkitUserSelect: 'none',
-                        MozUserSelect: 'none',
-                        msUserSelect: 'none',
-                      }}
-                      onMouseOver={e => {
-                        if (!isSelected) {
-                          e.target.style.backgroundColor = '#e5e7eb'
-                          e.target.style.borderColor = '#d1d5db'
-                        }
-                      }}
-                      onMouseOut={e => {
-                        if (!isSelected) {
-                          e.target.style.backgroundColor = '#f3f4f6'
-                          e.target.style.borderColor = '#e5e7eb'
-                        }
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: '36px',
-                          userSelect: 'none',
-                          WebkitUserSelect: 'none',
-                          MozUserSelect: 'none',
-                          msUserSelect: 'none',
-                          backgroundColor: 'transparent',
-                          pointerEvents: 'none',
-                        }}
-                      >
-                        {option.emoji}
-                      </span>
-                      <span
-                        style={{
-                          userSelect: 'none',
-                          WebkitUserSelect: 'none',
-                          MozUserSelect: 'none',
-                          msUserSelect: 'none',
-                          backgroundColor: 'transparent',
-                          pointerEvents: 'none',
-                        }}
-                      >
-                        {option.label}
-                      </span>
-                    </button>
-                  )
-                })}
-              </div>
-            )
-          })()}
-        </div>
-
-        {/* Navigation Buttons */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            gap: '16px',
-            flexShrink: 0,
-          }}
-        >
-          <button
-            type='button'
-            onClick={handlePrevious}
-            disabled={currentStep === 0}
-            style={{
-              padding: '14px 28px',
-              fontSize: '18px',
-              fontWeight: 'bold',
-              backgroundColor: currentStep === 0 ? '#e5e7eb' : '#6b7280',
-              color: currentStep === 0 ? '#9ca3af' : 'white',
-              border: 'none',
-              borderRadius: '12px',
-              cursor: currentStep === 0 ? 'not-allowed' : 'pointer',
-              transition: 'background-color 0.2s',
-              opacity: currentStep === 0 ? 0.5 : 1,
-            }}
-          >
-            ← Previous
-          </button>
-
-          <button
-            type='button'
-            onClick={handleNext}
-            disabled={!answers[currentActivity.id]}
-            style={{
-              padding: '14px 40px',
-              fontSize: '18px',
-              fontWeight: 'bold',
-              backgroundColor: answers[currentActivity.id]
-                ? '#10b981'
-                : '#e5e7eb',
-              color: answers[currentActivity.id] ? 'white' : '#9ca3af',
-              border: 'none',
-              borderRadius: '12px',
-              cursor: answers[currentActivity.id] ? 'pointer' : 'not-allowed',
-              transition: 'background-color 0.2s',
-              opacity: answers[currentActivity.id] ? 1 : 0.5,
-            }}
-            onMouseOver={e => {
-              if (answers[currentActivity.id]) {
-                e.target.style.backgroundColor = '#059669'
-              }
-            }}
-            onMouseOut={e => {
-              if (answers[currentActivity.id]) {
-                e.target.style.backgroundColor = '#10b981'
-              }
-            }}
-          >
-            Next →
-          </button>
-        </div>
-      </div>
+      {/* Main Content Area with MCQ Component */}
+      <MCQ
+        activity={currentActivity}
+        answerOptions={[]}
+        selectedAnswer={answers[currentActivity.id]}
+        onAnswerSelect={handleAnswerSelect}
+        onNext={handleNext}
+        onPrevious={handlePrevious}
+        canGoPrevious={true}
+        canGoNext={!!answers[currentActivity.id]}
+        currentPosition={currentStep + 1}
+        totalActivities={activities.length}
+        isFirstQuestion={currentStep === 0}
+      />
     </div>
   )
 }
 
 export default Activities
-
-

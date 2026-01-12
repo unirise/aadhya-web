@@ -7,23 +7,7 @@ function Navigation() {
   const isAuthenticated = authService.isAuthenticated()
   const user = authService.getUser()
 
-  const routes = [
-    { name: 'Activities', path: '/activities' },
-    { name: 'Pehchan', path: '/pehchan' },
-    { name: 'Sajag', path: '/sajag' },
-  ]
-
-  const isActive = path => {
-    if (path === '/activities') {
-      return location.pathname === '/' || location.pathname === '/activities'
-    }
-    return location.pathname === path
-  }
-
-  const handleLogout = () => {
-    authService.logout()
-    navigate('/login')
-  }
+  const isHomeActive = location.pathname === '/' || location.pathname === '/home'
 
   // Don't show navigation on login page
   if (location.pathname === '/login') {
@@ -48,108 +32,105 @@ function Navigation() {
         boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '32px',
-        }}
-      >
+      {/* Left: Home Link */}
+      <div style={{ flex: '1', display: 'flex', alignItems: 'center' }}>
         <Link
-          to='/activities'
+          to='/'
           style={{
             textDecoration: 'none',
-            fontSize: '24px',
-            fontWeight: 'bold',
-            color: '#1d4ed8',
-            letterSpacing: '-0.5px',
+            color: isHomeActive ? '#1d4ed8' : '#6b7280',
+            fontWeight: isHomeActive ? '600' : '500',
+            fontSize: '15px',
+            padding: '8px 16px',
+            borderRadius: '8px',
+            backgroundColor: isHomeActive ? '#eff6ff' : 'transparent',
+            transition: 'all 0.2s ease',
+          }}
+          onMouseEnter={e => {
+            if (!isHomeActive) {
+              e.currentTarget.style.backgroundColor = '#f9fafb'
+              e.currentTarget.style.color = '#374151'
+            }
+          }}
+          onMouseLeave={e => {
+            if (!isHomeActive) {
+              e.currentTarget.style.backgroundColor = 'transparent'
+              e.currentTarget.style.color = '#6b7280'
+            }
           }}
         >
-          Aadya
+          Home
         </Link>
-
-        <nav
-          style={{
-            display: 'flex',
-            gap: '8px',
-            alignItems: 'center',
-          }}
-        >
-          {routes.map(route => {
-            const active = isActive(route.path)
-            return (
-              <Link
-                key={route.path}
-                to={route.path}
-                style={{
-                  textDecoration: 'none',
-                  color: active ? '#1d4ed8' : '#6b7280',
-                  fontWeight: active ? '600' : '500',
-                  fontSize: '15px',
-                  padding: '8px 16px',
-                  borderRadius: '8px',
-                  backgroundColor: active ? '#eff6ff' : 'transparent',
-                  transition: 'all 0.2s ease',
-                }}
-                onMouseEnter={e => {
-                  if (!active) {
-                    e.target.style.backgroundColor = '#f9fafb'
-                    e.target.style.color = '#374151'
-                  }
-                }}
-                onMouseLeave={e => {
-                  if (!active) {
-                    e.target.style.backgroundColor = 'transparent'
-                    e.target.style.color = '#6b7280'
-                  }
-                }}
-              >
-                {route.name}
-              </Link>
-            )
-          })}
-        </nav>
       </div>
 
-      {/* User info and logout */}
+      {/* Center: Aadya Logo */}
+      <div
+        style={{
+          position: 'absolute',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          fontSize: '28px',
+          fontWeight: 'bold',
+          color: '#1d4ed8',
+          letterSpacing: '-0.5px',
+          userSelect: 'none',
+        }}
+      >
+        Aadya
+      </div>
+
+      {/* Right: User Info and Profile Link */}
       {isAuthenticated && (
         <div
           style={{
+            flex: '1',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'flex-end',
             gap: '16px',
           }}
         >
-          <span
+          <Link
+            to='/profile'
             style={{
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
               color: '#6b7280',
               fontSize: '14px',
-            }}
-          >
-            {user?.name || user?.username}
-          </span>
-          <button
-            onClick={handleLogout}
-            style={{
-              padding: '8px 16px',
-              backgroundColor: '#ef4444',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '14px',
               fontWeight: '500',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s',
+              padding: '8px 12px',
+              borderRadius: '8px',
+              transition: 'all 0.2s ease',
             }}
             onMouseEnter={e => {
-              e.target.style.backgroundColor = '#dc2626'
+              e.currentTarget.style.backgroundColor = '#f9fafb'
+              e.currentTarget.style.color = '#374151'
             }}
             onMouseLeave={e => {
-              e.target.style.backgroundColor = '#ef4444'
+              e.currentTarget.style.backgroundColor = 'transparent'
+              e.currentTarget.style.color = '#6b7280'
             }}
           >
-            Logout
-          </button>
+            <span
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                backgroundColor: '#3b82f6',
+                color: 'white',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '14px',
+                fontWeight: '600',
+              }}
+            >
+              {(user?.name || user?.username || 'U').charAt(0).toUpperCase()}
+            </span>
+            <span>{user?.name || user?.username}</span>
+          </Link>
         </div>
       )}
     </div>
