@@ -46,6 +46,25 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* Prevent text selection highlighting on buttons */
+button,
+button * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+button::selection,
+button *::selection {
+  background: transparent;
+}
+
+button::-moz-selection,
+button *::-moz-selection {
+  background: transparent;
+}
+
 /* Chart loading animation */
 @keyframes spin {
   0% {

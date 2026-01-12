@@ -3,6 +3,11 @@ export { default as SampleLineChart } from './SampleLineChart'
 export { default as SampleBarChart } from './SampleBarChart'
 export { default as SamplePieChart } from './SamplePieChart'
 export { default as ChartWrapper } from './ChartWrapper'
+export { default as IntelligenceRadarChart } from './IntelligenceRadarChart'
+export { default as SkillsVocationalChart } from './SkillsVocationalChart'
+export { default as RolesByIntelligenceChart } from './RolesByIntelligenceChart'
+export { default as NSQFLevelsChart } from './NSQFLevelsChart'
+export { default as HybridRolesChart } from './HybridRolesChart'
 
 // Chart utilities and constants
 export const CHART_COLORS = {

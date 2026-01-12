@@ -1,21 +1,16 @@
 import { Routes, Route } from 'react-router-dom'
-import Home from '../pages/Home'
-import About from '../pages/About'
-import Contact from '../pages/Contact'
-import Login from '../pages/Login'
-import LanguageSwitcher from '../components/LanguageSwitcher'
-import DateTimeDemo from '../components/DateTimeDemo'
+import Activities from '../pages/Activities'
+import Pehchan from '../pages/Pehchan'
+import Sajag from '../pages/Sajag'
 import NotFound from '../pages/NotFound'
 
 function AppRouter() {
   return (
     <Routes>
-      <Route path='/' element={<Home />} />
-      <Route path='/about' element={<About />} />
-      <Route path='/contact' element={<Contact />} />
-      <Route path='/login' element={<Login />} />
-      <Route path='/language' element={<LanguageSwitcher />} />
-      <Route path='/datetime' element={<DateTimeDemo />} />
+      <Route path='/' element={<Activities />} />
+      <Route path='/activities' element={<Activities />} />
+      <Route path='/pehchan' element={<Pehchan />} />
+      <Route path='/sajag' element={<Sajag />} />
       <Route path='*' element={<NotFound />} />
     </Routes>
   )
