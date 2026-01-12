@@ -10,7 +10,6 @@ import { getIntelligenceIcon } from '../lib/intelligence-icons'
 function Pehchan() {
   const [intelligenceScores, setIntelligenceScores] = useState(null)
   const [intelligencesData, setIntelligencesData] = useState(null)
-  const [metadata, setMetadata] = useState(null)
   const [activities, setActivities] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -48,20 +47,16 @@ function Pehchan() {
         setIsLoading(true)
         setError(null)
 
-        // Load metadata and activities to get domain display names
-        const [metadataResponse, intelligencesResponse, firstPageResponse] =
-          await Promise.all([
-            activitiesApi.fetchMetadata(),
-            activitiesApi.fetchIntelligences(PERSON_ID),
-            activitiesApi.fetchActivities(100), // Get enough activities to find all domains
-          ])
+        // Load activities to get domain display names
+        const [intelligencesResponse, firstPageResponse] = await Promise.all([
+          activitiesApi.fetchIntelligences(PERSON_ID),
+          activitiesApi.fetchActivities(100), // Get enough activities to find all domains
+        ])
 
-        const metadataData = metadataResponse.data || metadataResponse
         const intelligencesData =
           intelligencesResponse.data || intelligencesResponse
         const firstPageData = firstPageResponse.data || firstPageResponse
 
-        setMetadata(metadataData)
         setIntelligencesData(intelligencesData)
         setIntelligenceScores(intelligencesData.intelligences || {})
         setActivities(firstPageData.questions || [])
@@ -88,15 +83,15 @@ function Pehchan() {
 
   // Get domain display names for chart
   const domainDisplayNames = useMemo(() => {
-    if (!metadata || !activities.length) return {}
+    if (!activities.length) return {}
     return Object.fromEntries(
-      (metadata.intelligenceDomains || []).map(domain => [
+      Object.keys(intelligenceScores || {}).map(domain => [
         domain,
         getDomainDisplayName(domain),
       ])
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [metadata, activities])
+  }, [activities, intelligenceScores])
 
   // Get top 3 intelligences
   const topIntelligences = useMemo(() => {

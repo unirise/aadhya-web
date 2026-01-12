@@ -27,7 +27,7 @@ function LoginForm() {
     try {
       await authService.login(data.username, data.password)
       reset()
-      navigate('/activities') // Redirect to activities page after login
+      navigate('/') // Redirect to home page after login
     } catch (error) {
       console.error('Login error:', error)
       alert(error.message || t('login.form.error') || 'Login failed')

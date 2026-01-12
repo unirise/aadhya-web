@@ -1,6 +1,6 @@
 // API configuration and utilities
 export const API_CONFIG = {
-  BASE_URL: import.meta.env.VITE_API_BASE_URL || '', // Will be set when you add your API
+  BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api/v1',
   TIMEOUT: 10000, // 10 seconds
   RETRY_COUNT: 3,
   RETRY_DELAY: 1000, // 1 second

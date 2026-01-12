@@ -1,46 +1,4 @@
-import { apiRequest } from './apiConfig'
-
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/v1'
-
-interface Activity {
-  id: number
-  question: string
-  domain?: string
-  [key: string]: unknown
-}
-
-interface ActivitiesResponse {
-  questions: Activity[]
-  pagination: {
-    page: number
-    limit: number
-    total: number
-    totalPages: number
-  }
-}
-
-interface Metadata {
-  [key: string]: unknown
-}
-
-interface Scoring {
-  [key: string]: unknown
-}
-
-interface AnswerOption {
-  value: number
-  label: string
-}
-
-interface SubmitAnswerResponse {
-  success: boolean
-  message?: string
-}
-
-interface IntelligencesResponse {
-  [key: string]: unknown
-}
+import { axiosInstance } from '@/lib/axios'
 
 /**
  * Activities API Service
@@ -48,74 +6,83 @@ interface IntelligencesResponse {
  */
 export const activitiesApi = {
   /**
-   * Fetch random activities
-   * @param limit - Number of activities to return (default: 5)
-   * @param page - Page number (default: 1)
+   * Fetch activities
+   * @param limit - Number of activities to return (default: 5) - only used when no assessmentId
+   * @param page - Page number (default: 1) - only used when no assessmentId
+   * @param assessmentId - Optional assessment ID to filter activities
    * @returns Promise with activities and pagination info
    */
-  fetchActivities: async (limit = 5, page = 1): Promise<ActivitiesResponse> => {
-    const url = `${API_BASE_URL}/activities?limit=${limit}&page=${page}`
-    return apiRequest<ActivitiesResponse>(url)
-  },
-
-  /**
-   * Fetch activities metadata
-   * @returns Promise with metadata object
-   */
-  fetchMetadata: async (): Promise<Metadata> => {
-    const url = `${API_BASE_URL}/activities/metadata`
-    return apiRequest<Metadata>(url)
-  },
-
-  /**
-   * Fetch scoring configuration
-   * @returns Promise with scoring configuration
-   */
-  fetchScoring: async (): Promise<Scoring> => {
-    const url = `${API_BASE_URL}/activities/scoring`
-    return apiRequest<Scoring>(url)
-  },
-
-  /**
-   * Fetch answer options
-   * @returns Promise with array of answer options
-   */
-  fetchAnswerOptions: async (): Promise<AnswerOption[]> => {
-    const url = `${API_BASE_URL}/activities/answer-options`
-    return apiRequest<AnswerOption[]>(url)
+  fetchActivities: async (limit = 5, page = 1, assessmentId?: string) => {
+    // If assessmentId is provided, fetch entity-based activities from database
+    if (assessmentId) {
+      const response = await axiosInstance.get(
+        `/activities/entity?assessmentId=${assessmentId}`
+      )
+      // Transform entity response to match the expected format
+      const entities = response.data.data || response.data
+      
+      // Map entity structure to frontend format
+      const questions = entities.map((entity: any) => ({
+        id: entity.id, // UUID from database
+        text: entity.metadata?.text || '',
+        intelligenceDomain: entity.attribute || entity.domain,
+        domainDisplayName: entity.metadata?.domainDisplayName || entity.attribute,
+        options: entity.metadata?.options || [],
+      }))
+      
+      return {
+        questions,
+        pagination: {
+          page: 1,
+          limit: questions.length,
+          total: questions.length,
+          totalPages: 1,
+          hasNext: false,
+          hasPrevious: false,
+        },
+      }
+    }
+    
+    // Otherwise, fetch random activities from JSON
+    const params = new URLSearchParams({
+      limit: limit.toString(),
+      page: page.toString(),
+    })
+    const response = await axiosInstance.get(
+      `/activities?${params.toString()}`
+    )
+    return response.data.data
   },
 
   /**
    * Submit an answer for an activity
-   * @param questionId - The activity/question ID
+   * @param activityId - The activity ID (UUID or numeric ID)
    * @param optionValue - The selected option value (1-5)
-   * @param personId - The person ID
    * @returns Promise with submission response
    */
-  submitAnswer: async (
-    questionId: number,
-    optionValue: number,
-    personId: string
-  ): Promise<SubmitAnswerResponse> => {
-    const url = `${API_BASE_URL}/activities/submit-answer`
-    return apiRequest<SubmitAnswerResponse>(url, {
-      method: 'POST',
-      body: JSON.stringify({
-        questionId,
-        optionValue,
-        personId,
-      }),
+  submitAnswer: async (activityId, optionValue) => {
+    const response = await axiosInstance.post('/responses/submit-answer', {
+      activityId,
+      optionValue,
     })
+    return response.data.data
   },
 
   /**
-   * Fetch intelligences for a person
-   * @param personId - The person ID
+   * Fetch intelligences for the authenticated user
    * @returns Promise with intelligences data
    */
-  fetchIntelligences: async (personId: string): Promise<IntelligencesResponse> => {
-    const url = `${API_BASE_URL}/activities/intelligences/${personId}`
-    return apiRequest<IntelligencesResponse>(url)
+  fetchIntelligences: async () => {
+    const response = await axiosInstance.get('/activities/intelligences')
+    return response.data.data
+  },
+
+  /**
+   * Fetch all responses for the authenticated user
+   * @returns Promise with responses data
+   */
+  fetchMyResponses: async () => {
+    const response = await axiosInstance.get('/responses/my-responses')
+    return response.data.data || response.data
   },
 }
-
