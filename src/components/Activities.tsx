@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { activitiesApi } from '../services/activitiesApi'
 import { getTopIntelligences } from '../lib/mi-scoring'
 import IntelligenceRadarChart from './charts/IntelligenceRadarChart'
-import MCQ from './activity-components/MCQ'
+import MultipleChoiceQuestion from './activity-components/MCQ'
 
 type Activity = {
   id: string
@@ -41,7 +41,8 @@ function Activities() {
 
   const [answers, setAnswers] = useState<Record<string, number>>({})
   const [isMobile, setIsMobile] = useState(false)
-  const [intelligenceScores, setIntelligenceScores] = useState<IntelligenceScores | null>(null)
+  const [intelligenceScores, setIntelligenceScores] =
+    useState<IntelligenceScores | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   // Fetch intelligence scores from DB
@@ -71,11 +72,12 @@ function Activities() {
         setError(null)
 
         // Load activities, intelligence scores, and saved responses in parallel
-        const [activitiesResponse, intelligencesResponse, responsesResponse] = await Promise.all([
-          activitiesApi.fetchActivities(100, 1, assessmentId), // Load all activities for the assessment
-          activitiesApi.fetchIntelligences(),
-          activitiesApi.fetchMyResponses(), // Fetch saved responses
-        ])
+        const [activitiesResponse, intelligencesResponse, responsesResponse] =
+          await Promise.all([
+            activitiesApi.fetchActivities(100, 1, assessmentId), // Load all activities for the assessment
+            activitiesApi.fetchIntelligences(),
+            activitiesApi.fetchMyResponses(), // Fetch saved responses
+          ])
 
         // Unwrap responses (backend wraps them in { status, message, data, stack })
         const activitiesData = activitiesResponse.data || activitiesResponse
@@ -83,7 +85,8 @@ function Activities() {
           intelligencesResponse.data || intelligencesResponse
         const responsesData = responsesResponse.data || responsesResponse
 
-        const loadedActivities = activitiesData.questions || activitiesData || []
+        const loadedActivities =
+          activitiesData.questions || activitiesData || []
         setActivities(loadedActivities)
         setIntelligenceScores(intelligencesData.intelligences || {})
 
@@ -91,8 +94,12 @@ function Activities() {
         if (Array.isArray(responsesData) && responsesData.length > 0) {
           const savedAnswers: Record<string, number> = {}
           responsesData.forEach((response: any) => {
-            if (response.activityId && response.responseData?.optionValue !== undefined) {
-              savedAnswers[response.activityId] = response.responseData.optionValue
+            if (
+              response.activityId &&
+              response.responseData?.optionValue !== undefined
+            ) {
+              savedAnswers[response.activityId] =
+                response.responseData.optionValue
             }
           })
           setAnswers(savedAnswers)
@@ -100,12 +107,16 @@ function Activities() {
 
         // If no activityId in URL, navigate to first activity
         if (!activityId && loadedActivities.length > 0) {
-          navigate(`/assessment/${assessmentId}/activity/${loadedActivities[0].id}`, { replace: true })
+          navigate(
+            `/assessment/${assessmentId}/activity/${loadedActivities[0].id}`,
+            { replace: true }
+          )
         }
       } catch (err) {
         console.error('Error loading activities:', err)
         setError(
-          (err as Error).message || 'Failed to load activities. Please try again later.'
+          (err as Error).message ||
+            'Failed to load activities. Please try again later.'
         )
       } finally {
         setIsLoading(false)
@@ -308,22 +319,22 @@ function Activities() {
           aria-label={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
         >
           <svg
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+            width='20'
+            height='20'
+            viewBox='0 0 20 20'
+            fill='none'
+            xmlns='http://www.w3.org/2000/svg'
             style={{
               transform: sidebarOpen ? 'rotate(0deg)' : 'rotate(180deg)',
               transition: 'transform 0.3s ease',
             }}
           >
             <path
-              d="M12 5L7 10L12 15"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              d='M12 5L7 10L12 15'
+              stroke='currentColor'
+              strokeWidth='2'
+              strokeLinecap='round'
+              strokeLinejoin='round'
             />
           </svg>
         </button>
@@ -378,7 +389,7 @@ function Activities() {
                     color: '#6b7280',
                     padding: '4px 8px',
                   }}
-                  aria-label="Close sidebar"
+                  aria-label='Close sidebar'
                 >
                   ×
                 </button>
@@ -406,15 +417,17 @@ function Activities() {
               <IntelligenceRadarChart
                 scores={realTimeScores}
                 domainDisplayNames={Object.fromEntries(
-                  Object.keys(intelligenceScores || {}).map((domain: string) => {
-                    const activity = activities.find(
-                      a => a.intelligenceDomain === domain
-                    )
-                    return [
-                      domain,
-                      activity ? activity.domainDisplayName : domain,
-                    ]
-                  })
+                  Object.keys(intelligenceScores || {}).map(
+                    (domain: string) => {
+                      const activity = activities.find(
+                        a => a.intelligenceDomain === domain
+                      )
+                      return [
+                        domain,
+                        activity ? activity.domainDisplayName : domain,
+                      ]
+                    }
+                  )
                 )}
                 height={isMobile ? 350 : 400}
               />
@@ -436,7 +449,11 @@ function Activities() {
                   Top 3 Intelligences
                 </h4>
                 <div
-                  style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '8px',
+                  }}
                 >
                   {realTimeTop3.map((item, index) => (
                     <div
@@ -519,14 +536,14 @@ function Activities() {
             justifyContent: 'center',
             fontSize: '24px',
           }}
-          aria-label="Show intelligence profile"
+          aria-label='Show intelligence profile'
         >
           📊
         </button>
       )}
 
       {/* Main Content Area with MCQ Component */}
-      <MCQ
+      <MultipleChoiceQuestion
         activity={currentActivity}
         answerOptions={[]}
         selectedAnswer={answers[currentActivity.id]}

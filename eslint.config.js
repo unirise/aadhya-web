@@ -8,6 +8,8 @@ import jsxA11y from 'eslint-plugin-jsx-a11y'
 import unusedImports from 'eslint-plugin-unused-imports'
 import prettierPlugin from 'eslint-plugin-prettier'
 import prettier from 'eslint-config-prettier'
+import tseslint from '@typescript-eslint/eslint-plugin'
+import tsParser from '@typescript-eslint/parser'
 
 export default [
     {
@@ -33,6 +35,7 @@ export default [
     {
         files: ['**/*.{js,jsx,ts,tsx}'],
         languageOptions: {
+            parser: tsParser,
             ecmaVersion: 2020,
             globals: {
                 ...globals.browser,
@@ -42,6 +45,7 @@ export default [
                 ecmaVersion: 'latest',
                 ecmaFeatures: { jsx: true },
                 sourceType: 'module',
+                project: './tsconfig.json',
             },
         },
         settings: {
@@ -53,6 +57,7 @@ export default [
             },
         },
         plugins: {
+            '@typescript-eslint': tseslint,
             react,
             'react-hooks': reactHooks,
             'react-refresh': reactRefresh,
@@ -71,10 +76,10 @@ export default [
             ...reactHooks.configs.recommended.rules,
 
             // Import/export rules
-            'import/no-unresolved': 'error',
-            'import/named': 'error',
-            'import/default': 'error',
-            'import/namespace': 'error',
+            'import/no-unresolved': 'off', // Disabled - TypeScript handles this
+            'import/named': 'off', // Disabled - TypeScript handles this
+            'import/default': 'off', // Disabled - TypeScript handles this
+            'import/namespace': 'off', // Disabled - TypeScript handles this
             'import/no-absolute-path': 'error',
             'import/no-dynamic-require': 'error',
             'import/no-self-import': 'error',
