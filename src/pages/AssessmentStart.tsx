@@ -1,41 +1,112 @@
-import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { AlertCircle, Clock, FileText, Lightbulb, Target } from 'lucide-react'
 import { useAssessment } from '../hooks/useAssessments'
-import { activitiesApi } from '../services/activitiesApi'
+import Navigation from '@/components/Navigation'
+import { ActionBlock, ContentBlock } from '@/components/blocks'
+import { Activity, Assessment } from '@/types'
+
+const AssessmentContent = ({
+  assessment,
+  activities,
+}: {
+  assessment: Assessment
+  activities: Activity[]
+}) => {
+  // Calculate metrics
+  const activityCount = activities.length
+  const uniqueAttributes = new Set(
+    activities.map(a => a.attribute).filter(Boolean)
+  ).size
+  const totalSeconds = activityCount * 10
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = totalSeconds % 60
+  const timeEstimate = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`
+
+  return (
+    <div className='max-w-3xl mx-auto'>
+      {/* Header */}
+      <div className='my-8 text-center'>
+        <h1 className='text-4xl font-bold text-gray-900 mb-4'>
+          {assessment.name}
+        </h1>
+        {assessment.description && (
+          <p className='text-lg text-gray-600 mx-auto'>
+            {assessment.description}
+          </p>
+        )}
+      </div>
+
+      {/* Introduction Section */}
+      {assessment.introduction && (
+        <div className='mb-8 mx-auto'>
+          <div className='bg-gray-300 rounded-lg p-6'>
+            <div className='flex gap-3 items-start'>
+              <Lightbulb className='text-yellow-500 flex-shrink-0' size={24} />
+              <p className='text-black text-base leading-relaxed font-medium'>
+                {assessment.introduction}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Dashboard Cards */}
+      <div className='mb-8 max-w-4xl mx-auto'>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+          {/* Activities Card */}
+          <div className='rounded-xl border border-gray-200 p-6 hover:shadow-lg transition-shadow'>
+            <div className='flex flex-col items-center text-center'>
+              <FileText className='text-blue-500 mb-3' size={40} />
+              <div className='text-4xl font-bold text-gray-900 mb-2'>
+                {activityCount}
+              </div>
+              <div className='text-sm text-gray-600 font-medium'>
+                {activityCount === 1 ? 'Activity' : 'Activities'}
+              </div>
+            </div>
+          </div>
+
+          {/* Unique Attributes Card */}
+          <div className='rounded-xl border border-gray-200 p-6 hover:shadow-lg transition-shadow'>
+            <div className='flex flex-col items-center text-center'>
+              <Target className='text-purple-500 mb-3' size={40} />
+              <div className='text-4xl font-bold text-gray-900 mb-2'>
+                {uniqueAttributes}
+              </div>
+              <div className='text-sm text-gray-600 font-medium'>
+                {uniqueAttributes === 1 ? 'Attribute' : 'Attributes'}
+              </div>
+            </div>
+          </div>
+
+          {/* Time Estimate Card */}
+          <div className='rounded-xl border border-gray-200 p-6 hover:shadow-lg transition-shadow'>
+            <div className='flex flex-col items-center text-center'>
+              <Clock className='text-green-500 mb-3' size={40} />
+              <div className='text-4xl font-bold text-gray-900 mb-2'>
+                {timeEstimate}
+              </div>
+              <div className='text-sm text-gray-600 font-medium'>
+                Est. Completion
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 function AssessmentStart() {
   const { assessmentId } = useParams()
   const navigate = useNavigate()
-  const { data: assessment, isLoading: isLoadingAssessment, error: assessmentError } = useAssessment(assessmentId)
-  
-  const [activities, setActivities] = useState([])
-  const [isLoadingActivities, setIsLoadingActivities] = useState(true)
-  const [activitiesError, setActivitiesError] = useState(null)
+  const {
+    data: assessment,
+    isLoading,
+    error: assessmentError,
+  } = useAssessment(assessmentId)
 
-  // Fetch activities for this assessment
-  useEffect(() => {
-    const loadActivities = async () => {
-      if (!assessmentId) return
-
-      try {
-        setIsLoadingActivities(true)
-        setActivitiesError(null)
-        
-        const response = await activitiesApi.fetchActivities(100, 1, assessmentId)
-        const activitiesData = response.data || response
-        const loadedActivities = activitiesData.questions || activitiesData || []
-        
-        setActivities(loadedActivities)
-      } catch (err) {
-        console.error('Error loading activities:', err)
-        setActivitiesError(err?.message || 'Failed to load activities')
-      } finally {
-        setIsLoadingActivities(false)
-      }
-    }
-
-    loadActivities()
-  }, [assessmentId])
+  const activities = assessment?.activities || []
 
   const handleStart = () => {
     if (activities.length > 0 && assessmentId) {
@@ -43,37 +114,16 @@ function AssessmentStart() {
     }
   }
 
-  const isLoading = isLoadingAssessment || isLoadingActivities
-  const error = assessmentError?.message || activitiesError
+  const error = assessmentError?.message
 
   if (isLoading) {
     return (
-      <div style={{ 
-        marginTop: '60px', 
-        padding: '32px', 
-        textAlign: 'center',
-        minHeight: 'calc(100vh - 60px)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <div>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            border: '4px solid #e5e7eb',
-            borderTop: '4px solid #3b82f6',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-            margin: '0 auto 16px'
-          }} />
-          <p style={{ fontSize: '18px', color: '#6b7280' }}>Loading assessment...</p>
-          <style>{`
-            @keyframes spin {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-          `}</style>
+      <div className='min-h-screen'>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+          <Navigation />
+          <div className='text-center py-12'>
+            <p className='text-gray-600'>Loading assessment...</p>
+          </div>
         </div>
       </div>
     )
@@ -81,275 +131,70 @@ function AssessmentStart() {
 
   if (error || !assessment) {
     return (
-      <div style={{ 
-        marginTop: '60px', 
-        padding: '32px', 
-        textAlign: 'center',
-        minHeight: 'calc(100vh - 60px)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <div style={{ maxWidth: '500px' }}>
-          <div style={{
-            width: '64px',
-            height: '64px',
-            backgroundColor: '#fef2f2',
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 24px'
-          }}>
-            <span style={{ fontSize: '32px', color: '#ef4444' }}>⚠️</span>
+      <div className='min-h-screen'>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+          <Navigation />
+          <div className='text-center py-12'>
+            <p className='text-red-600'>{error || 'Assessment not found'}</p>
+            <button
+              onClick={() => navigate('/')}
+              className='mt-4 px-8 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors'
+            >
+              Back to Home
+            </button>
           </div>
-          <h2 style={{ 
-            fontSize: '24px', 
-            fontWeight: 'bold', 
-            color: '#1f2937',
-            marginBottom: '12px'
-          }}>
-            Error Loading Assessment
-          </h2>
-          <p style={{ color: '#ef4444', marginBottom: '24px', fontSize: '16px' }}>
-            {error || 'Assessment not found'}
-          </p>
-          <button
-            onClick={() => navigate('/')}
-            style={{
-              padding: '12px 32px',
-              backgroundColor: '#3b82f6',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontSize: '16px',
-              fontWeight: '600',
-              transition: 'background-color 0.2s'
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.backgroundColor = '#2563eb'
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.backgroundColor = '#3b82f6'
-            }}
-          >
-            Back to Home
-          </button>
         </div>
       </div>
     )
   }
 
   return (
-    <div style={{ 
-      marginTop: '60px', 
-      minHeight: 'calc(100vh - 60px)',
-      backgroundColor: '#f9fafb',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '32px'
-    }}>
-      <div style={{ maxWidth: '900px', width: '100%' }}>
-        {/* Main Content Card */}
-        <div style={{
-          backgroundColor: '#ffffff',
-          borderRadius: '20px',
-          padding: '64px',
-          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.08)',
-          border: '1px solid #e5e7eb'
-        }}>
-          {/* Header Section */}
-          <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-            {/* Assessment Code Badge */}
-            {assessment.code && (
-              <div style={{
-                display: 'inline-block',
-                padding: '8px 20px',
-                backgroundColor: '#eff6ff',
-                color: '#2563eb',
-                borderRadius: '24px',
-                fontSize: '13px',
-                fontWeight: '700',
-                marginBottom: '24px',
-                letterSpacing: '1px',
-                textTransform: 'uppercase'
-              }}>
-                {assessment.code}
-              </div>
-            )}
+    <div className='min-h-screen'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+        <Navigation />
 
-            {/* Assessment Name */}
-            <h1 style={{ 
-              fontSize: '42px', 
-              fontWeight: 'bold', 
-              color: '#1f2937',
-              marginBottom: '20px',
-              lineHeight: '1.2'
-            }}>
-              {assessment.name}
-            </h1>
+        <ContentBlock
+          component={AssessmentContent}
+          label={assessment.name}
+          componentProps={{ assessment, activities }}
+        />
 
-            {/* Assessment Description */}
-            {assessment.description && (
-              <p style={{ 
-                fontSize: '18px', 
-                color: '#6b7280',
-                lineHeight: '1.7',
-                maxWidth: '700px',
-                margin: '0 auto'
-              }}>
-                {assessment.description}
-              </p>
-            )}
+        {/* Navigation Footer */}
+        <div className='grid grid-cols-5 lg:grid-cols-9 gap-4 h-16 items-center shrink-0 mt-8'>
+          {/* Previous Button - spans first column */}
+          <div />
+
+          <div className='hidden lg:block' />
+          <div />
+          <div className='hidden lg:block' />
+
+          {/* Next Button - spans last column */}
+          <div className='col-span-1 flex items-center justify-center h-full w-full p-1'>
+            <ActionBlock label='Begin →' onClick={handleStart} />
           </div>
+          <div />
+          <div className='hidden lg:block' />
+          <div />
+          <div className='hidden lg:block' />
+        </div>
 
-          {/* Introduction Section */}
-          {assessment.introduction && (
-            <div style={{
-              backgroundColor: '#f0f9ff',
-              borderLeft: '4px solid #3b82f6',
-              borderRadius: '12px',
-              padding: '24px 28px',
-              marginBottom: '40px'
-            }}>
-              <div style={{
-                display: 'flex',
-                gap: '12px',
-                alignItems: 'flex-start'
-              }}>
-                <span style={{ 
-                  fontSize: '24px',
-                  flexShrink: 0
-                }}>💡</span>
-                <p style={{ 
-                  fontSize: '16px', 
-                  color: '#1e40af',
-                  lineHeight: '1.7',
-                  margin: 0,
-                  fontWeight: '500'
-                }}>
-                  {assessment.introduction}
+        {/* No activities warning */}
+        {activities.length === 0 && (
+          <div className='mx-auto mt-8'>
+            <div className='bg-yellow-50 border border-yellow-200 rounded-lg p-5'>
+              <div className='flex items-center justify-center gap-2'>
+                <AlertCircle className='text-yellow-600' size={20} />
+                <p className='text-yellow-800 text-sm font-medium'>
+                  This assessment has no activities yet. Please check back
+                  later.
                 </p>
               </div>
             </div>
-          )}
-
-          {/* Activities Count */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '20px',
-            padding: '32px',
-            backgroundColor: '#fafbfc',
-            borderRadius: '16px',
-            marginBottom: '48px',
-            border: '1px solid #e5e7eb'
-          }}>
-            <div style={{
-              width: '64px',
-              height: '64px',
-              backgroundColor: '#eff6ff',
-              borderRadius: '16px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 8px rgba(59, 130, 246, 0.1)'
-            }}>
-              <span style={{ fontSize: '32px' }}>📝</span>
-            </div>
-            <div>
-              <p style={{ 
-                fontSize: '14px', 
-                color: '#6b7280',
-                marginBottom: '6px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.8px',
-                fontWeight: '600'
-              }}>
-                Total Activities
-              </p>
-              <p style={{ 
-                fontSize: '36px', 
-                fontWeight: 'bold',
-                color: '#1f2937',
-                margin: 0
-              }}>
-                {activities.length}
-              </p>
-            </div>
           </div>
-
-          {/* Action Button - Centered */}
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center'
-          }}>
-            <button
-              onClick={handleStart}
-              disabled={activities.length === 0}
-              style={{
-                padding: '18px 48px',
-                backgroundColor: activities.length === 0 ? '#d1d5db' : '#3b82f6',
-                color: 'white',
-                border: 'none',
-                borderRadius: '12px',
-                cursor: activities.length === 0 ? 'not-allowed' : 'pointer',
-                fontSize: '18px',
-                fontWeight: '600',
-                transition: 'all 0.2s',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                boxShadow: activities.length === 0 ? 'none' : '0 4px 16px rgba(59, 130, 246, 0.2)'
-              }}
-              onMouseEnter={e => {
-                if (activities.length > 0) {
-                  e.currentTarget.style.backgroundColor = '#2563eb'
-                  e.currentTarget.style.transform = 'translateY(-2px)'
-                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(59, 130, 246, 0.3)'
-                }
-              }}
-              onMouseLeave={e => {
-                if (activities.length > 0) {
-                  e.currentTarget.style.backgroundColor = '#3b82f6'
-                  e.currentTarget.style.transform = 'translateY(0)'
-                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(59, 130, 246, 0.2)'
-                }
-              }}
-            >
-              <span>Begin Assessment</span>
-              <span style={{ fontSize: '20px' }}>→</span>
-            </button>
-          </div>
-
-          {/* No activities warning */}
-          {activities.length === 0 && (
-            <div style={{
-              marginTop: '32px',
-              padding: '20px',
-              backgroundColor: '#fef3c7',
-              borderRadius: '12px',
-              border: '1px solid #fcd34d',
-              textAlign: 'center'
-            }}>
-              <p style={{ 
-                color: '#92400e', 
-                fontSize: '15px',
-                margin: 0,
-                fontWeight: '500'
-              }}>
-                ⚠️ This assessment has no activities yet. Please check back later.
-              </p>
-            </div>
-          )}
-        </div>
+        )}
       </div>
     </div>
   )
 }
 
 export default AssessmentStart
-

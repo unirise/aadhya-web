@@ -4,6 +4,7 @@ export interface Activity {
   id: number
   question: string
   domain?: string
+  subdomain?: string
   [key: string]: unknown
 }
 
@@ -35,4 +36,3 @@ export interface FetchActivitiesParams {
   limit?: number
   page?: number
 }
-

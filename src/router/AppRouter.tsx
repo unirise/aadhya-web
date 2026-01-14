@@ -13,7 +13,7 @@ function AppRouter() {
   return (
     <Routes>
       <Route path='/login' element={<Login />} />
-      
+
       {/* Home page - now the main landing page after login */}
       <Route
         path='/'
@@ -23,7 +23,7 @@ function AppRouter() {
           </ProtectedRoute>
         }
       />
-      
+
       {/* Home route alias */}
       <Route
         path='/home'
@@ -33,13 +33,10 @@ function AppRouter() {
           </ProtectedRoute>
         }
       />
-      
+
       {/* Legacy activities route - redirects to home */}
-      <Route
-        path='/activities'
-        element={<Navigate to='/' replace />}
-      />
-      
+      <Route path='/activities' element={<Navigate to='/' replace />} />
+
       {/* Assessment start page - shows overview before starting */}
       <Route
         path='/assessment/:assessmentId/start'
@@ -49,7 +46,7 @@ function AppRouter() {
           </ProtectedRoute>
         }
       />
-      
+
       {/* New assessment-based activities route with parameters */}
       <Route
         path='/assessment/:assessmentId/activity/:activityId'
@@ -59,7 +56,7 @@ function AppRouter() {
           </ProtectedRoute>
         }
       />
-      
+
       {/* Assessment completion thank you page */}
       <Route
         path='/assessment/:assessmentId/thank-you'
@@ -69,9 +66,9 @@ function AppRouter() {
           </ProtectedRoute>
         }
       />
-      
+
       <Route
-        path='/pehchan'
+        path='/pehachan'
         element={
           <ProtectedRoute>
             <Pehchan />

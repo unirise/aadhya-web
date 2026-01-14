@@ -1,18 +1,8 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import { axiosInstance } from '@/lib/axios'
+import { ApiResponse, Assessment } from '@/types'
 
 // Types
-export interface Assessment {
-  id: string
-  code: string
-  name: string
-  description?: string
-  introduction?: string
-  conclusion?: string
-  createdAt?: string
-  updatedAt?: string
-}
-
 export interface AssessmentsResponse {
   assessments: Assessment[]
 }
@@ -29,15 +19,16 @@ const ASSESSMENTS_KEYS = {
 // API Functions
 const assessmentsApi = {
   fetchAssessments: async (): Promise<Assessment[]> => {
-    const response = await axiosInstance.get<Assessment[]>('/assessments')
-    // Handle both wrapped and unwrapped responses
-    const data = response.data?.data || response.data
-    return Array.isArray(data) ? data : []
+    const response =
+      await axiosInstance.get<ApiResponse<Assessment[]>>('/assessments')
+    return response.data.data
   },
 
   fetchAssessmentById: async (assessmentId: string): Promise<Assessment> => {
-    const response = await axiosInstance.get<Assessment>(`/assessments/${assessmentId}`)
-    return response.data?.data || response.data
+    const response = await axiosInstance.get<ApiResponse<Assessment>>(
+      `/assessments/${assessmentId}`
+    )
+    return response.data.data
   },
 }
 
@@ -73,4 +64,3 @@ export const useAssessment = (
 
 // Export query keys for use in other parts of the app if needed
 export { ASSESSMENTS_KEYS }
-
