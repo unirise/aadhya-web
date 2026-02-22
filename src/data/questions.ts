@@ -15,6 +15,7 @@ export interface AnswerOption {
   value: number
   label: string
   emoji: string
+  scoreAdjustment: number
 }
 
 export const questions: Question[] = [
@@ -61,10 +62,9 @@ export const questions: Question[] = [
 ]
 
 export const answerOptions: AnswerOption[] = [
-  { value: 1, label: 'Completely agree', emoji: '😊' },
-  { value: 2, label: 'Somewhat agree', emoji: '🙂' },
-  { value: 3, label: 'Unsure', emoji: '😐' },
-  { value: 4, label: 'Somewhat disagree', emoji: '😕' },
-  { value: 5, label: 'Completely disagree', emoji: '😢' },
+  { value: 1, label: 'Completely agree', emoji: '😊', scoreAdjustment: 5 },
+  { value: 2, label: 'Somewhat agree', emoji: '🙂', scoreAdjustment: 2 },
+  { value: 3, label: 'Unsure', emoji: '😐', scoreAdjustment: 0 },
+  { value: 4, label: 'Somewhat disagree', emoji: '😕', scoreAdjustment: -2 },
+  { value: 5, label: 'Completely disagree', emoji: '😢', scoreAdjustment: -5 },
 ]
-

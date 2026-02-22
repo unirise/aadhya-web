@@ -1,4 +1,10 @@
-import { useQuery, useMutation, useQueryClient, UseQueryResult, UseMutationResult } from '@tanstack/react-query'
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  UseQueryResult,
+  UseMutationResult,
+} from '@tanstack/react-query'
 import { axiosInstance } from '@/lib/axios'
 import type {
   ActivitiesResponse,
@@ -12,27 +18,43 @@ import type {
 const ACTIVITIES_KEYS = {
   all: ['activities'] as const,
   lists: () => [...ACTIVITIES_KEYS.all, 'list'] as const,
-  list: (params: FetchActivitiesParams) => [...ACTIVITIES_KEYS.lists(), params] as const,
-  intelligences: (personId: string) => [...ACTIVITIES_KEYS.all, 'intelligences', personId] as const,
+  list: (params: FetchActivitiesParams) =>
+    [...ACTIVITIES_KEYS.lists(), params] as const,
+  intelligences: (personId: string) =>
+    [...ACTIVITIES_KEYS.all, 'intelligences', personId] as const,
 }
 
 // API Functions
 const activitiesApi = {
-  fetchActivities: async (params: FetchActivitiesParams = {}): Promise<ActivitiesResponse> => {
+  fetchActivities: async (
+    params: FetchActivitiesParams = {}
+  ): Promise<ActivitiesResponse> => {
     const { limit = 5, page = 1 } = params
-    const response = await axiosInstance.get<ActivitiesResponse>('/activities', {
-      params: { limit, page },
-    })
+    const response = await axiosInstance.get<ActivitiesResponse>(
+      '/activities',
+      {
+        params: { limit, page },
+      }
+    )
     return response.data
   },
 
-  submitAnswer: async (data: SubmitAnswerRequest): Promise<SubmitAnswerResponse> => {
-    const response = await axiosInstance.post<SubmitAnswerResponse>('/activities/submit-answer', data)
+  submitAnswer: async (
+    data: SubmitAnswerRequest
+  ): Promise<SubmitAnswerResponse> => {
+    const response = await axiosInstance.post<SubmitAnswerResponse>(
+      '/activities/submit-answer',
+      data
+    )
     return response.data
   },
 
-  fetchIntelligences: async (personId: string): Promise<IntelligencesResponse> => {
-    const response = await axiosInstance.get<IntelligencesResponse>(`/activities/intelligences/${personId}`)
+  fetchIntelligences: async (
+    personId: string
+  ): Promise<IntelligencesResponse> => {
+    const response = await axiosInstance.get<IntelligencesResponse>(
+      `/activities/intelligences/${personId}`
+    )
     return response.data
   },
 }
@@ -95,4 +117,3 @@ export const useIntelligences = (
 
 // Export query keys for use in other parts of the app if needed
 export { ACTIVITIES_KEYS }
-

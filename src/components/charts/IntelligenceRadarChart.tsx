@@ -101,7 +101,7 @@ function IntelligenceRadarChart({
   const renderCustomTick = ({ payload, x, y, index }) => {
     const data = chartData[index]
     const IconComponent = data?.IconComponent
-    
+
     if (!IconComponent) {
       // Fallback to text if no icon available
       return (
@@ -128,15 +128,15 @@ function IntelligenceRadarChart({
     // Render icon centered at the tick position
     return (
       <g transform={`translate(${x}, ${y})`}>
-        <foreignObject 
-          x={-iconOffset} 
-          y={-iconOffset} 
-          width={iconSize} 
+        <foreignObject
+          x={-iconOffset}
+          y={-iconOffset}
+          width={iconSize}
           height={iconSize}
           style={{ overflow: 'visible' }}
         >
           <div
-            xmlns="http://www.w3.org/1999/xhtml"
+            xmlns='http://www.w3.org/1999/xhtml'
             style={{
               display: 'flex',
               alignItems: 'center',

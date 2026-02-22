@@ -17,7 +17,10 @@ export function cn(...inputs: ClassValue[]): string {
  * @param format - Format string (default: 'MMM D, YYYY')
  * @returns Formatted date string
  */
-export function formatDate(date: Date | string, format = 'MMM D, YYYY'): string {
+export function formatDate(
+  date: Date | string,
+  format = 'MMM D, YYYY'
+): string {
   return formatDateDayjs(date, format)
 }
 
@@ -58,4 +61,3 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
     timeoutId = setTimeout(() => func.apply(this, args), delay)
   }
 }
-

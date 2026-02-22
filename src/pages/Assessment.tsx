@@ -4,19 +4,14 @@ import { getTopIntelligences } from '../lib/mi-scoring'
 import { getIntelligenceIcon } from '../lib/intelligence-icons'
 import IntelligenceRadarChart from '../components/charts/IntelligenceRadarChart'
 import Navigation from '../components/Navigation'
+import type { Activity } from '../types/activities'
 
-interface ActivityOption {
-  value: number
-  label: string
-  emoji: string
-}
-
-interface Activity {
+interface MIQuestion {
   id: number
   text: string
   intelligenceDomain: string
   domainDisplayName: string
-  options: ActivityOption[]
+  options: Activity['metadata']['options']
 }
 
 interface IntelligenceScores {
@@ -24,7 +19,7 @@ interface IntelligenceScores {
 }
 
 function Assessment() {
-  const [activities, setActivities] = useState<Activity[]>([])
+  const [activities, setActivities] = useState<MIQuestion[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [currentStep, setCurrentStep] = useState(0)

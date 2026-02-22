@@ -4,38 +4,42 @@
 import { authService } from './authService'
 import type { User, Post, Stats, FetchOptions } from '@/types'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1'
+const _API_BASE_URL =
+  import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1'
 
 // Helper function to make authenticated requests
-const fetchWithAuth = async <T>(url: string, options: FetchOptions = {}): Promise<T> => {
+const fetchWithAuth = async <T>(
+  url: string,
+  options: FetchOptions = {}
+): Promise<T> => {
   const token = authService.getToken()
-  
+
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...options.headers,
   }
-  
+
   if (token) {
     headers['Authorization'] = `Bearer ${token}`
   }
-  
+
   const response = await fetch(url, {
     ...options,
     headers,
   })
-  
+
   if (response.status === 401) {
     // Token expired or invalid, logout
     authService.logout()
     window.location.href = '/login'
     throw new Error('Unauthorized')
   }
-  
+
   if (!response.ok) {
     const error = await response.json()
     throw new Error(error.message || 'Request failed')
   }
-  
+
   return response.json()
 }
 
@@ -115,4 +119,3 @@ export const apiService = {
 
 // Export the fetch helper for use in other services
 export { fetchWithAuth }
-

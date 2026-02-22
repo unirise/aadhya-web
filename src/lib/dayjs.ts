@@ -17,4 +17,3 @@ dayjs.extend(isTomorrow)
 dayjs.extend(isYesterday)
 
 export default dayjs
-

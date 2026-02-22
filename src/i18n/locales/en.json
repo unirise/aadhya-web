@@ -62,8 +62,8 @@
     }
   },
   "login": {
-    "title": "Login Form",
-    "description": "Sample login form with validation",
+    "title": "Login",
+    "description": "Please login with your assigned username and password",
     "form": {
       "email": "Email",
       "password": "Password",

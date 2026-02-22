@@ -14,7 +14,10 @@ export const Block: React.FC<BlockProps> = ({
   onClick,
 }) => {
   return (
-    <Card className={cn('h-full w-full', className)} onClick={onClick}>
+    <Card
+      className={cn('border border-border shadow-none', className)}
+      onClick={onClick}
+    >
       {children}
     </Card>
   )

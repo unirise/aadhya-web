@@ -84,4 +84,27 @@ const RadioGroupOption = React.forwardRef<
 })
 RadioGroupOption.displayName = 'RadioGroupOption'
 
-export { RadioGroup, RadioGroupItem, RadioGroupOption }
+const RadioButton = RadioGroupItem
+
+interface InputDotRadioProps {
+  isSelected?: boolean
+  className?: string
+}
+
+function InputDotRadio({ isSelected, className }: InputDotRadioProps) {
+  return (
+    <div
+      className={cn(
+        'h-5 w-5 rounded-full border-2 border-current flex items-center justify-center flex-shrink-0',
+        isSelected ? 'opacity-100' : 'opacity-50',
+        className
+      )}
+    >
+      {isSelected && (
+        <Circle className='h-3 w-3 fill-current text-current' />
+      )}
+    </div>
+  )
+}
+
+export { RadioGroup, RadioGroupItem, RadioGroupOption, RadioButton, InputDotRadio }

@@ -18,18 +18,9 @@ export const activitiesApi = {
       const response = await axiosInstance.get(
         `/activities/entity?assessmentId=${assessmentId}`
       )
-      // Transform entity response to match the expected format
-      const entities = response.data.data || response.data
-      
-      // Map entity structure to frontend format
-      const questions = entities.map((entity: any) => ({
-        id: entity.id, // UUID from database
-        text: entity.metadata?.text || '',
-        intelligenceDomain: entity.attribute || entity.domain,
-        domainDisplayName: entity.metadata?.domainDisplayName || entity.attribute,
-        options: entity.metadata?.options || [],
-      }))
-      
+      // Pass DB entities through as-is
+      const questions = response.data.data || response.data
+
       return {
         questions,
         pagination: {
@@ -42,15 +33,13 @@ export const activitiesApi = {
         },
       }
     }
-    
+
     // Otherwise, fetch random activities from JSON
     const params = new URLSearchParams({
       limit: limit.toString(),
       page: page.toString(),
     })
-    const response = await axiosInstance.get(
-      `/activities?${params.toString()}`
-    )
+    const response = await axiosInstance.get(`/activities?${params.toString()}`)
     return response.data.data
   },
 

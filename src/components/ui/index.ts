@@ -9,4 +9,4 @@ export {
   CardFooter,
 } from './card'
 
-export { RadioGroup, RadioGroupItem, RadioGroupOption } from './radio-group'
+export { RadioGroup, RadioGroupItem, RadioGroupOption, RadioButton, InputDotRadio } from './radio-group'

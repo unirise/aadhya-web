@@ -1,9 +1,12 @@
 export { Block } from './Block'
 export type { BlockProps } from './Block'
-export { ControlBlock } from './ControlBlock'
 export { SettingBlock } from './SettingBlock'
-export { ActionBlock } from './ActionBlock'
 export { NavigationBlock } from './NavigationBlock'
-export { ContentBlock } from './ContentBlock'
-export { InputBlock } from './InputBlock'
 
+// Action blocks
+export { ActionBlock } from './action/ActionBlock'
+
+// Content blocks
+export { Media } from './content/Media'
+export { Text } from './content/Text'
+export { List } from './content/List'

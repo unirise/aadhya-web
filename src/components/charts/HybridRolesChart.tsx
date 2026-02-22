@@ -32,7 +32,10 @@ function HybridRolesChart({ data = [], height = 400 }) {
 
   // Transform data for chart
   const chartData = data.map(item => ({
-    name: item.combination.length > 25 ? `${item.combination.substring(0, 25)}...` : item.combination,
+    name:
+      item.combination.length > 25
+        ? `${item.combination.substring(0, 25)}...`
+        : item.combination,
     fullName: item.combination,
     roles: item.roles?.length || 0,
     description: item.description,
@@ -54,15 +57,37 @@ function HybridRolesChart({ data = [], height = 400 }) {
             maxWidth: '300px',
           }}
         >
-          <p style={{ margin: 0, fontWeight: 'bold', color: '#1f2937', marginBottom: '4px' }}>
+          <p
+            style={{
+              margin: 0,
+              fontWeight: 'bold',
+              color: '#1f2937',
+              marginBottom: '4px',
+            }}
+          >
             {data.fullName}
           </p>
           {data.description && (
-            <p style={{ margin: 0, fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontStyle: 'italic' }}>
+            <p
+              style={{
+                margin: 0,
+                fontSize: '12px',
+                color: '#6b7280',
+                marginBottom: '8px',
+                fontStyle: 'italic',
+              }}
+            >
               {data.description}
             </p>
           )}
-          <p style={{ margin: 0, fontSize: '16px', fontWeight: 'bold', color: '#8b5cf6' }}>
+          <p
+            style={{
+              margin: 0,
+              fontSize: '16px',
+              fontWeight: 'bold',
+              color: '#8b5cf6',
+            }}
+          >
             {data.roles} Role{data.roles !== 1 ? 's' : ''}
           </p>
         </div>
@@ -104,5 +129,3 @@ function HybridRolesChart({ data = [], height = 400 }) {
 }
 
 export default HybridRolesChart
-
-

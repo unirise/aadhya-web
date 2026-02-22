@@ -9,10 +9,13 @@ const USER_KEY = 'auth_user'
 export const authService = {
   // Login
   login: async (username: string, password: string): Promise<AuthResponse> => {
-    const response = await axiosInstance.post<ApiResponse<AuthResponse>>('/auth/login', {
-      username,
-      password,
-    })
+    const response = await axiosInstance.post<ApiResponse<AuthResponse>>(
+      '/auth/login',
+      {
+        username,
+        password,
+      }
+    )
 
     const data = response.data
 
@@ -35,12 +38,15 @@ export const authService = {
     name: string,
     yob: number
   ): Promise<AuthResponse> => {
-    const response = await axiosInstance.post<ApiResponse<AuthResponse>>('/auth/register', {
-      username,
-      password,
-      name,
-      yob,
-    })
+    const response = await axiosInstance.post<ApiResponse<AuthResponse>>(
+      '/auth/register',
+      {
+        username,
+        password,
+        name,
+        yob,
+      }
+    )
 
     const data = response.data
 

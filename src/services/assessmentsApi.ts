@@ -24,4 +24,3 @@ export const assessmentsApi = {
     return response.data.data
   },
 }
-

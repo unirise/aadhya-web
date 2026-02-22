@@ -11,7 +11,8 @@ export const useUsers = (): UseQueryResult<User[], Error> => {
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
     retry: 2,
-    retryDelay: (attemptIndex: number) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    retryDelay: (attemptIndex: number) =>
+      Math.min(1000 * 2 ** attemptIndex, 30000),
   })
 }
 
@@ -24,7 +25,8 @@ export const usePosts = (): UseQueryResult<Post[], Error> => {
     staleTime: 3 * 60 * 1000, // 3 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
     retry: 2,
-    retryDelay: (attemptIndex: number) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    retryDelay: (attemptIndex: number) =>
+      Math.min(1000 * 2 ** attemptIndex, 30000),
   })
 }
 
@@ -37,7 +39,8 @@ export const useStats = (): UseQueryResult<Stats, Error> => {
     staleTime: 1 * 60 * 1000, // 1 minute
     gcTime: 5 * 60 * 1000, // 5 minutes
     retry: 2,
-    retryDelay: (attemptIndex: number) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    retryDelay: (attemptIndex: number) =>
+      Math.min(1000 * 2 ** attemptIndex, 30000),
   })
 }
 
@@ -56,7 +59,9 @@ export const useUser = (userId: number | null): UseQueryResult<User, Error> => {
 
 // Custom hook for fetching user posts
 // Usage: const { data: userPosts, isLoading, error } = useUserPosts(userId)
-export const useUserPosts = (userId: number | null): UseQueryResult<Post[], Error> => {
+export const useUserPosts = (
+  userId: number | null
+): UseQueryResult<Post[], Error> => {
   return useQuery({
     queryKey: ['userPosts', userId],
     queryFn: () => apiService.fetchUserPosts(userId!),
@@ -66,4 +71,3 @@ export const useUserPosts = (userId: number | null): UseQueryResult<Post[], Erro
     retry: 2,
   })
 }
-

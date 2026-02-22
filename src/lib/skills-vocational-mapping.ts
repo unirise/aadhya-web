@@ -70,11 +70,6 @@ export const skillVocationalMapping = {
     'NGO Program Assistant',
     'Community Outreach Assistant',
   ],
-  'Group facilitation': [
-    'Training Assistant',
-    'Workshop Facilitator',
-    'Community Program Assistant',
-  ],
   'Emotional intelligence': [
     'HR Support Assistant',
     'Community Liaison Officer (Junior)',
