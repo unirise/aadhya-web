@@ -32,12 +32,22 @@ function SkillsVocationalChart({ data = [], height = 400 }) {
 
   // Transform data for chart
   const chartData = data.map(item => ({
-    name: item.skill.length > 20 ? `${item.skill.substring(0, 20)}...` : item.skill,
+    name:
+      item.skill.length > 20 ? `${item.skill.substring(0, 20)}...` : item.skill,
     fullName: item.skill,
     paths: item.vocationalPaths?.length || 0,
   }))
 
-  const colors = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4', '#ec4899', '#84cc16']
+  const colors = [
+    '#3b82f6',
+    '#10b981',
+    '#f59e0b',
+    '#8b5cf6',
+    '#ef4444',
+    '#06b6d4',
+    '#ec4899',
+    '#84cc16',
+  ]
 
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
@@ -52,10 +62,24 @@ function SkillsVocationalChart({ data = [], height = 400 }) {
             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
           }}
         >
-          <p style={{ margin: 0, fontWeight: 'bold', color: '#1f2937', marginBottom: '4px' }}>
+          <p
+            style={{
+              margin: 0,
+              fontWeight: 'bold',
+              color: '#1f2937',
+              marginBottom: '4px',
+            }}
+          >
             {data.fullName}
           </p>
-          <p style={{ margin: 0, fontSize: '16px', fontWeight: 'bold', color: '#3b82f6' }}>
+          <p
+            style={{
+              margin: 0,
+              fontSize: '16px',
+              fontWeight: 'bold',
+              color: '#3b82f6',
+            }}
+          >
             {data.paths} Career Path{data.paths !== 1 ? 's' : ''}
           </p>
         </div>
@@ -97,5 +121,3 @@ function SkillsVocationalChart({ data = [], height = 400 }) {
 }
 
 export default SkillsVocationalChart
-
-

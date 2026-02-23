@@ -1,9 +1,9 @@
 /**
  * Multiple Intelligences Scoring Utility
- * 
+ *
  * This utility provides functions to calculate intelligence domain scores
  * based on Howard Gardner's Theory of Multiple Intelligences.
- * 
+ *
  * Scoring Logic:
  * - Each domain starts at a base score (default: 50)
  * - Scores are adjusted based on answer values
@@ -12,13 +12,17 @@
 
 /**
  * Calculate intelligence domain scores from answers
- * 
+ *
  * @param {Object} questionsData - The questions data object from JSON
  * @param {Object} answers - Object mapping question IDs to answer values (e.g., {1: 1, 2: 3, ...})
  * @param {Object} customScoring - Optional custom scoring configuration
  * @returns {Object} Object mapping intelligence domains to their calculated scores
  */
-export function calculateMIScores(questionsData, answers, customScoring = null) {
+export function calculateMIScores(
+  questionsData,
+  answers,
+  customScoring = null
+) {
   const scoring = customScoring || questionsData.scoring
   const baseScore = scoring.baseScore || 50
   const scoreAdjustments = scoring.scoreAdjustments || {
@@ -26,7 +30,7 @@ export function calculateMIScores(questionsData, answers, customScoring = null) 
     2: 2,
     3: 0,
     4: -2,
-    5: -5
+    5: -5,
   }
 
   // Initialize all domains with base score
@@ -50,7 +54,7 @@ export function calculateMIScores(questionsData, answers, customScoring = null) 
 
 /**
  * Get top N intelligence domains by score
- * 
+ *
  * @param {Object} domainScores - Object mapping domains to scores
  * @param {number} topN - Number of top domains to return (default: 3)
  * @returns {Array} Array of {domain, score} objects sorted by score (descending)
@@ -64,7 +68,7 @@ export function getTopIntelligences(domainScores, topN = 3) {
 
 /**
  * Get question statistics by domain
- * 
+ *
  * @param {Object} questionsData - The questions data object from JSON
  * @param {Object} answers - Object mapping question IDs to answer values
  * @returns {Object} Statistics for each domain
@@ -83,9 +87,11 @@ export function getDomainStatistics(questionsData, answers) {
     stats[domain] = {
       totalQuestions: domainQuestions.length,
       answeredQuestions: answeredQuestions.length,
-      averageAnswer: answeredQuestions.length > 0
-        ? answeredQuestions.reduce((sum, q) => sum + answers[q.id], 0) / answeredQuestions.length
-        : null
+      averageAnswer:
+        answeredQuestions.length > 0
+          ? answeredQuestions.reduce((sum, q) => sum + answers[q.id], 0) /
+            answeredQuestions.length
+          : null,
     }
   })
 
@@ -94,7 +100,7 @@ export function getDomainStatistics(questionsData, answers) {
 
 /**
  * Validate answers against questions data
- * 
+ *
  * @param {Object} questionsData - The questions data object from JSON
  * @param {Object} answers - Object mapping question IDs to answer values
  * @returns {Object} Validation result with isValid flag and errors array
@@ -107,25 +113,28 @@ export function validateAnswers(questionsData, answers) {
   Object.entries(answers).forEach(([questionId, answerValue]) => {
     const questionIdNum = parseInt(questionId)
     const question = questionsData.questions.find(q => q.id === questionIdNum)
-    
+
     if (!question) {
       errors.push(`Question ID ${questionId} does not exist`)
     } else if (!validAnswerValues.includes(answerValue)) {
-      errors.push(`Invalid answer value ${answerValue} for question ${questionId}`)
+      errors.push(
+        `Invalid answer value ${answerValue} for question ${questionId}`
+      )
     }
   })
 
   // Check for missing required answers (optional - can be customized)
   const answeredQuestionIds = Object.keys(answers).map(id => parseInt(id))
   const allQuestionIds = questionsData.questions.map(q => q.id)
-  const missingQuestions = allQuestionIds.filter(id => !answeredQuestionIds.includes(id))
+  const missingQuestions = allQuestionIds.filter(
+    id => !answeredQuestionIds.includes(id)
+  )
 
   return {
     isValid: errors.length === 0,
     errors,
     missingQuestions,
     answeredCount: answeredQuestionIds.length,
-    totalQuestions: allQuestionIds.length
+    totalQuestions: allQuestionIds.length,
   }
 }
-

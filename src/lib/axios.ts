@@ -24,9 +24,7 @@ axiosInstance.interceptors.request.use(
 
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`
-      // eslint-disable-next-line no-console
     } else if (!config.url?.includes('/auth/')) {
-      // eslint-disable-next-line no-console
       console.warn(
         `[Auth] No token found for request: ${config.method?.toUpperCase()} ${config.url}`
       )

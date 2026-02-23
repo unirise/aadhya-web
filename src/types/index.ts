@@ -1,3 +1,5 @@
 export * from './api'
 export * from './activities'
 export * from './assessments'
+export * from './presentation'
+export * from './dot'

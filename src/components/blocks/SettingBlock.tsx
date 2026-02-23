@@ -1,4 +1,5 @@
 import React from 'react'
+import { LucideIcon } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { Button } from '../ui'
 import { Block, BlockProps } from './Block'
@@ -6,11 +7,13 @@ import { Block, BlockProps } from './Block'
 interface SettingBlockProps extends Omit<BlockProps, 'children'> {
   label: string
   onClick?: () => void
+  icon?: LucideIcon
 }
 
 export const SettingBlock: React.FC<SettingBlockProps> = ({
   label,
   onClick,
+  icon: Icon,
   className,
   ...props
 }) => {
@@ -23,7 +26,10 @@ export const SettingBlock: React.FC<SettingBlockProps> = ({
       {...props}
     >
       <Button variant='ghost' className='h-full w-full' onClick={onClick}>
-        {label}
+        <span className='flex items-center justify-center gap-2'>
+          {Icon && <Icon className='w-5 h-5' />}
+          <span>{label}</span>
+        </span>
       </Button>
     </Block>
   )

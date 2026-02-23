@@ -12,6 +12,41 @@
   --color-brown-700: #5d4037;
   --color-brown-800: #4e342e;
   --color-brown-900: #3e2723;
+
+  /* Presentation Design System */
+  --color-background: #ffffff;
+  --color-foreground: #0a0a0a;
+  --color-card: #ffffff;
+  --color-card-foreground: #0a0a0a;
+  --color-primary: #09090b;
+  --color-primary-foreground: #fafafa;
+  --color-secondary: #f4f4f5;
+  --color-secondary-foreground: #18181b;
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+  --color-accent: #f1f5f9;
+  --color-accent-foreground: #0a0a0a;
+  --color-border: #e2e8f0;
+  --color-ring: #09090b;
+  --color-visited: #8b5cf6;
+}
+
+:root.dark {
+  --color-background: #0a0a0a;
+  --color-foreground: #fafafa;
+  --color-card: #141414;
+  --color-card-foreground: #fafafa;
+  --color-primary: #fafafa;
+  --color-primary-foreground: #09090b;
+  --color-secondary: #27272a;
+  --color-secondary-foreground: #fafafa;
+  --color-muted: #1e293b;
+  --color-muted-foreground: #94a3b8;
+  --color-accent: #1e293b;
+  --color-accent-foreground: #fafafa;
+  --color-border: #334155;
+  --color-ring: #fafafa;
+  --color-visited: #a78bfa;
 }
 
 :root {
@@ -34,8 +69,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  background-color: #f3e9dc;
-  color: #213547;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
 }
 
 #root {

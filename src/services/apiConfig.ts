@@ -11,7 +11,10 @@ interface FetchOptions extends RequestInit {
 }
 
 // Generic fetch wrapper with error handling
-export const apiRequest = async <T>(url: string, options: FetchOptions = {}): Promise<T> => {
+export const apiRequest = async <T>(
+  url: string,
+  options: FetchOptions = {}
+): Promise<T> => {
   const controller = new AbortController()
   const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT)
 
@@ -58,4 +61,3 @@ export const withRetry = async <T>(
     throw error
   }
 }
-

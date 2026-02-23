@@ -27,7 +27,8 @@ function LoginForm() {
     try {
       await authService.login(data.username, data.password)
       reset()
-      navigate('/') // Redirect to home page after login
+      const user = authService.getUser()
+      navigate(user?.role === 'educator' ? '/dashboard' : '/')
     } catch (error) {
       console.error('Login error:', error)
       alert(error.message || t('login.form.error') || 'Login failed')
@@ -36,8 +37,8 @@ function LoginForm() {
 
   return (
     <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
-      <h2>{t('login.title')}</h2>
-      <p style={{ color: '#6b7280', marginBottom: '24px' }}>
+      <h2 className='text-2xl font-bold text-center'>{t('login.title')}</h2>
+      <p className='text-gray-500 text-center text-sm mb-4'>
         {t('login.description')}
       </p>
 
@@ -60,7 +61,9 @@ function LoginForm() {
             style={{
               width: '100%',
               padding: '8px 12px',
-              border: errors.username ? '1px solid #ef4444' : '1px solid #d1d5db',
+              border: errors.username
+                ? '1px solid #ef4444'
+                : '1px solid #d1d5db',
               borderRadius: '4px',
               fontSize: '16px',
               outline: 'none',

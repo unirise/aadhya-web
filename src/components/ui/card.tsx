@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { forwardRef, HTMLAttributes } from 'react'
 import { cn } from '../../lib/utils'
 
@@ -7,10 +6,7 @@ export const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     return (
       <div
         ref={ref}
-        className={cn(
-          'rounded-lg border shadow-sm',
-          className
-        )}
+        className={cn('rounded-lg border shadow-sm', className)}
         {...rest}
       />
     )
@@ -56,11 +52,7 @@ export const CardDescription = forwardRef<
   HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...rest }, ref) => {
   return (
-    <p
-      ref={ref}
-      className={cn('text-sm text-gray-500', className)}
-      {...rest}
-    />
+    <p ref={ref} className={cn('text-sm text-gray-500', className)} {...rest} />
   )
 })
 CardDescription.displayName = 'CardDescription'

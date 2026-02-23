@@ -1,10 +1,11 @@
 // API Types
 export interface User {
-  id: string  // UUID from backend
+  id: string // UUID from backend
   name: string
   email?: string
   username: string
   yob: number
+  role: string
 }
 
 export interface Post {
@@ -37,4 +38,3 @@ export interface ApiError {
 export interface FetchOptions extends RequestInit {
   headers?: Record<string, string>
 }
-

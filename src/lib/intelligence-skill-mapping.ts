@@ -1,6 +1,6 @@
 /**
  * Intelligence-Skill Mapping Utility
- * 
+ *
  * Maps Multiple Intelligence domains to relevant skills and competencies
  * that individuals with high scores in each domain typically excel at.
  */
@@ -20,7 +20,7 @@ export const intelligenceSkillMapping = {
     'Self-discipline',
     'Independent thinking',
     'Metacognition',
-    'Personal growth planning'
+    'Personal growth planning',
   ],
   BODILY_KINESTHETIC: [
     'Physical coordination',
@@ -32,7 +32,7 @@ export const intelligenceSkillMapping = {
     'Physical expression',
     'Dance and movement',
     'Craftsmanship',
-    'Sports performance'
+    'Sports performance',
   ],
   LOGICAL_MATHEMATICAL: [
     'Problem solving',
@@ -44,7 +44,7 @@ export const intelligenceSkillMapping = {
     'Abstract reasoning',
     'Quantitative skills',
     'Algorithmic thinking',
-    'Critical thinking'
+    'Critical thinking',
   ],
   LINGUISTIC: [
     'Reading comprehension',
@@ -56,7 +56,7 @@ export const intelligenceSkillMapping = {
     'Persuasive speaking',
     'Poetry and literature',
     'Public speaking',
-    'Editing and proofreading'
+    'Editing and proofreading',
   ],
   MUSICAL: [
     'Musical composition',
@@ -68,7 +68,7 @@ export const intelligenceSkillMapping = {
     'Sound pattern recognition',
     'Musical memory',
     'Harmony understanding',
-    'Audio production'
+    'Audio production',
   ],
   SPATIAL: [
     'Visual thinking',
@@ -80,7 +80,7 @@ export const intelligenceSkillMapping = {
     'Artistic creation',
     'Map reading',
     'Visual memory',
-    'Pattern design'
+    'Pattern design',
   ],
   NATURALISTIC: [
     'Nature observation',
@@ -92,7 +92,7 @@ export const intelligenceSkillMapping = {
     'Outdoor skills',
     'Conservation',
     'Natural pattern recognition',
-    'Sustainability practices'
+    'Sustainability practices',
   ],
   INTERPERSONAL: [
     'Empathy',
@@ -104,13 +104,13 @@ export const intelligenceSkillMapping = {
     'Relationship building',
     'Group facilitation',
     'Emotional intelligence',
-    'Networking'
-  ]
+    'Networking',
+  ],
 }
 
 /**
  * Get skills for a specific intelligence domain
- * 
+ *
  * @param {string} domain - The intelligence domain code
  * @returns {Array<string>} Array of skills associated with the domain
  */
@@ -121,7 +121,7 @@ export function getSkillsForDomain(domain) {
 /**
  * Get skills mapped to intelligence scores
  * Prioritizes skills from domains with higher scores
- * 
+ *
  * @param {Object} intelligenceScores - Object mapping domains to scores
  * @param {number} topN - Number of top intelligences to consider (default: 3)
  * @returns {Array<Object>} Array of {domain, displayName, score, skills} objects sorted by score
@@ -141,13 +141,13 @@ export function getIntelligenceSkillMapping(intelligenceScores, topN = 3) {
   return sortedDomains.map(({ domain, score }) => ({
     domain,
     score,
-    skills: getSkillsForDomain(domain)
+    skills: getSkillsForDomain(domain),
   }))
 }
 
 /**
  * Get all skills for top intelligences, flattened and deduplicated
- * 
+ *
  * @param {Object} intelligenceScores - Object mapping domains to scores
  * @param {number} topN - Number of top intelligences to consider (default: 3)
  * @returns {Array<string>} Array of unique skills from top intelligences
@@ -158,4 +158,3 @@ export function getTopSkills(intelligenceScores, topN = 3) {
   // Remove duplicates while preserving order
   return [...new Set(allSkills)]
 }
-

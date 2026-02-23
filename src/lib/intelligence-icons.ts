@@ -15,14 +15,14 @@ import {
  * Maps each intelligence domain to a semantically appropriate icon from lucide-react
  */
 export const intelligenceIcons: Record<string, LucideIcon> = {
-  INTRAPERSONAL: Brain,
-  BODILY_KINESTHETIC: Activity,
-  LOGICAL_MATHEMATICAL: Calculator,
-  LINGUISTIC: BookOpen,
-  MUSICAL: Music,
-  SPATIAL: Eye,
-  NATURALISTIC: Leaf,
-  INTERPERSONAL: Users,
+  'Intrapersonal Intelligence': Brain,
+  'Bodily-Kinesthetic Intelligence': Activity,
+  'Logical-Mathematical Intelligence': Calculator,
+  'Linguistic Intelligence': BookOpen,
+  'Musical Intelligence': Music,
+  'Spatial Intelligence': Eye,
+  'Naturalistic Intelligence': Leaf,
+  'Interpersonal Intelligence': Users,
 }
 
 /**

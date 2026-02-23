@@ -33,7 +33,8 @@ function NSQFLevelsChart({ data = [], height = 400 }) {
   // Count roles by NSQF level
   const levelCounts = {}
   data.forEach(role => {
-    const level = role.nsqf_level !== null ? `Level ${role.nsqf_level}` : 'Not Mapped'
+    const level =
+      role.nsqf_level !== null ? `Level ${role.nsqf_level}` : 'Not Mapped'
     levelCounts[level] = (levelCounts[level] || 0) + 1
   })
 
@@ -76,10 +77,24 @@ function NSQFLevelsChart({ data = [], height = 400 }) {
             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
           }}
         >
-          <p style={{ margin: 0, fontWeight: 'bold', color: '#1f2937', marginBottom: '4px' }}>
+          <p
+            style={{
+              margin: 0,
+              fontWeight: 'bold',
+              color: '#1f2937',
+              marginBottom: '4px',
+            }}
+          >
             {data.level}
           </p>
-          <p style={{ margin: 0, fontSize: '16px', fontWeight: 'bold', color: '#3b82f6' }}>
+          <p
+            style={{
+              margin: 0,
+              fontSize: '16px',
+              fontWeight: 'bold',
+              color: '#3b82f6',
+            }}
+          >
             {data.count} Role{data.count !== 1 ? 's' : ''}
           </p>
         </div>
@@ -100,11 +115,7 @@ function NSQFLevelsChart({ data = [], height = 400 }) {
         }}
       >
         <CartesianGrid strokeDasharray='3 3' stroke='#e5e7eb' />
-        <XAxis
-          dataKey='level'
-          stroke='#6b7280'
-          fontSize={12}
-        />
+        <XAxis dataKey='level' stroke='#6b7280' fontSize={12} />
         <YAxis stroke='#6b7280' fontSize={12} />
         <Tooltip content={<CustomTooltip />} />
         <Bar dataKey='count' radius={[8, 8, 0, 0]}>
@@ -121,5 +132,3 @@ function NSQFLevelsChart({ data = [], height = 400 }) {
 }
 
 export default NSQFLevelsChart
-
-

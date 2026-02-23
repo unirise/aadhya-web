@@ -88,4 +88,3 @@ export type ContactFormData = z.infer<typeof contactFormSchema>
 export type UserRegistrationFormData = z.infer<typeof userRegistrationSchema>
 export type LoginFormData = z.infer<typeof loginFormSchema>
 export type SearchFormData = z.infer<typeof searchFormSchema>
-

@@ -1,4 +1,4 @@
-import dayjs, { Dayjs, ConfigType, OpUnitType, ManipulateType } from 'dayjs'
+import dayjs, { Dayjs, ConfigType, OpUnitType } from 'dayjs'
 import './dayjs' // Import to ensure plugins are loaded
 
 /**
@@ -12,7 +12,10 @@ export const formatDate = (date: ConfigType, format = 'YYYY-MM-DD'): string => {
   return dayjs(date).format(format)
 }
 
-export const formatDateTime = (date: ConfigType, format = 'YYYY-MM-DD HH:mm:ss'): string => {
+export const formatDateTime = (
+  date: ConfigType,
+  format = 'YYYY-MM-DD HH:mm:ss'
+): string => {
   if (!date) return ''
   return dayjs(date).format(format)
 }
@@ -23,12 +26,18 @@ export const formatTime = (date: ConfigType, format = 'HH:mm'): string => {
 }
 
 // Localized formatting
-export const formatDateLocalized = (date: ConfigType, format = 'LL'): string => {
+export const formatDateLocalized = (
+  date: ConfigType,
+  format = 'LL'
+): string => {
   if (!date) return ''
   return dayjs(date).format(format)
 }
 
-export const formatDateTimeLocalized = (date: ConfigType, format = 'LLL'): string => {
+export const formatDateTimeLocalized = (
+  date: ConfigType,
+  format = 'LLL'
+): string => {
   if (!date) return ''
   return dayjs(date).format(format)
 }
@@ -63,7 +72,10 @@ export const formatTimeAgo = (date: ConfigType): string => {
 }
 
 // UTC and timezone functions
-export const formatUTC = (date: ConfigType, format = 'YYYY-MM-DD HH:mm:ss [UTC]'): string => {
+export const formatUTC = (
+  date: ConfigType,
+  format = 'YYYY-MM-DD HH:mm:ss [UTC]'
+): string => {
   if (!date) return ''
   return dayjs(date).utc().format(format)
 }
@@ -103,7 +115,10 @@ export const addHours = (date: ConfigType, hours: number): Dayjs | null => {
   return dayjs(date).add(hours, 'hour')
 }
 
-export const subtractHours = (date: ConfigType, hours: number): Dayjs | null => {
+export const subtractHours = (
+  date: ConfigType,
+  hours: number
+): Dayjs | null => {
   if (!date) return null
   return dayjs(date).subtract(hours, 'hour')
 }
@@ -154,17 +169,29 @@ export const isTomorrow = (date: ConfigType): boolean => {
   return dayjs(date).isTomorrow()
 }
 
-export const isSame = (date1: ConfigType, date2: ConfigType, unit: OpUnitType = 'day'): boolean => {
+export const isSame = (
+  date1: ConfigType,
+  date2: ConfigType,
+  unit: OpUnitType = 'day'
+): boolean => {
   if (!date1 || !date2) return false
   return dayjs(date1).isSame(dayjs(date2), unit)
 }
 
-export const isBefore = (date1: ConfigType, date2: ConfigType, unit: OpUnitType = 'day'): boolean => {
+export const isBefore = (
+  date1: ConfigType,
+  date2: ConfigType,
+  unit: OpUnitType = 'day'
+): boolean => {
   if (!date1 || !date2) return false
   return dayjs(date1).isBefore(dayjs(date2), unit)
 }
 
-export const isAfter = (date1: ConfigType, date2: ConfigType, unit: OpUnitType = 'day'): boolean => {
+export const isAfter = (
+  date1: ConfigType,
+  date2: ConfigType,
+  unit: OpUnitType = 'day'
+): boolean => {
   if (!date1 || !date2) return false
   return dayjs(date1).isAfter(dayjs(date2), unit)
 }
@@ -190,7 +217,10 @@ export const isValidDate = (date: ConfigType): boolean => {
   return dayjs(date).isValid()
 }
 
-export const parseDate = (dateString: string, format?: string): Dayjs | null => {
+export const parseDate = (
+  dateString: string,
+  format?: string
+): Dayjs | null => {
   if (!dateString) return null
   const parsed = format ? dayjs(dateString, format) : dayjs(dateString)
   return parsed.isValid() ? parsed : null
@@ -261,4 +291,3 @@ export default {
   DATE_FORMATS,
   dayjs,
 }
-

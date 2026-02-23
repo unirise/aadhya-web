@@ -1,11 +1,37 @@
 // Activity Types
 
+export interface ActivityOption {
+  value: number
+  label: string
+  emoji: string
+  scoreAdjustment: number
+}
+
+export interface ActivityMetadata {
+  questionId?: number
+  text?: string
+  domainDisplayName?: string
+  options?: ActivityOption[]
+  key?: string
+  label?: string
+  icon?: string
+  title?: string
+  subtitle?: string
+  snippet?: string
+  description?: string
+  paragraph1?: string
+  paragraph2?: string
+  media?: string
+  [extra: string]: unknown
+}
+
 export interface Activity {
-  id: number
-  question: string
-  domain?: string
-  subdomain?: string
-  [key: string]: unknown
+  id: string
+  assessmentId?: string
+  type?: string
+  domain: string
+  attribute?: string
+  metadata: ActivityMetadata
 }
 
 export interface ActivitiesResponse {

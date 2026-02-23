@@ -1,0 +1,243 @@
+import { useState, useEffect, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
+import {
+  Home as HomeIcon,
+  Moon,
+  Sun,
+  User,
+  Shuffle,
+  LogOut,
+  BookOpen,
+  ZapIcon,
+} from 'lucide-react'
+import {
+  Header,
+  Footer,
+  ContentSection,
+  FluidLayout,
+} from '@/components/sections'
+import { useTheme } from '@/contexts/ThemeContext'
+import { useKeyboardNavigation } from '@/hooks/useKeyboardNavigation'
+import type { FocusPosition } from '@/hooks/useKeyboardNavigation'
+import { assessmentsApi } from '@/services/assessmentsApi'
+import { Assessment } from '@/types'
+import type { DotData } from '@/types/dot'
+
+function Home() {
+  const navigate = useNavigate()
+  const { theme, toggleTheme } = useTheme()
+  const [assessments, setAssessments] = useState<Assessment[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const loadAssessments = async () => {
+      try {
+        setLoading(true)
+        const data = await assessmentsApi.fetchAssessments()
+        setAssessments(data)
+      } catch (err) {
+        setError('Failed to load assessments')
+        console.error('Error loading assessments:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadAssessments()
+  }, [])
+
+  const handleAssessmentClick = (assessmentId: string) => {
+    navigate(`/assessment/${assessmentId}/start`)
+  }
+
+  const handleRandomAssessment = () => {
+    if (assessments.length > 0) {
+      const randomIndex = Math.floor(Math.random() * assessments.length)
+      const randomAssessment = assessments[randomIndex]
+      navigate(`/assessment/${randomAssessment.id}/start`)
+    }
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken')
+    sessionStorage.clear()
+    navigate('/login')
+  }
+
+  const handleActivate = useCallback(
+    (position: FocusPosition) => {
+      const { section, index } = position
+      if (section === 'header') {
+        if (index <= 1) navigate('/presentation')
+        else if (index === 2) toggleTheme()
+      } else if (section === 'content') {
+        const assessment = assessments[index]
+        if (assessment) navigate(`/assessment/${assessment.id}/start`)
+      } else if (section === 'footer') {
+        if (index === 0) navigate('/pehachan')
+        else if (index === 1) {
+          if (assessments.length > 0) {
+            const ri = Math.floor(Math.random() * assessments.length)
+            navigate(`/assessment/${assessments[ri].id}/start`)
+          }
+        } else if (index === 2) {
+          localStorage.removeItem('authToken')
+          sessionStorage.clear()
+          navigate('/login')
+        }
+      }
+    },
+    [assessments, navigate, toggleTheme]
+  )
+
+  const { isFocused } = useKeyboardNavigation({
+    headerCount: 3,
+    contentCount: assessments.length,
+    panelCount: 0,
+    footerCount: 3,
+    onActivate: handleActivate,
+  })
+
+  const navigationItems: DotData[] = [
+    {
+      id: 'home',
+      icon: HomeIcon,
+      label: 'Home',
+      title: 'Welcome Home',
+      subtitle: 'Your personal dashboard',
+      tinyText: 'Home',
+      smallText:
+        'Navigate back to your main dashboard and see recent activity.',
+      largeText: [
+        'This is the home screen where you can access all your assessments, track your progress, and manage your learning journey.',
+        'Use the navigation below to explore different sections of the application.',
+      ],
+      buttonText: 'Go Home',
+      onClick: () => {},
+      isFocused: isFocused('header', 0),
+    },
+    {
+      id: 'logo',
+      icon: ZapIcon,
+      label: 'Reset',
+      title: 'Reset Dots',
+      subtitle: 'This button will Reset the content you have in front of you',
+      tinyText: 'Reset',
+      buttonText: 'Reset',
+      onClick: () => {},
+      isFocused: isFocused('header', 1),
+    },
+    {
+      id: 'theme',
+      icon: theme === 'light' ? Moon : Sun,
+      label: 'Theme',
+      title: theme === 'light' ? 'Dark Mode' : 'Light Mode',
+      subtitle: `Currently using ${theme} theme`,
+      tinyText: theme === 'light' ? 'Dark' : 'Light',
+      smallText: `Switch to ${theme === 'light' ? 'dark' : 'light'} mode for a different visual experience.`,
+      largeText: `Toggle between light and dark themes to match your preference. The current theme is ${theme}.`,
+      buttonText: 'Toggle Theme',
+      onClick: toggleTheme,
+      isFocused: isFocused('header', 2),
+    },
+  ]
+
+  const footerItems: DotData[] = [
+    {
+      id: 'pehchan',
+      icon: User,
+      label: 'Plan',
+      title: 'Pehchan',
+      subtitle: 'Your personalised learning plan',
+      tinyText: 'Plan',
+      smallText:
+        'View your customised learning plan based on your assessment performance.',
+      largeText: [
+        'Pehchan builds a personalised learning plan tailored to your strengths and areas for growth, drawn from your assessment results.',
+        'Track your progress over time and see recommendations for what to focus on next.',
+      ],
+      buttonText: 'View Plan',
+      onClick: () => navigate('/pehachan'),
+      isFocused: isFocused('footer', 0),
+    },
+    {
+      id: 'random',
+      icon: Shuffle,
+      label: 'Random',
+      title: 'Random Path',
+      subtitle: 'Try something unexpected',
+      tinyText: 'Shuffle',
+      smallText:
+        'Jump into a randomly selected assessment for a surprise challenge.',
+      largeText:
+        'Not sure where to start? Let us pick an assessment for you at random. A great way to explore topics you might not have tried yet.',
+      buttonText: 'Surprise Me',
+      onClick: handleRandomAssessment,
+      isFocused: isFocused('footer', 1),
+    },
+    {
+      id: 'logout',
+      icon: LogOut,
+      label: 'Logout',
+      title: 'Leave',
+      subtitle: 'End your current session',
+      tinyText: 'Leave',
+      smallText: 'Sign out and return to the login screen.',
+      largeText:
+        'Logging out will clear your session. You will need to sign in again to access your assessments and learning plan.',
+      buttonText: 'Log Out',
+      onClick: handleLogout,
+      isFocused: isFocused('footer', 2),
+    },
+  ]
+
+  const contentItems: DotData[] = assessments.map((assessment, index) => ({
+    id: assessment.id,
+    icon: BookOpen,
+    label: assessment.introduction,
+    title: assessment.name,
+    largeText: assessment.description,
+    ariaLabel: assessment.name,
+    isFocused: isFocused('content', index),
+    onClick: () => handleAssessmentClick(assessment.id),
+  }))
+
+  return (
+    <FluidLayout
+      layoutId='home'
+      defaultSizes={[10, 80, 10]}
+      header={<Header items={navigationItems} />}
+      footer={<Footer items={footerItems} />}
+      className='p-2 sm:p-4'
+    >
+      {loading && (
+        <div className='flex items-center justify-center h-full'>
+          <p className='text-muted-foreground'>Loading assessments...</p>
+        </div>
+      )}
+
+      {error && (
+        <div className='flex items-center justify-center h-full'>
+          <p className='text-red-600'>{error}</p>
+        </div>
+      )}
+
+      {!loading && !error && assessments.length === 0 && (
+        <div className='flex items-center justify-center h-full'>
+          <p className='text-muted-foreground'>No assessments available</p>
+        </div>
+      )}
+
+      {!loading && !error && assessments.length > 0 && (
+        <ContentSection
+          title='Explore'
+          description='Choose an assessment to begin'
+          items={contentItems}
+        />
+      )}
+    </FluidLayout>
+  )
+}
+
+export default Home

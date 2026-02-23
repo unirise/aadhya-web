@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
-import { authService } from '../services/authService'
+import { Home, ArrowLeft, Settings, User } from 'lucide-react'
 import { ActionBlock, NavigationBlock, SettingBlock } from './blocks'
+import { authService } from '@/services/authService'
 
 function Navigation() {
   const location = useLocation()
@@ -22,7 +23,7 @@ function Navigation() {
         <div className='grid grid-cols-5 lg:grid-cols-9 gap-4 h-full items-center'>
           {/* Home Link - spans first column */}
           <div className='col-span-1 flex items-center justify-center h-full w-full p-1'>
-            <NavigationBlock label='Home' to='/' />
+            <NavigationBlock label='Home' to='/' icon={Home} />
           </div>
 
           <div className='hidden lg:block' />
@@ -31,20 +32,24 @@ function Navigation() {
 
           {/* Back Button - spans middle column(s) */}
           <div className='col-span-1 flex items-center justify-center h-full w-full p-1'>
-            <ActionBlock label='Back' onClick={handleBack} />
+            <ActionBlock label='Back' onClick={handleBack} icon={ArrowLeft} />
           </div>
 
           <div className='hidden lg:block' />
           <div />
 
           <div className='col-span-1 flex items-center justify-center h-full w-full p-1'>
-            <SettingBlock label={'Settings'} onClick={() => {}} />
+            <SettingBlock
+              label={'Settings'}
+              onClick={() => {}}
+              icon={Settings}
+            />
           </div>
 
           {/* User Info and Profile Link - spans last column */}
           {isAuthenticated && (
             <div className='col-span-1 flex items-center justify-center h-full w-full p-1'>
-              <NavigationBlock label={'Pehachan'} to='/pehachan' />
+              <NavigationBlock label={'Pehachan'} to='/pehachan' icon={User} />
             </div>
           )}
         </div>
