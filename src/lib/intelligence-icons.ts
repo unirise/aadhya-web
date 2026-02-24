@@ -10,10 +10,20 @@ import {
   LucideIcon,
 } from 'lucide-react'
 
-/**
- * Icon mapping for Multiple Intelligences types
- * Maps each intelligence domain to a semantically appropriate icon from lucide-react
- */
+const iconMap: Record<string, Record<string, LucideIcon>> = {
+  intelligence: {
+    INTRAPERSONAL: Brain,
+    BODILY_KINESTHETIC: Activity,
+    LOGICAL_MATHEMATICAL: Calculator,
+    LINGUISTIC: BookOpen,
+    MUSICAL: Music,
+    SPATIAL: Eye,
+    NATURALISTIC: Leaf,
+    INTERPERSONAL: Users,
+  },
+}
+
+// Legacy mapping for callers that pass display names
 export const intelligenceIcons: Record<string, LucideIcon> = {
   'Intrapersonal Intelligence': Brain,
   'Bodily-Kinesthetic Intelligence': Activity,
@@ -25,12 +35,14 @@ export const intelligenceIcons: Record<string, LucideIcon> = {
   'Interpersonal Intelligence': Users,
 }
 
-/**
- * Get the icon component for a given intelligence domain
- * @param domain - The intelligence domain code (e.g., 'INTRAPERSONAL')
- * @returns The icon component from lucide-react
- */
-export function getIntelligenceIcon(domain: string): LucideIcon | null {
+export function getIntelligenceIcon(
+  domain: string,
+  attribute?: string
+): LucideIcon | null {
+  console.log('🚀 ~ getIntelligenceIcon ~ attribute:', attribute, domain)
+  if (attribute) {
+    return iconMap[domain.toLowerCase()]?.[attribute.toUpperCase()] ?? null
+  }
   return intelligenceIcons[domain] || null
 }
 
