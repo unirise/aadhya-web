@@ -1,0 +1,25 @@
+services:
+  aadhya-web:
+    container_name: aadhya-web-prod
+    image: aadhya-web:prod
+    build:
+      context: ../..
+      dockerfile: docker/prod/Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:3001/api/v1}
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:3001/api/v1}
+    restart: unless-stopped
+    expose:
+      - '80'
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1/']
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - traefik_network
+
+networks:
+  traefik_network:
+    external: true
