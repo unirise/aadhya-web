@@ -5,11 +5,19 @@
  * that work best for learners with high scores in each domain.
  */
 
+export type IntelligenceScores = Record<string, number>
+
+export interface IntelligenceTeachingStyleEntry {
+  domain: string
+  score: number
+  teachingStyles: string[]
+}
+
 /**
  * Teaching styles mapping for each intelligence domain
  * Each domain maps to an array of recommended teaching approaches
  */
-export const intelligenceTeachingStyles = {
+export const intelligenceTeachingStyles: Record<string, string[]> = {
   INTRAPERSONAL: [
     'Self-paced learning - Allow them to learn at their own speed',
     'Journaling and reflection - Encourage writing about their learning',
@@ -87,28 +95,31 @@ export const intelligenceTeachingStyles = {
 /**
  * Get teaching styles for a specific intelligence domain
  *
- * @param {string} domain - The intelligence domain code
- * @returns {Array<string>} Array of teaching styles associated with the domain
+ * @param domain - The intelligence domain code
+ * @returns Array of teaching styles associated with the domain
  */
-export function getTeachingStylesForDomain(domain) {
+export function getTeachingStylesForDomain(domain: string): string[] {
   return intelligenceTeachingStyles[domain] || []
 }
 
 /**
  * Get teaching styles mapped to top intelligences
  *
- * @param {Object} intelligenceScores - Object mapping domains to scores
- * @param {number} topN - Number of top intelligences to consider (default: 3)
- * @returns {Array<Object>} Array of {domain, displayName, score, teachingStyles} objects sorted by score
+ * @param intelligenceScores - Object mapping domains to scores
+ * @param topN - Number of top intelligences to consider (default: 3)
+ * @returns Array of {domain, score, teachingStyles} objects sorted by score
  */
-export function getIntelligenceTeachingStyles(intelligenceScores, topN = 3) {
+export function getIntelligenceTeachingStyles(
+  intelligenceScores: IntelligenceScores,
+  topN = 3
+): IntelligenceTeachingStyleEntry[] {
   if (!intelligenceScores || Object.keys(intelligenceScores).length === 0) {
     return []
   }
 
   // Get top N intelligences
   const sortedDomains = Object.entries(intelligenceScores)
-    .map(([domain, score]) => ({ domain, score }))
+    .map(([domain, score]) => ({ domain, score: Number(score) }))
     .sort((a, b) => b.score - a.score)
     .slice(0, topN)
 

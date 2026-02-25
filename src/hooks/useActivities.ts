@@ -92,7 +92,7 @@ export const useSubmitAnswer = (): UseMutationResult<
     onSuccess: (_, variables) => {
       // Invalidate intelligences query for the person who submitted the answer
       queryClient.invalidateQueries({
-        queryKey: ACTIVITIES_KEYS.intelligences(variables.personId),
+        queryKey: ACTIVITIES_KEYS.intelligences(variables.personId ?? ''),
       })
     },
   })

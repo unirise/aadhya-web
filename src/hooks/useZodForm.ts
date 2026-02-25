@@ -21,7 +21,7 @@ export const useZodForm = <T extends FieldValues>(
   onSubmit: ((data: T) => Promise<void> | void) | null = null
 ) => {
   const form = useForm<T>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema as any),
     defaultValues,
     mode: 'onChange', // Validate on change for better UX
   })

@@ -53,8 +53,22 @@ export const apiService = {
     await new Promise(resolve => setTimeout(resolve, 100))
 
     return [
-      { id: 1, name: 'John Doe', email: 'john@example.com' },
-      { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
+      {
+        id: '1',
+        name: 'John Doe',
+        email: 'john@example.com',
+        username: 'johndoe',
+        yob: 1990,
+        role: 'user',
+      },
+      {
+        id: '2',
+        name: 'Jane Smith',
+        email: 'jane@example.com',
+        username: 'janesmith',
+        yob: 1992,
+        role: 'user',
+      },
     ]
   },
 
@@ -96,9 +110,12 @@ export const apiService = {
     await new Promise(resolve => setTimeout(resolve, 100))
 
     return {
-      id: userId,
+      id: String(userId),
       name: 'John Doe',
       email: 'john@example.com',
+      username: 'johndoe',
+      yob: 1990,
+      role: 'user',
     }
   },
 

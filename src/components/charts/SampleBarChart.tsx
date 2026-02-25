@@ -47,8 +47,10 @@ function SampleBarChart({ data = sampleBarData, height = 400 }) {
               boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
             }}
             formatter={(value, name) => [
-              `$${value.toLocaleString()}`,
-              name.charAt(0).toUpperCase() + name.slice(1),
+              `$${Number(value).toLocaleString()}`,
+              typeof name === 'string'
+                ? name.charAt(0).toUpperCase() + name.slice(1)
+                : String(name),
             ]}
           />
           <Legend />

@@ -49,7 +49,13 @@ function SkillsVocationalChart({ data = [], height = 400 }) {
     '#84cc16',
   ]
 
-  const CustomTooltip = ({ active, payload }) => {
+  const CustomTooltip = ({
+    active,
+    payload,
+  }: {
+    active?: boolean
+    payload?: Array<{ payload: any }>
+  }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload
       return (
