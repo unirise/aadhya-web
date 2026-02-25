@@ -49,7 +49,7 @@ export const activitiesApi = {
    * @param optionValue - The selected option value (1-5)
    * @returns Promise with submission response
    */
-  submitAnswer: async (activityId, optionValue) => {
+  submitAnswer: async (activityId: string, optionValue: number) => {
     const response = await axiosInstance.post('/responses/submit-answer', {
       activityId,
       optionValue,
@@ -61,7 +61,7 @@ export const activitiesApi = {
    * Fetch intelligences for the authenticated user
    * @returns Promise with intelligences data
    */
-  fetchIntelligences: async () => {
+  fetchIntelligences: async (_personId?: string) => {
     const response = await axiosInstance.get('/activities/intelligences')
     return response.data.data
   },

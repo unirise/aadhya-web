@@ -49,7 +49,13 @@ function IntelligenceRadarChart({
     })
 
   // Custom tooltip
-  const CustomTooltip = ({ active, payload }) => {
+  const CustomTooltip = ({
+    active,
+    payload,
+  }: {
+    active?: boolean
+    payload?: Array<{ payload: any }>
+  }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload
       return (
@@ -136,7 +142,6 @@ function IntelligenceRadarChart({
           style={{ overflow: 'visible' }}
         >
           <div
-            xmlns='http://www.w3.org/1999/xhtml'
             style={{
               display: 'flex',
               alignItems: 'center',

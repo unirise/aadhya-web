@@ -43,7 +43,13 @@ function HybridRolesChart({ data = [], height = 400 }) {
 
   const colors = ['#8b5cf6', '#a855f7', '#c084fc', '#d8b4fe', '#e9d5ff']
 
-  const CustomTooltip = ({ active, payload }) => {
+  const CustomTooltip = ({
+    active,
+    payload,
+  }: {
+    active?: boolean
+    payload?: Array<{ payload: any }>
+  }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload
       return (

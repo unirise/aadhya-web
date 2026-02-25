@@ -13,7 +13,9 @@ import {
 
 function DateTimeDemo() {
   const [currentTime, setCurrentTime] = useState(now())
-  const [selectedDate, setSelectedDate] = useState(today())
+  const [selectedDate, setSelectedDate] = useState(
+    formatDate(today(), DATE_FORMATS.ISO)
+  )
 
   // Update current time every second
   useEffect(() => {
@@ -94,8 +96,8 @@ function DateTimeDemo() {
           <input
             id='date-input'
             type='date'
-            value={formatDate(selectedDate, DATE_FORMATS.ISO)}
-            onChange={e => setSelectedDate(new Date(e.target.value))}
+            value={selectedDate}
+            onChange={e => setSelectedDate(e.target.value)}
             style={{
               padding: '8px 12px',
               border: '1px solid #d1d5db',

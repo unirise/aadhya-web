@@ -7,19 +7,27 @@ import { getIntelligenceTeachingStyles } from '@/lib/intelligence-teaching-style
 import IntelligenceRadarChart from '@/components/charts/IntelligenceRadarChart'
 import { getIntelligenceIcon } from '@/lib/intelligence-icons'
 
+type IntelligenceScores = Record<string, number>
+
+type ActivityDomainInfo = {
+  intelligenceDomain: string
+  domainDisplayName: string
+}
+
 function Pehchan() {
-  const [intelligenceScores, setIntelligenceScores] = useState(null)
-  const [_intelligencesData, setIntelligencesData] = useState(null)
-  const [activities, setActivities] = useState([])
+  const [intelligenceScores, setIntelligenceScores] =
+    useState<IntelligenceScores | null>(null)
+  const [_intelligencesData, setIntelligencesData] = useState<unknown>(null)
+  const [activities, setActivities] = useState<ActivityDomainInfo[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
   const [isMobile, setIsMobile] = useState(false)
 
   // Hardcoded person ID (same as Questionnaire)
   const PERSON_ID = '2cdaa500-7daf-44cd-a1bc-50fb77e86bd4'
 
   // Domain display name mapping
-  const domainDisplayNameMap = {
+  const domainDisplayNameMap: Record<string, string> = {
     INTRAPERSONAL: 'Intrapersonal Intelligence',
     BODILY_KINESTHETIC: 'Bodily-Kinesthetic Intelligence',
     LOGICAL_MATHEMATICAL: 'Logical-Mathematical Intelligence',
@@ -63,7 +71,9 @@ function Pehchan() {
       } catch (err) {
         console.error('Error loading profile data:', err)
         setError(
-          err.message || 'Failed to load profile data. Please try again later.'
+          err instanceof Error
+            ? err.message
+            : 'Failed to load profile data. Please try again later.'
         )
       } finally {
         setIsLoading(false)
@@ -74,7 +84,7 @@ function Pehchan() {
   }, [])
 
   // Get domain display name
-  const getDomainDisplayName = domainCode => {
+  const getDomainDisplayName = (domainCode: string) => {
     const activity = activities.find(a => a.intelligenceDomain === domainCode)
     return activity
       ? activity.domainDisplayName

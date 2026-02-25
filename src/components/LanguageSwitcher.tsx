@@ -58,14 +58,14 @@ function LanguageSwitcher() {
             }}
             onMouseEnter={e => {
               if (i18n.language !== language.code) {
-                e.target.style.backgroundColor = '#f9fafb'
-                e.target.style.borderColor = '#9ca3af'
+                e.currentTarget.style.backgroundColor = '#f9fafb'
+                e.currentTarget.style.borderColor = '#9ca3af'
               }
             }}
             onMouseLeave={e => {
               if (i18n.language !== language.code) {
-                e.target.style.backgroundColor = 'white'
-                e.target.style.borderColor = '#d1d5db'
+                e.currentTarget.style.backgroundColor = 'white'
+                e.currentTarget.style.borderColor = '#d1d5db'
               }
             }}
           >
