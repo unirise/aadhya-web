@@ -59,30 +59,53 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install SSH key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.KEY }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
+          set -euo pipefail
           mkdir -p ~/.ssh
-          KEY_CONTENT='${{ secrets.KEY }}'
-          if printf '%s' "$KEY_CONTENT" | grep -q '\\n'; then
-            printf '%b' "$KEY_CONTENT" | tr -d '\r' > ~/.ssh/id_rsa
-          else
-            printf '%s' "$KEY_CONTENT" | tr -d '\r' > ~/.ssh/id_rsa
-          fi
-          chmod 600 ~/.ssh/id_rsa
+          chmod 700 ~/.ssh
 
-          SSH_PORT="${{ secrets.SSH_PORT }}"
-          if [ -z "$SSH_PORT" ]; then SSH_PORT=22; fi
+          KEY_CONTENT="$SSH_PRIVATE_KEY"
+          printf '%s' "$KEY_CONTENT" | tr -d '\r' > ~/.ssh/id_key_raw
+
+          if grep -q '\\n' ~/.ssh/id_key_raw; then
+            printf '%b' "$(cat ~/.ssh/id_key_raw)" > ~/.ssh/id_key_try
+          else
+            cp ~/.ssh/id_key_raw ~/.ssh/id_key_try
+          fi
+
+          if ! grep -Eq 'BEGIN (OPENSSH|RSA|EC|DSA|ED25519) PRIVATE KEY' ~/.ssh/id_key_try; then
+            base64 -d ~/.ssh/id_key_raw > ~/.ssh/id_key_try 2>/dev/null || true
+          fi
+
+          mv ~/.ssh/id_key_try ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          rm -f ~/.ssh/id_key_raw
+
+          if ! ssh-keygen -y -f ~/.ssh/id_rsa >/dev/null 2>&1; then
+            echo "Invalid SSH private key in KEY secret."
+            echo "Store either raw private key content or base64-encoded private key."
+            exit 1
+          fi
+
+          if [ -z "${SSH_PORT:-}" ]; then SSH_PORT=22; fi
           ssh-keyscan -p "$SSH_PORT" -H "${{ secrets.HOST }}" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
 
       - name: Verify SSH access to VPS
+        env:
+          SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
-          SSH_PORT="${{ secrets.SSH_PORT }}"
-          if [ -z "$SSH_PORT" ]; then SSH_PORT=22; fi
-          ssh -p "$SSH_PORT" -o BatchMode=yes -o StrictHostKeyChecking=yes "${{ secrets.USERNAME }}@${{ secrets.HOST }}" "docker --version && docker compose version"
+          if [ -z "${SSH_PORT:-}" ]; then SSH_PORT=22; fi
+          ssh -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes "${{ secrets.USERNAME }}@${{ secrets.HOST }}" "docker --version && docker compose version"
 
       - name: Configure Docker SSH context
+        env:
+          SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
-          SSH_PORT="${{ secrets.SSH_PORT }}"
-          if [ -z "$SSH_PORT" ]; then SSH_PORT=22; fi
+          if [ -z "${SSH_PORT:-}" ]; then SSH_PORT=22; fi
           docker context rm "${{ env.VPS_DOCKER_CONTEXT }}" || true
           docker context create "${{ env.VPS_DOCKER_CONTEXT }}" --docker "host=ssh://${{ secrets.USERNAME }}@${{ secrets.HOST }}:$SSH_PORT"
           docker --context "${{ env.VPS_DOCKER_CONTEXT }}" info
