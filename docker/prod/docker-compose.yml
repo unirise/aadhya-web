@@ -1,6 +1,5 @@
 services:
   aadhya-web:
-    container_name: aadhya-web-prod
     image: aadhya-web:prod
     build:
       context: ../..
@@ -10,16 +9,17 @@ services:
         VITE_API_URL: ${VITE_API_URL:-http://localhost:3001/api/v1}
     restart: unless-stopped
     expose:
-      - "80"
+      - '80'
     labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=traefik_network"
-      - "traefik.http.routers.yofit-frontend.entrypoints=websecure"
-      - "traefik.http.routers.yofit-frontend.rule=Host(`urf.buildstack.space`)"
-      - "traefik.http.routers.yofit-frontend.tls.certresolver=lets-encrypt"
-      - "traefik.http.services.yofit-frontend.loadbalancer.server.port=80"
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=traefik_network'
+      - 'traefik.http.routers.aadhya-web-prod.entrypoints=websecure'
+      - 'traefik.http.routers.aadhya-web-prod.rule=Host(`urf.buildstack.space`)'
+      - 'traefik.http.routers.aadhya-web-prod.tls=true'
+      - 'traefik.http.routers.aadhya-web-prod.tls.certresolver=lets-encrypt'
+      - 'traefik.http.services.aadhya-web-prod.loadbalancer.server.port=80'
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1/']
       interval: 30s
       timeout: 5s
       retries: 5
