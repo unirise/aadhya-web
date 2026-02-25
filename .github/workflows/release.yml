@@ -60,14 +60,31 @@ jobs:
 
       - name: Install SSH key
         run: |
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "${{ secrets.KEY }}" > ~/.ssh/id_rsa
-          ssh-keyscan -H "${{ secrets.HOST }}" > ~/.ssh/known_hosts
+          mkdir -p ~/.ssh
+          KEY_CONTENT='${{ secrets.KEY }}'
+          if printf '%s' "$KEY_CONTENT" | grep -q '\\n'; then
+            printf '%b' "$KEY_CONTENT" | tr -d '\r' > ~/.ssh/id_rsa
+          else
+            printf '%s' "$KEY_CONTENT" | tr -d '\r' > ~/.ssh/id_rsa
+          fi
+          chmod 600 ~/.ssh/id_rsa
+
+          SSH_PORT="${{ secrets.SSH_PORT }}"
+          if [ -z "$SSH_PORT" ]; then SSH_PORT=22; fi
+          ssh-keyscan -p "$SSH_PORT" -H "${{ secrets.HOST }}" > ~/.ssh/known_hosts
+
+      - name: Verify SSH access to VPS
+        run: |
+          SSH_PORT="${{ secrets.SSH_PORT }}"
+          if [ -z "$SSH_PORT" ]; then SSH_PORT=22; fi
+          ssh -p "$SSH_PORT" -o BatchMode=yes -o StrictHostKeyChecking=yes "${{ secrets.USERNAME }}@${{ secrets.HOST }}" "docker --version && docker compose version"
 
       - name: Configure Docker SSH context
         run: |
+          SSH_PORT="${{ secrets.SSH_PORT }}"
+          if [ -z "$SSH_PORT" ]; then SSH_PORT=22; fi
           docker context rm "${{ env.VPS_DOCKER_CONTEXT }}" || true
-          docker context create "${{ env.VPS_DOCKER_CONTEXT }}" --docker "host=ssh://${{ secrets.USERNAME }}@${{ secrets.HOST }}"
+          docker context create "${{ env.VPS_DOCKER_CONTEXT }}" --docker "host=ssh://${{ secrets.USERNAME }}@${{ secrets.HOST }}:$SSH_PORT"
           docker --context "${{ env.VPS_DOCKER_CONTEXT }}" info
 
       - name: Build and deploy on VPS
