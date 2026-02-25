@@ -15,10 +15,12 @@ COPY . .
 
 ARG VITE_API_BASE_URL=http://localhost:3001/api/v1
 ARG VITE_API_URL=http://localhost:3001/api/v1
+ARG NODE_OPTIONS=--max-old-space-size=1024
 ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 ENV VITE_API_URL=${VITE_API_URL}
+ENV NODE_OPTIONS=${NODE_OPTIONS}
 
-RUN pnpm build
+RUN pnpm exec vite build
 
 FROM nginx:1.27-alpine AS runtime
 
