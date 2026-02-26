@@ -1,6 +1,10 @@
 // API configuration and utilities
+const DEFAULT_API_BASE_URL = import.meta.env.PROD
+  ? 'https://api.urf.buildstack.space/api/v1'
+  : 'http://localhost:3001/api/v1'
+
 export const API_CONFIG = {
-  BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api/v1',
+  BASE_URL: import.meta.env.VITE_API_BASE_URL || DEFAULT_API_BASE_URL,
   TIMEOUT: 10000, // 10 seconds
   RETRY_COUNT: 3,
   RETRY_DELAY: 1000, // 1 second
