@@ -4,8 +4,11 @@ import axios from 'axios'
 const TOKEN_KEY = 'auth_token'
 
 // Get base URL from environment variable
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api/v1'
+const DEFAULT_API_BASE_URL = import.meta.env.PROD
+  ? 'https://api.urf.buildstack.space/api/v1'
+  : 'http://localhost:3001/api/v1'
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || DEFAULT_API_BASE_URL
 
 // Create axios instance with default config
 export const axiosInstance = axios.create({

@@ -13,8 +13,8 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-ARG VITE_API_BASE_URL=http://localhost:3001/api/v1
-ARG VITE_API_URL=http://localhost:3001/api/v1
+ARG VITE_API_BASE_URL=https://api.urf.buildstack.space/api/v1
+ARG VITE_API_URL=https://api.urf.buildstack.space/api/v1
 ARG NODE_OPTIONS=--max-old-space-size=1024
 ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 ENV VITE_API_URL=${VITE_API_URL}

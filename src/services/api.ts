@@ -4,8 +4,14 @@
 import { authService } from './authService'
 import type { User, Post, Stats, FetchOptions } from '@/types'
 
+const DEFAULT_API_BASE_URL = import.meta.env.PROD
+  ? 'https://api.urf.buildstack.space/api/v1'
+  : 'http://localhost:3001/api/v1'
+
 const _API_BASE_URL =
-  import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1'
+  import.meta.env.VITE_API_URL ||
+  import.meta.env.VITE_API_BASE_URL ||
+  DEFAULT_API_BASE_URL
 
 // Helper function to make authenticated requests
 const fetchWithAuth = async <T>(
