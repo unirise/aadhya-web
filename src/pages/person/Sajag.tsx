@@ -23,18 +23,31 @@ import {
 } from '@/lib/nsqf-role-mapping'
 import { getIntelligenceIcon } from '@/lib/intelligence-icons'
 
+type IntelligenceScores = Record<string, number>
+
+type ActivityDomainInfo = {
+  intelligenceDomain: string
+  domainDisplayName: string
+}
+
+type NSQFRoleEntry = {
+  role: string
+  nsqf_level: number | null
+}
+
 function Sajag() {
-  const [intelligenceScores, setIntelligenceScores] = useState(null)
-  const [activities, setActivities] = useState([])
+  const [intelligenceScores, setIntelligenceScores] =
+    useState<IntelligenceScores | null>(null)
+  const [activities, setActivities] = useState<ActivityDomainInfo[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
   const [isMobile, setIsMobile] = useState(false)
 
   // Hardcoded person ID (same as Questionnaire)
   const PERSON_ID = '2cdaa500-7daf-44cd-a1bc-50fb77e86bd4'
 
   // Domain display name mapping
-  const domainDisplayNameMap = {
+  const domainDisplayNameMap: Record<string, string> = {
     INTRAPERSONAL: 'Intrapersonal Intelligence',
     BODILY_KINESTHETIC: 'Bodily-Kinesthetic Intelligence',
     LOGICAL_MATHEMATICAL: 'Logical-Mathematical Intelligence',
@@ -77,7 +90,9 @@ function Sajag() {
       } catch (err) {
         console.error('Error loading profile data:', err)
         setError(
-          err.message || 'Failed to load profile data. Please try again later.'
+          err instanceof Error
+            ? err.message
+            : 'Failed to load profile data. Please try again later.'
         )
       } finally {
         setIsLoading(false)
@@ -88,7 +103,7 @@ function Sajag() {
   }, [])
 
   // Get domain display name
-  const getDomainDisplayName = domainCode => {
+  const getDomainDisplayName = (domainCode: string) => {
     const activity = activities.find(a => a.intelligenceDomain === domainCode)
     return activity
       ? activity.domainDisplayName
@@ -116,12 +131,12 @@ function Sajag() {
   }, [intelligenceSkillMapping])
 
   // Extract roles by intelligence domain from skills-vocational mapping
-  const rolesByIntelligence = useMemo(() => {
+  const rolesByIntelligence = useMemo<Record<string, string[]>>(() => {
     if (!intelligenceSkillMapping || intelligenceSkillMapping.length === 0)
       return {}
 
     // Map domain codes to display names
-    const domainNameMap = {
+    const domainNameMap: Record<string, string> = {
       INTERPERSONAL: 'Interpersonal',
       BODILY_KINESTHETIC: 'Bodily-Kinesthetic',
       LOGICAL_MATHEMATICAL: 'Logical-Mathematical',
@@ -132,7 +147,7 @@ function Sajag() {
       INTRAPERSONAL: 'Intrapersonal',
     }
 
-    const rolesByIntelligenceMap = {}
+    const rolesByIntelligenceMap: Record<string, string[]> = {}
 
     // For each intelligence domain, collect roles from its skills
     intelligenceSkillMapping.forEach(({ domain, skills }) => {
@@ -165,7 +180,9 @@ function Sajag() {
   }, [intelligenceSkillMapping])
 
   // Map roles to NSQF levels by intelligence domain
-  const nsqfRolesByIntelligence = useMemo(() => {
+  const nsqfRolesByIntelligence = useMemo<
+    Record<string, NSQFRoleEntry[]>
+  >(() => {
     if (!rolesByIntelligence || Object.keys(rolesByIntelligence).length === 0)
       return {}
     return mapRolesToNSQF(rolesByIntelligence)
@@ -1248,7 +1265,7 @@ function Sajag() {
 
             {/* NSQF Level Distribution Summary */}
             {(() => {
-              const levelCounts = {}
+              const levelCounts: Record<string, number> = {}
               allNSQFRoles.forEach(role => {
                 const level =
                   role.nsqf_level !== null

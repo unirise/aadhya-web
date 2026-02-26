@@ -47,6 +47,7 @@ export interface ActivitiesResponse {
 export interface SubmitAnswerRequest {
   activityId: string
   optionValue: number
+  personId?: string
 }
 
 export interface SubmitAnswerResponse {

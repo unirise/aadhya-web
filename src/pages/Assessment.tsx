@@ -136,7 +136,10 @@ function Assessment() {
 
     // Submit answer to API and update intelligence scores
     try {
-      const response = await activitiesApi.submitAnswer(activityId, value)
+      const response = await activitiesApi.submitAnswer(
+        String(activityId),
+        value
+      )
       const responseData = response.data || response
       if (responseData.intelligences) {
         setIntelligenceScores(responseData.intelligences)

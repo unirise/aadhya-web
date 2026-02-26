@@ -3,6 +3,8 @@ export interface User {
   id: string // UUID from backend
   name: string
   email?: string
+  phone?: string
+  website?: string
   username: string
   yob: number
   role: string

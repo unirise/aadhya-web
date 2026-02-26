@@ -11,7 +11,13 @@ import {
  * Roles by Intelligence Distribution Chart
  * Shows the distribution of roles across different intelligence types
  */
-function RolesByIntelligenceChart({ data = {}, height = 400 }) {
+function RolesByIntelligenceChart({
+  data = {},
+  height = 400,
+}: {
+  data?: Record<string, string[]>
+  height?: number
+}) {
   if (!data || Object.keys(data).length === 0) {
     return (
       <div
@@ -48,7 +54,13 @@ function RolesByIntelligenceChart({ data = {}, height = 400 }) {
     '#84cc16',
   ]
 
-  const CustomTooltip = ({ active, payload }) => {
+  const CustomTooltip = ({
+    active,
+    payload,
+  }: {
+    active?: boolean
+    payload?: Array<{ payload: any }>
+  }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload
       return (
@@ -139,9 +151,8 @@ function RolesByIntelligenceChart({ data = {}, height = 400 }) {
     midAngle,
     innerRadius,
     outerRadius,
-    _percent,
     name,
-  }) => {
+  }: any) => {
     const RADIAN = Math.PI / 180
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5
     const x = cx + radius * Math.cos(-midAngle * RADIAN)
