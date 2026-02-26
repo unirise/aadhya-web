@@ -48,6 +48,12 @@ export function FluidLayout({
     <div
       className={`h-screen w-screen overflow-hidden bg-background text-foreground ${className ?? ''}`}
     >
+      <a
+        href='#main-content'
+        className='sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:p-4 focus:bg-background focus:text-foreground focus:border focus:rounded-md'
+      >
+        Skip to main content
+      </a>
       <Group
         orientation='vertical'
         defaultLayout={defaultLayout ?? fallback}
@@ -62,7 +68,7 @@ export function FluidLayout({
           {header}
         </Panel>
 
-        <Separator className='group relative h-2 flex items-center justify-center data-[separator]:cursor-row-resize p-2'>
+        <Separator onClick={(e) => e.stopPropagation()} className='group relative h-2 flex items-center justify-center data-[separator]:cursor-row-resize p-2'>
           <div className='h-0.5 w-12 rounded-full bg-border transition-colors group-hover:bg-primary/40 group-data-[dragging]:bg-primary/60' />
         </Separator>
 
@@ -71,10 +77,10 @@ export function FluidLayout({
           defaultSize={`${defaultSizes[1]}%`}
           minSize={`${minSizes[1]}%`}
         >
-          {children}
+          <div id='main-content' className='h-full w-full overflow-hidden'>{children}</div>
         </Panel>
 
-        <Separator className='group relative h-2 flex items-center justify-center data-[separator]:cursor-row-resize p-2'>
+        <Separator onClick={(e) => e.stopPropagation()} className='group relative h-2 flex items-center justify-center data-[separator]:cursor-row-resize p-2'>
           <div className='h-0.5 w-12 rounded-full bg-border transition-colors group-hover:bg-primary/40 group-data-[dragging]:bg-primary/60' />
         </Separator>
 

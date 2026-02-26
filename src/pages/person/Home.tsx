@@ -1,9 +1,8 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   Home as HomeIcon,
-  Moon,
-  Sun,
   User,
   Shuffle,
   LogOut,
@@ -22,30 +21,37 @@ import type { FocusPosition } from '@/hooks/useKeyboardNavigation'
 import { assessmentsApi } from '@/services/assessmentsApi'
 import { Assessment } from '@/types'
 import type { DotData } from '@/types/dot'
+import { themeDot } from '@/lib/themeDot'
 
 function Home() {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const { theme, toggleTheme } = useTheme()
   const [assessments, setAssessments] = useState<Assessment[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    const loadAssessments = async () => {
-      try {
-        setLoading(true)
-        const data = await assessmentsApi.fetchAssessments()
-        setAssessments(data)
-      } catch (err) {
-        setError('Failed to load assessments')
-        console.error('Error loading assessments:', err)
-      } finally {
-        setLoading(false)
-      }
+  const loadAssessments = useCallback(async () => {
+    try {
+      setLoading(true)
+      const data = await assessmentsApi.fetchAssessments()
+      setAssessments(data)
+    } catch (err) {
+      setError('Failed to load assessments')
+      console.error('Error loading assessments:', err)
+    } finally {
+      setLoading(false)
     }
-
-    loadAssessments()
   }, [])
+
+  useEffect(() => {
+    loadAssessments()
+  }, [loadAssessments])
+
+  const handleReset = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: ['assessments'] })
+    loadAssessments()
+  }, [queryClient, loadAssessments])
 
   const handleAssessmentClick = (assessmentId: string) => {
     navigate(`/assessment/${assessmentId}/start`)
@@ -69,7 +75,7 @@ function Home() {
     (position: FocusPosition) => {
       const { section, index } = position
       if (section === 'header') {
-        if (index <= 1) navigate('/presentation')
+        if (index === 1) handleReset()
         else if (index === 2) toggleTheme()
       } else if (section === 'content') {
         const assessment = assessments[index]
@@ -88,7 +94,7 @@ function Home() {
         }
       }
     },
-    [assessments, navigate, toggleTheme]
+    [assessments, navigate, toggleTheme, handleReset]
   )
 
   const { isFocused } = useKeyboardNavigation({
@@ -125,20 +131,11 @@ function Home() {
       subtitle: 'This button will Reset the content you have in front of you',
       tinyText: 'Reset',
       buttonText: 'Reset',
-      onClick: () => {},
+      onClick: handleReset,
       isFocused: isFocused('header', 1),
     },
     {
-      id: 'theme',
-      icon: theme === 'light' ? Moon : Sun,
-      label: 'Theme',
-      title: theme === 'light' ? 'Dark Mode' : 'Light Mode',
-      subtitle: `Currently using ${theme} theme`,
-      tinyText: theme === 'light' ? 'Dark' : 'Light',
-      smallText: `Switch to ${theme === 'light' ? 'dark' : 'light'} mode for a different visual experience.`,
-      largeText: `Toggle between light and dark themes to match your preference. The current theme is ${theme}.`,
-      buttonText: 'Toggle Theme',
-      onClick: toggleTheme,
+      ...themeDot(theme, toggleTheme),
       isFocused: isFocused('header', 2),
     },
   ]
@@ -147,14 +144,14 @@ function Home() {
     {
       id: 'pehchan',
       icon: User,
-      label: 'Plan',
-      title: 'Pehchan',
+      label: 'Pehachan',
+      title: 'Pehachan',
       subtitle: 'Your personalised learning plan',
-      tinyText: 'Plan',
+      tinyText: 'Pehachan',
       smallText:
         'View your customised learning plan based on your assessment performance.',
       largeText: [
-        'Pehchan builds a personalised learning plan tailored to your strengths and areas for growth, drawn from your assessment results.',
+        'Pehachan builds a personalised learning plan tailored to your strengths and areas for growth, drawn from your assessment results.',
         'Track your progress over time and see recommendations for what to focus on next.',
       ],
       buttonText: 'View Plan',
@@ -211,31 +208,33 @@ function Home() {
       footer={<Footer items={footerItems} />}
       className='p-2 sm:p-4'
     >
-      {loading && (
-        <div className='flex items-center justify-center h-full'>
-          <p className='text-muted-foreground'>Loading assessments...</p>
-        </div>
-      )}
+      <main aria-label='Assessments' className='h-full w-full overflow-hidden'>
+        {loading && (
+          <div role='status' aria-live='polite' className='flex items-center justify-center h-full'>
+            <p className='text-muted-foreground'>Loading assessments...</p>
+          </div>
+        )}
 
-      {error && (
-        <div className='flex items-center justify-center h-full'>
-          <p className='text-red-600'>{error}</p>
-        </div>
-      )}
+        {error && (
+          <div role='alert' className='flex items-center justify-center h-full'>
+            <p className='text-destructive font-medium'>{error}</p>
+          </div>
+        )}
 
-      {!loading && !error && assessments.length === 0 && (
-        <div className='flex items-center justify-center h-full'>
-          <p className='text-muted-foreground'>No assessments available</p>
-        </div>
-      )}
+        {!loading && !error && assessments.length === 0 && (
+          <div role='status' aria-live='polite' className='flex items-center justify-center h-full'>
+            <p className='text-muted-foreground'>No assessments available</p>
+          </div>
+        )}
 
-      {!loading && !error && assessments.length > 0 && (
-        <ContentSection
-          title='Explore'
-          description='Choose an assessment to begin'
-          items={contentItems}
-        />
-      )}
+        {!loading && !error && assessments.length > 0 && (
+          <ContentSection
+            title='Explore'
+            description='Choose an assessment to begin'
+            items={contentItems}
+          />
+        )}
+      </main>
     </FluidLayout>
   )
 }

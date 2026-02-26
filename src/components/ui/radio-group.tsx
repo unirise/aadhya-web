@@ -59,8 +59,8 @@ const RadioGroupOption = React.forwardRef<
         'flex flex-row items-center justify-between gap-2 text-center',
         'select-none cursor-pointer',
         isSelected
-          ? 'bg-sky-600 text-white border-sky-600'
-          : 'bg-sky-100 text-gray-800 border-sky-100 hover:bg-sky-200 hover:border-sky-200',
+          ? 'bg-primary text-primary-foreground border-primary'
+          : 'bg-secondary text-secondary-foreground border-secondary hover:bg-accent hover:border-accent',
         className
       )}
     >
@@ -69,8 +69,8 @@ const RadioGroupOption = React.forwardRef<
         className={cn(
           'mt-2',
           isSelected
-            ? 'border-white text-white'
-            : 'border-gray-400 text-gray-400'
+            ? 'border-primary-foreground text-primary-foreground'
+            : 'border-muted-foreground text-muted-foreground'
         )}
       />
       <span className='select-none pointer-events-none bg-transparent'>
@@ -89,21 +89,40 @@ const RadioButton = RadioGroupItem
 interface InputDotRadioProps {
   isSelected?: boolean
   className?: string
+  name?: string
+  value?: string
+  disabled?: boolean
+  onChange?: () => void
+  ariaLabel?: string
 }
 
-function InputDotRadio({ isSelected, className }: InputDotRadioProps) {
+function InputDotRadio({ isSelected, className, name, value, disabled, onChange, ariaLabel }: InputDotRadioProps) {
   return (
-    <div
-      className={cn(
-        'h-5 w-5 rounded-full border-2 border-current flex items-center justify-center flex-shrink-0',
-        isSelected ? 'opacity-100' : 'opacity-50',
-        className
-      )}
-    >
-      {isSelected && (
-        <Circle className='h-3 w-3 fill-current text-current' />
-      )}
-    </div>
+    <>
+      <input
+        type='radio'
+        name={name}
+        value={value}
+        checked={isSelected ?? false}
+        disabled={disabled}
+        onChange={onChange ?? (() => {})}
+        aria-label={ariaLabel}
+        tabIndex={-1}
+        className='sr-only'
+      />
+      <div
+        aria-hidden='true'
+        className={cn(
+          'h-5 w-5 rounded-full border-2 border-current flex items-center justify-center flex-shrink-0',
+          isSelected ? 'opacity-100' : 'opacity-50',
+          className
+        )}
+      >
+        {isSelected && (
+          <Circle className='h-3 w-3 fill-current text-current' />
+        )}
+      </div>
+    </>
   )
 }
 

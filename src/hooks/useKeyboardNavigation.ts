@@ -19,6 +19,7 @@ interface UseKeyboardNavigationConfig {
   isMobile?: boolean
   onActivate?: (position: FocusPosition) => void
   onFooterBoundary?: (direction: 'left' | 'right') => void
+  onNavigateHome?: () => void
 }
 
 export function useKeyboardNavigation({
@@ -31,10 +32,11 @@ export function useKeyboardNavigation({
   isMobile = false,
   onActivate,
   onFooterBoundary,
+  onNavigateHome,
 }: UseKeyboardNavigationConfig) {
   const visibleEnd = footerWindowEnd ?? footerCount - 1
   const [focus, setFocus] = useState<FocusPosition>({
-    section: 'header',
+    section: 'content',
     zone: 'main',
     index: 0,
   })
@@ -43,6 +45,8 @@ export function useKeyboardNavigation({
   onActivateRef.current = onActivate
   const onFooterBoundaryRef = useRef(onFooterBoundary)
   onFooterBoundaryRef.current = onFooterBoundary
+  const onNavigateHomeRef = useRef(onNavigateHome)
+  onNavigateHomeRef.current = onNavigateHome
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -140,7 +144,7 @@ export function useKeyboardNavigation({
                   setFocus({
                     section: 'footer',
                     zone: 'main',
-                    index: footerWindowStart,
+                    index: visibleEnd,
                   })
                 }
               } else {
@@ -214,7 +218,7 @@ export function useKeyboardNavigation({
             }
           }
           if (section === 'footer') {
-            if (index > 0) {
+            if (index > footerWindowStart) {
               setFocus({ section: 'footer', zone: 'main', index: index - 1 })
             } else {
               onFooterBoundaryRef.current?.('left')
@@ -248,7 +252,7 @@ export function useKeyboardNavigation({
             }
           }
           if (section === 'footer') {
-            if (index < footerCount - 1) {
+            if (index < visibleEnd) {
               setFocus({ section: 'footer', zone: 'main', index: index + 1 })
             } else {
               onFooterBoundaryRef.current?.('right')
@@ -261,6 +265,13 @@ export function useKeyboardNavigation({
         case ' ': {
           e.preventDefault()
           onActivateRef.current?.(focus)
+          break
+        }
+
+        case 'Backspace':
+        case 'Escape': {
+          e.preventDefault()
+          onNavigateHomeRef.current?.()
           break
         }
       }

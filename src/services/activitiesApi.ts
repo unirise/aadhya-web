@@ -49,10 +49,11 @@ export const activitiesApi = {
    * @param optionValue - The selected option value (1-5)
    * @returns Promise with submission response
    */
-  submitAnswer: async (activityId: string, optionValue: number) => {
+  submitAnswer: async (activityId: string, optionValue: number, timeSpentSeconds?: number) => {
     const response = await axiosInstance.post('/responses/submit-answer', {
       activityId,
       optionValue,
+      ...(timeSpentSeconds !== undefined && { timeSpentSeconds }),
     })
     return response.data.data
   },
@@ -63,6 +64,15 @@ export const activitiesApi = {
    */
   fetchIntelligences: async (_personId?: string) => {
     const response = await axiosInstance.get('/activities/intelligences')
+    return response.data.data
+  },
+
+  /**
+   * Fetch physical scores for the authenticated user
+   * @returns Promise with physical data
+   */
+  fetchPhysical: async () => {
+    const response = await axiosInstance.get('/activities/physical')
     return response.data.data
   },
 
