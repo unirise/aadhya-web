@@ -16,7 +16,8 @@ export function getFooterWindow(
 ): { start: number; size: number } {
   const size = isMobile ? 5 : 7
   if (totalItems <= size) return { start: 0, size }
-  const start = Math.max(0, Math.min(currentIndex - 3, totalItems - size))
+  const center = Math.floor((size - 1) / 2)
+  const start = Math.max(0, Math.min(currentIndex - center, totalItems - size))
   return { start, size }
 }
 
@@ -36,16 +37,13 @@ export function Footer({ items, currentIndex = 0 }: FooterProps) {
   }, [])
 
   const activityMode = isActivityMode(items)
+  const maxVisible = isMobile ? 5 : 7
 
-  const windowedItems = useMemo(() => {
-    if (!activityMode) return items
-    const { start, size } = getFooterWindow(
-      items.length,
-      currentIndex,
-      isMobile
-    )
-    return items.slice(start, start + size)
-  }, [items, currentIndex, isMobile, activityMode])
+  const windowStart = useMemo(() => {
+    if (!activityMode || items.length <= maxVisible) return 0
+    const center = Math.floor((maxVisible - 1) / 2)
+    return Math.max(0, Math.min(currentIndex - center, items.length - maxVisible))
+  }, [items.length, currentIndex, maxVisible, activityMode])
 
   return (
     <footer
@@ -59,19 +57,38 @@ export function Footer({ items, currentIndex = 0 }: FooterProps) {
       >
         <div className='h-full w-full flex justify-between items-center lg:px-50'>
           {activityMode ? (
-            <div
-              role='tablist'
+            <nav
               aria-label='Activity navigation'
-              className='flex gap-2 sm:gap-4 items-center justify-center flex-1 w-full h-full'
+              className='overflow-hidden w-full h-full'
             >
-              {windowedItems.map(item => (
-                <Dot
-                  key={item.key ?? item.id}
-                  data={item}
-                  className='aspect-square w-auto'
-                />
-              ))}
-            </div>
+              <div
+                className='flex items-center h-full transition-transform duration-300'
+                style={{
+                  width: items.length <= maxVisible
+                    ? '100%'
+                    : `${(items.length / maxVisible) * 100}%`,
+                  transform: items.length <= maxVisible
+                    ? undefined
+                    : `translateX(-${(windowStart / items.length) * 100}%)`,
+                }}
+              >
+                {items.map(item => (
+                  <div
+                    key={item.key ?? item.id}
+                    className='flex items-center justify-center h-full'
+                    style={{ width: `${100 / Math.max(items.length, maxVisible)}%` }}
+                  >
+                    <Dot
+                      data={{
+                        ...item,
+                        ariaCurrent: item.isActive ? 'step' : undefined,
+                      }}
+                      className='aspect-square w-auto'
+                    />
+                  </div>
+                ))}
+              </div>
+            </nav>
           ) : (
             <div className='flex justify-around items-center gap-2 sm:gap-4 w-full h-full'>
               {items.map(item => (

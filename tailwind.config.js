@@ -31,6 +31,7 @@ export default {
         },
         border: 'var(--color-border)',
         ring: 'var(--color-ring)',
+        focus: 'var(--color-focus)',
         visited: 'var(--color-visited)',
       },
     },

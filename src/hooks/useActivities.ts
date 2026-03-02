@@ -31,7 +31,7 @@ const activitiesApi = {
   ): Promise<ActivitiesResponse> => {
     const { limit = 5, page = 1 } = params
     const response = await axiosInstance.get<ActivitiesResponse>(
-      '/activities',
+      '/v1/activities',
       {
         params: { limit, page },
       }
@@ -43,7 +43,7 @@ const activitiesApi = {
     data: SubmitAnswerRequest
   ): Promise<SubmitAnswerResponse> => {
     const response = await axiosInstance.post<SubmitAnswerResponse>(
-      '/activities/submit-answer',
+      '/v1/activities/submit-answer',
       data
     )
     return response.data
@@ -53,7 +53,7 @@ const activitiesApi = {
     personId: string
   ): Promise<IntelligencesResponse> => {
     const response = await axiosInstance.get<IntelligencesResponse>(
-      `/activities/intelligences/${personId}`
+      `/v1/activities/intelligences/${personId}`
     )
     return response.data
   },

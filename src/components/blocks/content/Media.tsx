@@ -1,19 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import mermaid from 'mermaid'
 import type { PresentationItem } from '@/types/presentation'
-
-mermaid.initialize({
-  startOnLoad: false,
-  theme: 'base',
-  themeVariables: {
-    primaryColor: '#3b82f6',
-    primaryTextColor: '#fff',
-    primaryBorderColor: '#2563eb',
-    lineColor: '#64748b',
-    secondaryColor: '#f1f5f9',
-    tertiaryColor: '#e2e8f0',
-  },
-})
+import { useTheme } from '@/contexts/ThemeContext'
 
 function renderIcon(icon: PresentationItem['icon']) {
   if (icon === null || icon === undefined) return null
@@ -37,6 +25,7 @@ function MermaidDiagram({
   title: string
 }) {
   const ref = useRef<HTMLDivElement>(null)
+  const { theme } = useTheme()
 
   useEffect(() => {
     if (!ref.current) return
@@ -45,7 +34,7 @@ function MermaidDiagram({
     mermaid.render(uniqueId, diagram).then(({ svg }) => {
       if (ref.current) ref.current.innerHTML = svg
     })
-  }, [diagram, id])
+  }, [diagram, id, theme])
 
   return (
     <div
@@ -64,10 +53,23 @@ export interface MediaProps {
 }
 
 export function Media({ item, onClick, className }: MediaProps) {
+  const handleKeyDown = onClick
+    ? (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onClick()
+        }
+      }
+    : undefined
+
   return (
     <div
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      aria-label={onClick ? item.title : undefined}
       className={`flex items-center justify-center bg-card border shadow-sm rounded-2xl p-4 lg:p-8 h-full w-full overflow-hidden ${onClick ? 'cursor-pointer' : ''} ${className ?? ''}`}
       onClick={onClick}
+      onKeyDown={handleKeyDown}
     >
       {item.diagram ? (
         <MermaidDiagram

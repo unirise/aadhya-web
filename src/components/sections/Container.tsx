@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { type ReactNode, type KeyboardEvent } from 'react'
 import { cn } from '@/lib/utils'
 
 interface ContainerProps {
@@ -23,8 +23,19 @@ export function Container({
   transparent = false,
   onClick,
 }: ContainerProps) {
+  const handleKeyDown = onClick
+    ? (e: KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onClick()
+        }
+      }
+    : undefined
+
   return (
     <div
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
       className={cn(
         'relative w-full flex flex-col items-center',
         rounded,
@@ -34,6 +45,7 @@ export function Container({
         className
       )}
       onClick={onClick}
+      onKeyDown={handleKeyDown}
     >
       {title && (
         <div className='absolute top-1 left-1 z-10'>

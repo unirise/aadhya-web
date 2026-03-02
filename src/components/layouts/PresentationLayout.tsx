@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Home, Zap, Moon, Sun } from 'lucide-react'
+import { Home, Zap, Moon, Sun, Sunrise, Sunset } from 'lucide-react'
 import { Dot } from '@/components/dots/Dot'
 import { Media } from '@/components/blocks/content/Media'
 import { Header } from '@/components/sections/Header'
@@ -108,12 +108,18 @@ export function PresentationLayout({
     ]
   )
 
-  const FOOTER_WINDOW = 5
+  const maxVisible = isMobile ? 5 : 7
   const footerWindowStart = useMemo(() => {
     const total = activities.length
-    if (total <= FOOTER_WINDOW) return 0
-    return Math.max(0, Math.min(currentSlideIndex - 2, total - FOOTER_WINDOW))
-  }, [currentSlideIndex, activities.length])
+    if (total <= maxVisible) return 0
+    const center = Math.floor((maxVisible - 1) / 2)
+    return Math.max(0, Math.min(currentSlideIndex - center, total - maxVisible))
+  }, [currentSlideIndex, activities.length, maxVisible])
+
+  const footerWindowEnd = Math.min(
+    footerWindowStart + maxVisible - 1,
+    activities.length - 1
+  )
 
   const { focus, setFocus, isFocused } = useKeyboardNavigation({
     headerCount: 3,
@@ -121,6 +127,7 @@ export function PresentationLayout({
     panelCount: panelItems.length,
     footerCount: activities.length,
     footerWindowStart,
+    footerWindowEnd,
     isMobile,
     onActivate: handleActivate,
   })
@@ -185,14 +192,8 @@ export function PresentationLayout({
       {
         id: 'theme',
         label: 'Theme',
-        icon:
-          theme === 'light' ? (
-            <Moon className='w-5 h-5' />
-          ) : (
-            <Sun className='w-5 h-5' />
-          ),
-        ariaLabel: `Switch to ${theme === 'light' ? 'dark' : 'light'} mode`,
-        ariaPressed: theme === 'dark',
+        icon: { morning: <Sunrise className='w-5 h-5' />, afternoon: <Sun className='w-5 h-5' />, evening: <Sunset className='w-5 h-5' />, night: <Moon className='w-5 h-5' /> }[theme],
+        ariaLabel: `Current theme: ${theme}. Click to switch.`,
         isFocused: isFocused('header', 2),
         onClick: () => {
           setFocus({ section: 'header', zone: 'main', index: 2 })

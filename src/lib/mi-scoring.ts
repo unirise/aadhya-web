@@ -74,6 +74,24 @@ export function calculateMIScores(
 }
 
 /**
+ * Normalise any known domain key variant to the UPPER_SNAKE canonical form.
+ */
+const DOMAIN_ALIAS = {
+  'intrapersonal': 'INTRAPERSONAL',
+  'bodily-kinesthetic': 'BODILY_KINESTHETIC',
+  'logical-mathematical': 'LOGICAL_MATHEMATICAL',
+  'linguistic': 'LINGUISTIC',
+  'musical': 'MUSICAL',
+  'spatial': 'SPATIAL',
+  'naturalistic': 'NATURALISTIC',
+  'interpersonal': 'INTERPERSONAL',
+}
+
+function normaliseDomain(domain) {
+  return DOMAIN_ALIAS[domain] ?? domain
+}
+
+/**
  * Get top N intelligence domains by score
  *
  * @param domainScores - Object mapping domains to scores
@@ -85,7 +103,7 @@ export function getTopIntelligences(
   topN = 3
 ): Array<{ domain: string; score: number }> {
   return Object.entries(domainScores)
-    .map(([domain, score]) => ({ domain, score: Number(score) }))
+    .map(([domain, score]) => ({ domain: normaliseDomain(domain), score: Number(score) }))
     .sort((a, b) => b.score - a.score)
     .slice(0, topN)
 }

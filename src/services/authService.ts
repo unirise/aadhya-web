@@ -10,7 +10,7 @@ export const authService = {
   // Login
   login: async (username: string, password: string): Promise<AuthResponse> => {
     const response = await axiosInstance.post<ApiResponse<AuthResponse>>(
-      '/auth/login',
+      '/v1/auth/login',
       {
         username,
         password,
@@ -39,7 +39,7 @@ export const authService = {
     yob: number
   ): Promise<AuthResponse> => {
     const response = await axiosInstance.post<ApiResponse<AuthResponse>>(
-      '/auth/register',
+      '/v1/auth/register',
       {
         username,
         password,

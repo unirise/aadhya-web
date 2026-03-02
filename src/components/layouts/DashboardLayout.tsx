@@ -38,12 +38,12 @@ export default function DashboardLayout() {
       {/* Sidebar */}
       <aside
         className={cn(
-          'flex flex-col border-r bg-card transition-all duration-200',
+          'flex flex-col border-r border-border bg-card transition-all duration-200',
           sidebarOpen ? 'w-64' : 'w-16'
         )}
       >
         {/* Sidebar header */}
-        <div className='flex h-14 items-center border-b px-4'>
+        <div className='flex h-14 items-center border-b border-border px-4'>
           {sidebarOpen && (
             <span className='text-lg font-semibold text-foreground'>
               Aadhya
@@ -51,7 +51,7 @@ export default function DashboardLayout() {
           )}
           <Button
             variant='ghost'
-            size='icon-sm'
+            size='sm'
             className={cn(sidebarOpen ? 'ml-auto' : 'mx-auto')}
             onClick={() => setSidebarOpen(!sidebarOpen)}
           >
@@ -86,7 +86,7 @@ export default function DashboardLayout() {
         </nav>
 
         {/* Footer / user info */}
-        <div className='border-t p-2'>
+        <div className='border-t border-border p-2'>
           {sidebarOpen && (
             <div className='mb-2 px-3 py-1'>
               <p className='text-sm font-medium text-foreground truncate'>
@@ -106,8 +106,8 @@ export default function DashboardLayout() {
       </aside>
 
       {/* Main content */}
-      <main className='flex-1 overflow-auto'>
-        <div className='p-6'>
+      <main className='flex-1 overflow-hidden flex flex-col min-h-0'>
+        <div className='flex-1 min-h-0 overflow-auto p-6'>
           <Outlet />
         </div>
       </main>

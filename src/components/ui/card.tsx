@@ -52,7 +52,7 @@ export const CardDescription = forwardRef<
   HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...rest }, ref) => {
   return (
-    <p ref={ref} className={cn('text-sm text-gray-500', className)} {...rest} />
+    <p ref={ref} className={cn('text-sm text-muted-foreground', className)} {...rest} />
   )
 })
 CardDescription.displayName = 'CardDescription'

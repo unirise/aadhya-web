@@ -1,6 +1,12 @@
 import React, { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
+import {
+  Group,
+  Panel,
+  Separator,
+  useDefaultLayout,
+} from 'react-resizable-panels'
 import { cn } from '@/lib/utils'
 import { useDotSize } from '@/hooks/useDotSize'
 import type { DotData, DotSizeTier } from '@/types/dot'
@@ -59,23 +65,23 @@ function DotMd({ data }: { data: DotData }) {
     : 'text-muted-foreground'
 
   return (
-    <div className='flex flex-col items-center justify-center w-full h-full p-3'>
+    <div className='flex flex-col items-center justify-center w-full h-full p-5'>
       <div className='[&_svg]:w-6 [&_svg]:h-6 mb-2'>
         {renderIcon(data.icon, 'w-6 h-6')}
       </div>
       {data.tinyText && (
         <span className='text-md font-bold text-center line-clamp-1 w-full'>
-          {data.label}
+          {data.tinyText}
         </span>
       )}
       <span
         aria-hidden='true'
         className={cn(
-          'text-xs font-medium text-center line-clamp-1 w-full mt-1',
+          'text-xs font-medium text-center line-clamp-2 w-full mt-1',
           labelColor
         )}
       >
-        {data.tinyText}
+        {data.label}
       </span>
     </div>
   )
@@ -102,6 +108,21 @@ function DotLg({ data }: { data: DotData }) {
 }
 
 function DotXl({ data }: { data: DotData }) {
+  const storageId = `aadhya-dot-${data.mediaStorageId ?? data.id}-media`
+  const panelIds = [`${storageId}-text`, `${storageId}-media`]
+  const mediaDefaults = data.mediaDefaultSizes ?? [50, 50]
+
+  const { defaultLayout, onLayoutChanged } = useDefaultLayout({
+    id: storageId,
+    panelIds,
+    storage: localStorage,
+  })
+
+  const fallback = {
+    [panelIds[0]]: mediaDefaults[0],
+    [panelIds[1]]: mediaDefaults[1],
+  }
+
   const paragraphs = Array.isArray(data.largeText)
     ? data.largeText
     : data.largeText
@@ -161,10 +182,10 @@ function DotXl({ data }: { data: DotData }) {
             className={cn(
               'font-semibold py-2 px-4 lg:py-4 lg:px-6 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 lg:gap-3 group shadow-lg flex-shrink-0',
               canAdvance
-                ? 'bg-primary text-primary-foreground hover:shadow-xl hover:bg-primary/90'
-                : 'bg-muted text-muted-foreground cursor-not-allowed opacity-70',
+                ? 'bg-primary text-primary-foreground hover:shadow-xl hover:bg-primary/80'
+                : 'bg-secondary text-secondary-foreground cursor-not-allowed',
               data.isFocused &&
-                'outline outline-2 outline-blue-500 outline-offset-2 brightness-110'
+                'outline outline-2 outline-ring outline-offset-2 brightness-110'
             )}
           >
             <span className='text-sm lg:text-lg'>{buttonText}</span>
@@ -180,18 +201,36 @@ function DotXl({ data }: { data: DotData }) {
 
   if (hasMedia) {
     return (
-      <div className='flex flex-col lg:grid lg:grid-cols-2 w-full h-full overflow-hidden min-h-0'>
-        <div className='flex-[3] lg:flex-none lg:h-full overflow-hidden min-h-0 order-2 lg:order-1'>
+      <Group
+        orientation='horizontal'
+        defaultLayout={defaultLayout ?? fallback}
+        onLayoutChanged={onLayoutChanged}
+        className='w-full h-full overflow-hidden min-h-0'
+      >
+        <Panel
+          id={panelIds[0]}
+          defaultSize={`${mediaDefaults[0]}%`}
+          minSize='30%'
+        >
           {textContent}
-        </div>
-        <div className='flex-[3] lg:flex-none lg:h-full overflow-hidden min-h-0 order-1 lg:order-2 flex items-center justify-center'>
-          {typeof data.media === 'string' ? (
-            <div className='p-4 lg:p-8'>{data.media}</div>
-          ) : (
-            data.media
-          )}
-        </div>
-      </div>
+        </Panel>
+        <Separator className='group relative flex w-2 items-center justify-center data-[separator]:cursor-col-resize p-2'>
+          <div className='w-0.5 h-12 rounded-full bg-border transition-colors group-hover:bg-primary/40 group-data-[dragging]:bg-primary/60' />
+        </Separator>
+        <Panel
+          id={panelIds[1]}
+          defaultSize={`${mediaDefaults[1]}%`}
+          minSize='20%'
+        >
+          <div className='h-full overflow-hidden min-h-0 flex items-center justify-center'>
+            {typeof data.media === 'string' ? (
+              <div className='p-4 lg:p-8'>{data.media}</div>
+            ) : (
+              data.media
+            )}
+          </div>
+        </Panel>
+      </Group>
     )
   }
 
@@ -226,14 +265,14 @@ export function Dot({ data, className }: DotProps) {
   }, [data.isFocused])
 
   const focusClasses = data.isFocused
-    ? 'border-none outline outline-[3px] outline-blue-500 outline-offset-[-4px]'
-    : 'border border-border hover:border-primary/20'
+    ? 'border-none outline outline-[3px] outline-focus outline-offset-[-4px]'
+    : 'border border-border'
 
   const stateClasses = data.isActive
     ? 'bg-primary text-primary-foreground'
     : data.isVisited
-      ? 'bg-primary/10 text-foreground hover:bg-accent hover:text-accent-foreground'
-      : 'bg-card hover:bg-accent hover:text-accent-foreground'
+      ? 'bg-primary/10 text-foreground'
+      : 'bg-card'
 
   const TierComponent = tierRenderers[tier]
 

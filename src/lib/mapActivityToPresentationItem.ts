@@ -7,20 +7,22 @@ export type { Activity as ApiActivity }
 
 export function mapActivityToDotData(
   activity: Activity,
-  index: number
+  _index: number
 ): DotData {
   const { metadata } = activity
-  const displayName = metadata?.domainDisplayName || activity.domain
-  const IconComponent = getIntelligenceIcon(displayName) || Home
-  const text = metadata?.text || metadata?.description || ''
+  const IconComponent =
+    getIntelligenceIcon(activity.domain, activity.attribute) || Home
   return {
     id: activity.id,
     key: metadata?.key || activity.id,
-    label: activity.attribute,
-    title: text,
+    label: metadata?.label,
+    title: metadata?.title,
     subtitle: metadata?.subtitle,
-    tinyText: `Activity ${index + 1}`,
-    smallText: text.slice(0, 120) + (text.length > 120 ? '\u2026' : ''),
+    tinyText: metadata?.tinyText,
+    smallText: metadata?.smallText,
+    mediumText: metadata?.mediumText,
+    largeText: metadata?.largeText,
+    media: metadata?.media,
     icon: IconComponent,
   }
 }

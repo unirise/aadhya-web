@@ -117,13 +117,35 @@ export const intelligenceSkillMapping: Record<string, string[]> = {
 }
 
 /**
+ * Normalise any known domain key variant to the UPPER_SNAKE key used
+ * in intelligenceSkillMapping.  Handles:
+ *   - UPPER_SNAKE  ("BODILY_KINESTHETIC")   — returned as-is
+ *   - lowercase kebab  ("bodily-kinesthetic") — from stored API records
+ *   - plain lowercase  ("intrapersonal")      — from stored API records
+ */
+const DOMAIN_ALIAS: Record<string, string> = {
+  'intrapersonal': 'INTRAPERSONAL',
+  'bodily-kinesthetic': 'BODILY_KINESTHETIC',
+  'logical-mathematical': 'LOGICAL_MATHEMATICAL',
+  'linguistic': 'LINGUISTIC',
+  'musical': 'MUSICAL',
+  'spatial': 'SPATIAL',
+  'naturalistic': 'NATURALISTIC',
+  'interpersonal': 'INTERPERSONAL',
+}
+
+function normaliseDomain(domain: string): string {
+  return DOMAIN_ALIAS[domain] ?? domain
+}
+
+/**
  * Get skills for a specific intelligence domain
  *
- * @param domain - The intelligence domain code
+ * @param domain - The intelligence domain code (any casing variant)
  * @returns Array of skills associated with the domain
  */
 export function getSkillsForDomain(domain: string): string[] {
-  return intelligenceSkillMapping[domain] || []
+  return intelligenceSkillMapping[normaliseDomain(domain)] || []
 }
 
 /**
@@ -142,9 +164,9 @@ export function getIntelligenceSkillMapping(
     return []
   }
 
-  // Get top N intelligences
+  // Get top N intelligences, normalising domain keys to UPPER_SNAKE
   const sortedDomains = Object.entries(intelligenceScores)
-    .map(([domain, score]) => ({ domain, score: Number(score) }))
+    .map(([domain, score]) => ({ domain: normaliseDomain(domain), score: Number(score) }))
     .sort((a, b) => b.score - a.score)
     .slice(0, topN)
 
