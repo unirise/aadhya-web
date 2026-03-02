@@ -8,12 +8,16 @@ import {
   Target,
   ArrowRight,
   Home,
-  Moon,
-  Sun,
   HomeIcon,
   ZapIcon,
 } from 'lucide-react'
-import { useAssessment } from '@/hooks/useAssessments'
+import { themeDot } from '@/lib/themeDot'
+import { useQueryClient } from '@tanstack/react-query'
+import {
+  useAssessment,
+  useMyResponses,
+  ASSESSMENTS_KEYS,
+} from '@/hooks/useAssessments'
 import {
   Header,
   Footer,
@@ -27,20 +31,50 @@ import { useTheme } from '@/contexts/ThemeContext'
 import { useKeyboardNavigation } from '@/hooks/useKeyboardNavigation'
 import type { FocusPosition } from '@/hooks/useKeyboardNavigation'
 import type { DotData } from '@/types/dot'
+import {
+  ACTIVITY_FLUID_SIZES,
+  ACTIVITY_FLUID_MIN_SIZES,
+  ACTIVITY_CONTENT_SIZES,
+  ACTIVITY_CONTENT_MIN_SIZES,
+  ACTIVITY_LAYOUT_PADDING,
+  ACTIVITY_CONTENT_RADIUS,
+} from '@/config/activityLayout'
 
 function AssessmentStart() {
   const { assessmentId } = useParams()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const { theme, toggleTheme } = useTheme()
   const {
     data: assessment,
     isLoading,
     error: assessmentError,
+    refetch,
   } = useAssessment(assessmentId)
 
   const activities = assessment?.activities || []
 
+  const { data: myResponses } = useMyResponses()
+
+  // Determine progress: which activities in this assessment already have a response
+  const respondedActivityIds = new Set(
+    (myResponses ?? [])
+      .filter(r => activities.some(a => a.id === r.activityId))
+      .map(r => r.activityId)
+  )
+  const hasStarted = respondedActivityIds.size > 0
+  const firstUnansweredActivity = activities.find(
+    a => !respondedActivityIds.has(a.id)
+  )
+  const continueTarget = firstUnansweredActivity ?? activities[0]
+
   const handleStart = () => {
+    if (activities.length > 0 && assessmentId) {
+      navigate(`/assessment/${assessmentId}/activity/${continueTarget.id}`)
+    }
+  }
+
+  const handleStartFromBeginning = () => {
     if (activities.length > 0 && assessmentId) {
       navigate(`/assessment/${assessmentId}/activity/${activities[0].id}`)
     }
@@ -60,19 +94,29 @@ function AssessmentStart() {
 
   const footerCount = activities.length > 0 ? 1 : 0
 
+  const handleReset = useCallback(() => {
+    if (assessmentId) {
+      queryClient.invalidateQueries({
+        queryKey: ASSESSMENTS_KEYS.detail(assessmentId),
+      })
+    }
+    refetch()
+  }, [queryClient, assessmentId, refetch])
+
   const handleActivate = useCallback(
     (position: FocusPosition) => {
       const { section, index } = position
       if (section === 'header') {
-        if (index <= 1) navigate('/')
+        if (index === 0) navigate('/')
+        else if (index === 1) handleReset()
         else if (index === 2) toggleTheme()
       } else if (section === 'content') {
         if (position.zone === 'main' && index === 0) handleStart()
       } else if (section === 'footer') {
-        if (index === 0) handleStart()
+        if (index === 0) handleStartFromBeginning()
       }
     },
-    [navigate, toggleTheme, activities, assessmentId]
+    [navigate, toggleTheme, activities, assessmentId, handleReset, hasStarted]
   )
 
   const { isFocused } = useKeyboardNavigation({
@@ -98,7 +142,7 @@ function AssessmentStart() {
         'Use the navigation below to explore different sections of the application.',
       ],
       buttonText: 'Go Home',
-      onClick: () => {},
+      onClick: () => navigate('/'),
       isFocused: isFocused('header', 0),
     },
     {
@@ -109,22 +153,10 @@ function AssessmentStart() {
       subtitle: 'This button will Reset the content you have in front of you',
       tinyText: 'Reset',
       buttonText: 'Reset',
-      onClick: () => {},
+      onClick: handleReset,
       isFocused: isFocused('header', 1),
     },
-    {
-      id: 'theme',
-      icon: theme === 'light' ? Moon : Sun,
-      label: 'Theme',
-      title: theme === 'light' ? 'Dark Mode' : 'Light Mode',
-      subtitle: `Currently using ${theme} theme`,
-      tinyText: theme === 'light' ? 'Dark' : 'Light',
-      smallText: `Switch to ${theme === 'light' ? 'dark' : 'light'} mode for a different visual experience.`,
-      largeText: `Toggle between light and dark themes to match your preference. The current theme is ${theme}.`,
-      buttonText: 'Toggle Theme',
-      onClick: toggleTheme,
-      isFocused: isFocused('header', 2),
-    },
+    { ...themeDot(theme, toggleTheme), isFocused: isFocused('header', 2) },
   ]
 
   const footerItems: DotData[] =
@@ -133,8 +165,9 @@ function AssessmentStart() {
           {
             id: 'begin',
             icon: ArrowRight,
-            label: 'Begin',
-            onClick: handleStart,
+            label: hasStarted ? 'Start from Beginning' : 'Begin',
+            tinyText: hasStarted ? 'Restart' : 'Begin',
+            onClick: handleStartFromBeginning,
             isFocused: isFocused('footer', 0),
           },
         ]
@@ -144,10 +177,29 @@ function AssessmentStart() {
     {
       id: 'activity-count',
       icon: FileText,
-      title: activityCount.toString(),
+      title: hasStarted ? `${activityCount}` : activityCount.toString(),
       label: activityCount === 1 ? 'Activity' : 'Activities',
-      tinyText: String(activityCount),
-      ariaLabel: `${activityCount} ${activityCount === 1 ? 'activity' : 'activities'}`,
+      tinyText: hasStarted ? `${activityCount}` : String(activityCount),
+      ariaLabel: hasStarted
+        ? `${respondedActivityIds.size} of ${activityCount} activities completed`
+        : `${activityCount} ${activityCount === 1 ? 'activity' : 'activities'}`,
+      role: 'region',
+      isFocused: isFocused('content', 0, 'panel'),
+      onClick: () => {},
+    },
+    {
+      id: 'activity-completed-count',
+      icon: FileText,
+      title: hasStarted
+        ? `${respondedActivityIds.size}`
+        : activityCount.toString(),
+      label: 'Completed',
+      tinyText: hasStarted
+        ? `${respondedActivityIds.size}`
+        : String(activityCount),
+      ariaLabel: hasStarted
+        ? `${respondedActivityIds.size} of ${activityCount} activities completed`
+        : `${activityCount} ${activityCount === 1 ? 'activity' : 'activities'}`,
       role: 'region',
       isFocused: isFocused('content', 0, 'panel'),
       onClick: () => {},
@@ -198,37 +250,51 @@ function AssessmentStart() {
     onClick: handleStart,
     isFocused: isFocused('content', 0),
     canAdvance: activities.length > 0,
-    buttonText: `Start ${assessment?.name ?? 'Assessment'}`,
+    buttonText: hasStarted
+      ? `Continue ${assessment?.name ?? 'Assessment'}`
+      : `Start ${assessment?.name ?? 'Assessment'}`,
   }
 
   const loadingContent = (
-    <div className='flex items-center justify-center h-full'>
-      <p className='text-muted-foreground'>Loading assessment...</p>
-    </div>
+    <main aria-label='Assessment' className='h-full w-full overflow-hidden'>
+      <div
+        role='status'
+        aria-live='polite'
+        className='flex items-center justify-center h-full'
+      >
+        <p className='text-muted-foreground'>Loading assessment...</p>
+      </div>
+    </main>
   )
 
   const errorContent = (
-    <div className='flex items-center justify-center h-full'>
-      <div className='text-center'>
-        <p className='text-red-600 mb-4'>{error || 'Assessment not found'}</p>
-        <button
-          onClick={() => navigate('/')}
-          className='px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors'
-        >
-          Back to Home
-        </button>
+    <main aria-label='Assessment' className='h-full w-full overflow-hidden'>
+      <div role='alert' className='flex items-center justify-center h-full'>
+        <div className='text-center'>
+          <p className='text-destructive font-medium mb-4'>
+            {error || 'Assessment not found'}
+          </p>
+          <button
+            type='button'
+            onClick={() => navigate('/')}
+            className='px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors'
+          >
+            Back to Home
+          </button>
+        </div>
       </div>
-    </div>
+    </main>
   )
 
   if (isLoading) {
     return (
       <FluidLayout
         layoutId='assessment-start'
-        defaultSizes={[8, 84, 8]}
+        defaultSizes={ACTIVITY_FLUID_SIZES}
+        minSizes={ACTIVITY_FLUID_MIN_SIZES}
         header={<Header items={navigationItems} />}
         footer={<Footer items={footerItems} />}
-        className='p-2 sm:p-4'
+        className={ACTIVITY_LAYOUT_PADDING}
       >
         {loadingContent}
       </FluidLayout>
@@ -239,10 +305,11 @@ function AssessmentStart() {
     return (
       <FluidLayout
         layoutId='assessment-start'
-        defaultSizes={[8, 84, 8]}
+        defaultSizes={ACTIVITY_FLUID_SIZES}
+        minSizes={ACTIVITY_FLUID_MIN_SIZES}
         header={<Header items={navigationItems} />}
         footer={<Footer items={footerItems} />}
-        className='p-2 sm:p-4'
+        className={ACTIVITY_LAYOUT_PADDING}
       >
         {errorContent}
       </FluidLayout>
@@ -252,37 +319,53 @@ function AssessmentStart() {
   return (
     <FluidLayout
       layoutId='assessment-start'
-      defaultSizes={[8, 84, 8]}
+      defaultSizes={ACTIVITY_FLUID_SIZES}
+      minSizes={ACTIVITY_FLUID_MIN_SIZES}
       header={<Header items={navigationItems} />}
       footer={<Footer items={footerItems} />}
       className='p-2 sm:p-4'
     >
-      <FluidContentPanel
-        layoutId='assessment-start-content'
-        content={
-          <>
-            <div className='w-full h-full rounded-2xl divide-y lg:divide-y-0 lg:divide-x overflow-hidden'>
-              <Dot data={contentDot} className='rounded-2xl' />
-            </div>
+      <main
+        aria-label={assessment?.name ?? 'Assessment'}
+        className='h-full w-full overflow-hidden'
+      >
+        <FluidContentPanel
+          layoutId='assessment-start-content'
+          defaultSizes={ACTIVITY_CONTENT_SIZES}
+          minSizes={ACTIVITY_CONTENT_MIN_SIZES}
+          content={
+            <>
+              <div
+                className={`w-full h-full ${ACTIVITY_CONTENT_RADIUS} divide-y lg:divide-y-0 lg:divide-x overflow-hidden`}
+              >
+                <Dot data={contentDot} className={ACTIVITY_CONTENT_RADIUS} />
+              </div>
 
-            {activities.length === 0 && (
-              <div className='mx-auto mt-8'>
-                <div className='bg-yellow-50 border border-yellow-200 rounded-lg p-5'>
-                  <div className='flex items-center justify-center gap-2'>
-                    <AlertCircle className='text-yellow-600' size={20} />
-                    <p className='text-yellow-800 text-sm font-medium'>
-                      This assessment has no activities yet. Please check back
-                      later.
-                    </p>
+              {activities.length === 0 && (
+                <div className='mx-auto mt-8'>
+                  <div
+                    role='alert'
+                    className='bg-yellow-50 border border-yellow-200 rounded-lg p-5'
+                  >
+                    <div className='flex items-center justify-center gap-2'>
+                      <AlertCircle
+                        className='text-yellow-600'
+                        size={20}
+                        aria-hidden='true'
+                      />
+                      <p className='text-yellow-800 text-sm font-medium'>
+                        This assessment has no activities yet. Please check back
+                        later.
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-          </>
-        }
-        panel={<Panel items={panelItems} />}
-        defaultSizes={[80, 20]}
-      />
+              )}
+            </>
+          }
+          panel={<Panel items={panelItems} />}
+        />
+      </main>
     </FluidLayout>
   )
 }

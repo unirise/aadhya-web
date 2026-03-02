@@ -1,10 +1,23 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import { axiosInstance } from '@/lib/axios'
-import { ApiResponse, Assessment } from '@/types'
+import { Activity, ApiResponse, Assessment } from '@/types'
 
 // Types
 export interface AssessmentsResponse {
   assessments: Assessment[]
+}
+
+export interface UserResponse {
+  id: string
+  activityId: string
+  personId: string
+  domain: string
+  attribute?: string
+  responseData: unknown
+  newScore?: string | number
+  scoreChange?: string | number
+  createdAt: string
+  activity: Activity
 }
 
 // Query Keys
@@ -14,19 +27,27 @@ const ASSESSMENTS_KEYS = {
   list: () => [...ASSESSMENTS_KEYS.lists()] as const,
   details: () => [...ASSESSMENTS_KEYS.all, 'detail'] as const,
   detail: (id: string) => [...ASSESSMENTS_KEYS.details(), id] as const,
+  myResponses: () => ['responses', 'my-responses'] as const,
 }
 
 // API Functions
 const assessmentsApi = {
   fetchAssessments: async (): Promise<Assessment[]> => {
     const response =
-      await axiosInstance.get<ApiResponse<Assessment[]>>('/assessments')
+      await axiosInstance.get<ApiResponse<Assessment[]>>('/v1/assessments')
     return response.data.data
   },
 
   fetchAssessmentById: async (assessmentId: string): Promise<Assessment> => {
     const response = await axiosInstance.get<ApiResponse<Assessment>>(
-      `/assessments/${assessmentId}`
+      `/v1/assessments/${assessmentId}`
+    )
+    return response.data.data
+  },
+
+  fetchMyResponses: async (): Promise<UserResponse[]> => {
+    const response = await axiosInstance.get<ApiResponse<UserResponse[]>>(
+      '/v1/responses/my-responses'
     )
     return response.data.data
   },
@@ -59,6 +80,17 @@ export const useAssessment = (
     queryKey: ASSESSMENTS_KEYS.detail(assessmentId || ''),
     queryFn: () => assessmentsApi.fetchAssessmentById(assessmentId!),
     enabled: enabled && !!assessmentId,
+  })
+}
+
+/**
+ * Hook to fetch all responses for the current user
+ * @returns Query result with user responses
+ */
+export const useMyResponses = (): UseQueryResult<UserResponse[], Error> => {
+  return useQuery({
+    queryKey: ASSESSMENTS_KEYS.myResponses(),
+    queryFn: assessmentsApi.fetchMyResponses,
   })
 }
 

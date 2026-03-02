@@ -933,10 +933,13 @@ export function getAllNSQFRoles(skillsVocationalMapping) {
  * @returns {Object} Object mapping intelligence domains to arrays of {role, nsqf_level} objects
  */
 export function mapRolesToNSQF(
-  rolesByIntelligence,
-  roleNsqfMap = ROLE_TO_NSQF
+  rolesByIntelligence: Record<string, string[]>,
+  roleNsqfMap: Record<string, number> = ROLE_TO_NSQF
 ) {
-  const nsqfMapping = {}
+  const nsqfMapping: Record<
+    string,
+    Array<{ role: string; nsqf_level: number | null }>
+  > = {}
 
   for (const [intelligence, roles] of Object.entries(rolesByIntelligence)) {
     nsqfMapping[intelligence] = []
@@ -960,7 +963,10 @@ export function mapRolesToNSQF(
  * @param {Object} roleNsqfMap - Object mapping role names to NSQF levels (defaults to ROLE_TO_NSQF)
  * @returns {Array<Object>} Array of {role, nsqf_level} objects
  */
-export function mapHybridRolesToNSQF(hybridRoles, roleNsqfMap = ROLE_TO_NSQF) {
+export function mapHybridRolesToNSQF(
+  hybridRoles: string[],
+  roleNsqfMap: Record<string, number> = ROLE_TO_NSQF
+) {
   return hybridRoles.map(role => ({
     role,
     nsqf_level: roleNsqfMap[role] ?? null,
@@ -973,6 +979,6 @@ export function mapHybridRolesToNSQF(hybridRoles, roleNsqfMap = ROLE_TO_NSQF) {
  * @param {string} role - The role name
  * @returns {number|null} NSQF level for the role, or null if not mapped
  */
-export function getNSQFLevelForRole(role) {
+export function getNSQFLevelForRole(role: string) {
   return ROLE_TO_NSQF[role] ?? null
 }

@@ -64,7 +64,13 @@ function NSQFLevelsChart({ data = [], height = 400 }) {
     'Not Mapped': '#9ca3af',
   }
 
-  const CustomTooltip = ({ active, payload }) => {
+  const CustomTooltip = ({
+    active,
+    payload,
+  }: {
+    active?: boolean
+    payload?: Array<{ payload: any }>
+  }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload
       return (

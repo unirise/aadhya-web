@@ -38,7 +38,7 @@ function LoginForm() {
   return (
     <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
       <h2 className='text-2xl font-bold text-center'>{t('login.title')}</h2>
-      <p className='text-gray-500 text-center text-sm mb-4'>
+      <p className='text-muted-foreground text-center text-sm mb-4'>
         {t('login.description')}
       </p>
 

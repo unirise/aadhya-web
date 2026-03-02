@@ -25,6 +25,8 @@ export interface DotData {
   role?: string
   buttonText?: string
   canAdvance?: boolean
+  mediaDefaultSizes?: [number, number]
+  mediaStorageId?: string
 }
 
 export interface InputDotData {

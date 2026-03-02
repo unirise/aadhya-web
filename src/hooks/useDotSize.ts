@@ -4,7 +4,7 @@ import type { DotSizeTier } from '@/types/dot'
 function getTier(width: number, height: number): DotSizeTier {
   const constraining = Math.min(width, height)
   if (constraining < 80) return 'xs'
-  if (constraining < 150) return 'sm'
+  if (constraining < 120) return 'sm'
   if (constraining < 250) return 'md'
   if (constraining < 400) return 'lg'
   return 'xl'

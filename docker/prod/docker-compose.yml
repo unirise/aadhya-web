@@ -1,0 +1,33 @@
+services:
+  aadhya-web:
+    image: aadhya-web:prod
+    build:
+      context: ../..
+      dockerfile: docker/prod/Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://api.urf.buildstack.space/api/v1}
+        VITE_API_URL: ${VITE_API_URL:-https://api.urf.buildstack.space/api/v1}
+        NODE_OPTIONS: ${NODE_OPTIONS:---max-old-space-size=1024}
+    restart: unless-stopped
+    expose:
+      - '80'
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=traefik_network'
+      - 'traefik.http.routers.aadhya-web-prod.entrypoints=websecure'
+      - 'traefik.http.routers.aadhya-web-prod.rule=Host(`urf.buildstack.space`)'
+      - 'traefik.http.routers.aadhya-web-prod.tls=true'
+      - 'traefik.http.routers.aadhya-web-prod.tls.certresolver=lets-encrypt'
+      - 'traefik.http.services.aadhya-web-prod.loadbalancer.server.port=80'
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1/']
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - traefik_network
+
+networks:
+  traefik_network:
+    external: true

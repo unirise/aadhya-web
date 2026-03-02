@@ -28,10 +28,60 @@
   --color-accent-foreground: #0a0a0a;
   --color-border: #e2e8f0;
   --color-ring: #09090b;
+  --color-focus: #3b82f6;
+  --color-destructive: #dc2626;
+  --color-destructive-foreground: #fafafa;
   --color-visited: #8b5cf6;
 }
 
-:root.dark {
+/* Morning - warm sepia tone */
+:root.morning {
+  --color-background: #faf6f0;
+  --color-foreground: #3d2b1f;
+  --color-card: #fdf8f3;
+  --color-card-foreground: #3d2b1f;
+  --color-primary: #8b5e3c;
+  --color-primary-foreground: #fdf8f3;
+  --color-secondary: #f0e6d8;
+  --color-secondary-foreground: #5c3d2e;
+  --color-muted: #f5ece0;
+  --color-muted-foreground: #8c7a6b;
+  --color-accent: #f5ece0;
+  --color-accent-foreground: #3d2b1f;
+  --color-border: #e0d2c0;
+  --color-ring: #8b5e3c;
+  --color-focus: #4a8fa3;
+  --color-destructive: #c0392b;
+  --color-destructive-foreground: #fdf8f3;
+  --color-visited: #9b59b6;
+}
+
+/* Afternoon - current light theme (defaults from @theme block) */
+
+/* Evening - cool tone */
+:root.evening {
+  --color-background: #1a1f2e;
+  --color-foreground: #c8cdd8;
+  --color-card: #222838;
+  --color-card-foreground: #c8cdd8;
+  --color-primary: #7b8fbd;
+  --color-primary-foreground: #141825;
+  --color-secondary: #2a3145;
+  --color-secondary-foreground: #b0b8cc;
+  --color-muted: #242b3d;
+  --color-muted-foreground: #7a8399;
+  --color-accent: #2a3145;
+  --color-accent-foreground: #c8cdd8;
+  --color-border: #3a4259;
+  --color-ring: #7b8fbd;
+  --color-focus: #e8c56e;
+  --color-destructive: #e06060;
+  --color-destructive-foreground: #141825;
+  --color-visited: #9a8fd4;
+}
+
+/* Night - current dark theme */
+:root.night {
   --color-background: #0a0a0a;
   --color-foreground: #fafafa;
   --color-card: #141414;
@@ -46,6 +96,9 @@
   --color-accent-foreground: #fafafa;
   --color-border: #334155;
   --color-ring: #fafafa;
+  --color-focus: #60a5fa;
+  --color-destructive: #f87171;
+  --color-destructive-foreground: #0a0a0a;
   --color-visited: #a78bfa;
 }
 

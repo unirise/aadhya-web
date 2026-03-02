@@ -24,23 +24,11 @@ import { Textarea } from '@/components/ui/textarea'
 import { IconPicker } from '@/components/ui/icon-picker'
 import { EmojiPicker } from '@/components/ui/emoji-picker'
 import { educatorApi } from '@/services/educatorApi'
+import { DOMAINS, ATTRIBUTES } from '@/constants/activity-constants'
 import type { Activity, ActivityOption } from '@/types/activities'
 
 const ACTIVITY_TYPES = [
   { value: 'MCQ', label: 'Multiple Choice Question' },
-] as const
-
-const DOMAINS = [{ value: 'intelligence', label: 'Intelligence' }] as const
-
-const ATTRIBUTES = [
-  { value: 'linguistic', label: 'Linguistic Intelligence' },
-  { value: 'logical-mathematical', label: 'Logical-Mathematical Intelligence' },
-  { value: 'spatial', label: 'Spatial Intelligence' },
-  { value: 'musical', label: 'Musical Intelligence' },
-  { value: 'bodily-kinesthetic', label: 'Bodily-Kinesthetic Intelligence' },
-  { value: 'interpersonal', label: 'Interpersonal Intelligence' },
-  { value: 'intrapersonal', label: 'Intrapersonal Intelligence' },
-  { value: 'naturalistic', label: 'Naturalistic Intelligence' },
 ] as const
 
 const DEFAULT_MCQ_OPTIONS: Omit<ActivityOption, 'value'>[] = [
@@ -99,7 +87,6 @@ export default function AssessmentActivities() {
   const [assessmentName, setAssessmentName] = useState('')
   const [loading, setLoading] = useState(true)
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [editing, setEditing] = useState<Activity | null>(null)
   const [formData, setFormData] = useState<FormData>(emptyForm)
   const [submitting, setSubmitting] = useState(false)
 
@@ -125,7 +112,6 @@ export default function AssessmentActivities() {
   }, [loadData])
 
   const openAdd = () => {
-    setEditing(null)
     setFormData({
       ...emptyForm,
       options: DEFAULT_MCQ_OPTIONS.map(o => ({ ...o })),
@@ -133,33 +119,6 @@ export default function AssessmentActivities() {
     setDialogOpen(true)
   }
 
-  const openEdit = (activity: Activity) => {
-    setEditing(activity)
-    const meta = activity.metadata || {}
-    const text = (meta.text as string) || ''
-    setFormData({
-      type: activity.type || 'MCQ',
-      domain: activity.domain || 'intelligence',
-      attribute: activity.attribute || '',
-      label: meta.label || '',
-      icon: meta.icon || '',
-      title: meta.title || text,
-      subtitle: meta.subtitle || '',
-      snippet: meta.snippet || '',
-      description: meta.description || '',
-      paragraph1: meta.paragraph1 || '',
-      paragraph2: meta.paragraph2 || '',
-      media: meta.media || '',
-      options: Array.isArray(meta.options)
-        ? meta.options.map((o: any) => ({
-            emoji: o.emoji || '',
-            label: o.label || '',
-            scoreAdjustment: Number(o.scoreAdjustment) || 0,
-          }))
-        : DEFAULT_MCQ_OPTIONS.map(o => ({ ...o })),
-    })
-    setDialogOpen(true)
-  }
 
   const updateOption = (
     idx: number,
@@ -221,11 +180,7 @@ export default function AssessmentActivities() {
         },
       }
 
-      if (editing) {
-        await educatorApi.updateActivity(editing.id, payload)
-      } else {
-        await educatorApi.createActivity({ assessmentId, ...payload })
-      }
+      await educatorApi.createActivity({ assessmentId, ...payload })
       setDialogOpen(false)
       await loadData()
     } catch (err) {
@@ -330,7 +285,11 @@ export default function AssessmentActivities() {
                         <Button
                           variant='ghost'
                           size='icon-sm'
-                          onClick={() => openEdit(activity)}
+                          onClick={() =>
+                            navigate(
+                              `/dashboard/assessments/${assessmentId}/activities/${activity.id}/edit`
+                            )
+                          }
                         >
                           <Pencil className='size-4' />
                         </Button>
@@ -355,7 +314,7 @@ export default function AssessmentActivities() {
         <DialogContent className='max-w-2xl max-h-[85vh] overflow-y-auto'>
           <DialogHeader>
             <DialogTitle>
-              {editing ? 'Edit Activity' : 'Add Activity'}
+              Add Activity
             </DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className='space-y-4'>
@@ -606,7 +565,7 @@ export default function AssessmentActivities() {
                 Cancel
               </Button>
               <Button type='submit' disabled={submitting}>
-                {submitting ? 'Saving...' : editing ? 'Update' : 'Add'}
+                {submitting ? 'Saving...' : 'Add'}
               </Button>
             </DialogFooter>
           </form>

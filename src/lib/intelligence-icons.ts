@@ -1,55 +1,44 @@
-import {
-  Brain,
-  Activity,
-  Calculator,
-  BookOpen,
-  Music,
-  Eye,
-  Leaf,
-  Users,
-  LucideIcon,
-} from 'lucide-react'
+import { LucideIcon } from 'lucide-react'
+import { ATTRIBUTES_BY_DOMAIN } from '@/constants/activity-constants'
 
-const iconMap: Record<string, Record<string, LucideIcon>> = {
-  intelligence: {
-    INTRAPERSONAL: Brain,
-    BODILY_KINESTHETIC: Activity,
-    LOGICAL_MATHEMATICAL: Calculator,
-    LINGUISTIC: BookOpen,
-    MUSICAL: Music,
-    SPATIAL: Eye,
-    NATURALISTIC: Leaf,
-    INTERPERSONAL: Users,
-  },
-}
+// Legacy exports derived from ATTRIBUTES_BY_DOMAIN
+export const intelligenceIcons: Record<string, LucideIcon> = Object.fromEntries(
+  (ATTRIBUTES_BY_DOMAIN.intelligence ?? [])
+    .filter(a => a.icon)
+    .map(a => [a.label, a.icon as LucideIcon])
+)
 
-// Legacy mapping for callers that pass display names
-export const intelligenceIcons: Record<string, LucideIcon> = {
-  'Intrapersonal Intelligence': Brain,
-  'Bodily-Kinesthetic Intelligence': Activity,
-  'Logical-Mathematical Intelligence': Calculator,
-  'Linguistic Intelligence': BookOpen,
-  'Musical Intelligence': Music,
-  'Spatial Intelligence': Eye,
-  'Naturalistic Intelligence': Leaf,
-  'Interpersonal Intelligence': Users,
-}
+export const physicalIcons: Record<string, LucideIcon> = Object.fromEntries(
+  (ATTRIBUTES_BY_DOMAIN.physical ?? [])
+    .filter(a => a.icon)
+    .map(a => [a.label, a.icon as LucideIcon])
+)
 
 export function getIntelligenceIcon(
   domain: string,
   attribute?: string
 ): LucideIcon | null {
-  console.log('🚀 ~ getIntelligenceIcon ~ attribute:', attribute, domain)
   if (attribute) {
-    return iconMap[domain.toLowerCase()]?.[attribute.toUpperCase()] ?? null
+    const normalizedAttr = attribute.toLowerCase().replace(/_/g, '-')
+    const found = (ATTRIBUTES_BY_DOMAIN[domain.toLowerCase()] ?? []).find(
+      a => a.value === normalizedAttr
+    )
+    return found?.icon ?? null
   }
-  return intelligenceIcons[domain] || null
+
+  // Search all domains: match by label (e.g. 'Intrapersonal Intelligence')
+  // or by normalized value (e.g. 'INTERPERSONAL' -> 'interpersonal')
+  const normalizedDomain = domain.toLowerCase().replace(/_/g, '-')
+  for (const attrs of Object.values(ATTRIBUTES_BY_DOMAIN)) {
+    const found =
+      attrs.find(a => a.label === domain) ??
+      attrs.find(a => a.value === normalizedDomain)
+    if (found?.icon) return found.icon
+  }
+
+  return null
 }
 
-/**
- * Get all intelligence icons as an object
- * @returns Object mapping domain codes to icon components
- */
 export function getAllIntelligenceIcons(): Record<string, LucideIcon> {
   return intelligenceIcons
 }

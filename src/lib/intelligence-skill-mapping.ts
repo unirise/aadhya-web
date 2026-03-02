@@ -5,11 +5,19 @@
  * that individuals with high scores in each domain typically excel at.
  */
 
+export type IntelligenceScores = Record<string, number>
+
+export interface IntelligenceSkillEntry {
+  domain: string
+  score: number
+  skills: string[]
+}
+
 /**
  * Skill mapping for each intelligence domain
  * Each domain maps to an array of relevant skills
  */
-export const intelligenceSkillMapping = {
+export const intelligenceSkillMapping: Record<string, string[]> = {
   INTRAPERSONAL: [
     'Self-reflection',
     'Emotional awareness',
@@ -109,31 +117,56 @@ export const intelligenceSkillMapping = {
 }
 
 /**
+ * Normalise any known domain key variant to the UPPER_SNAKE key used
+ * in intelligenceSkillMapping.  Handles:
+ *   - UPPER_SNAKE  ("BODILY_KINESTHETIC")   — returned as-is
+ *   - lowercase kebab  ("bodily-kinesthetic") — from stored API records
+ *   - plain lowercase  ("intrapersonal")      — from stored API records
+ */
+const DOMAIN_ALIAS: Record<string, string> = {
+  'intrapersonal': 'INTRAPERSONAL',
+  'bodily-kinesthetic': 'BODILY_KINESTHETIC',
+  'logical-mathematical': 'LOGICAL_MATHEMATICAL',
+  'linguistic': 'LINGUISTIC',
+  'musical': 'MUSICAL',
+  'spatial': 'SPATIAL',
+  'naturalistic': 'NATURALISTIC',
+  'interpersonal': 'INTERPERSONAL',
+}
+
+function normaliseDomain(domain: string): string {
+  return DOMAIN_ALIAS[domain] ?? domain
+}
+
+/**
  * Get skills for a specific intelligence domain
  *
- * @param {string} domain - The intelligence domain code
- * @returns {Array<string>} Array of skills associated with the domain
+ * @param domain - The intelligence domain code (any casing variant)
+ * @returns Array of skills associated with the domain
  */
-export function getSkillsForDomain(domain) {
-  return intelligenceSkillMapping[domain] || []
+export function getSkillsForDomain(domain: string): string[] {
+  return intelligenceSkillMapping[normaliseDomain(domain)] || []
 }
 
 /**
  * Get skills mapped to intelligence scores
  * Prioritizes skills from domains with higher scores
  *
- * @param {Object} intelligenceScores - Object mapping domains to scores
- * @param {number} topN - Number of top intelligences to consider (default: 3)
- * @returns {Array<Object>} Array of {domain, displayName, score, skills} objects sorted by score
+ * @param intelligenceScores - Object mapping domains to scores
+ * @param topN - Number of top intelligences to consider (default: 3)
+ * @returns Array of {domain, score, skills} objects sorted by score
  */
-export function getIntelligenceSkillMapping(intelligenceScores, topN = 3) {
+export function getIntelligenceSkillMapping(
+  intelligenceScores: IntelligenceScores,
+  topN = 3
+): IntelligenceSkillEntry[] {
   if (!intelligenceScores || Object.keys(intelligenceScores).length === 0) {
     return []
   }
 
-  // Get top N intelligences
+  // Get top N intelligences, normalising domain keys to UPPER_SNAKE
   const sortedDomains = Object.entries(intelligenceScores)
-    .map(([domain, score]) => ({ domain, score }))
+    .map(([domain, score]) => ({ domain: normaliseDomain(domain), score: Number(score) }))
     .sort((a, b) => b.score - a.score)
     .slice(0, topN)
 
@@ -148,11 +181,11 @@ export function getIntelligenceSkillMapping(intelligenceScores, topN = 3) {
 /**
  * Get all skills for top intelligences, flattened and deduplicated
  *
- * @param {Object} intelligenceScores - Object mapping domains to scores
- * @param {number} topN - Number of top intelligences to consider (default: 3)
- * @returns {Array<string>} Array of unique skills from top intelligences
+ * @param intelligenceScores - Object mapping domains to scores
+ * @param topN - Number of top intelligences to consider (default: 3)
+ * @returns Array of unique skills from top intelligences
  */
-export function getTopSkills(intelligenceScores, topN = 3) {
+export function getTopSkills(intelligenceScores: IntelligenceScores, topN = 3) {
   const mapping = getIntelligenceSkillMapping(intelligenceScores, topN)
   const allSkills = mapping.flatMap(item => item.skills)
   // Remove duplicates while preserving order

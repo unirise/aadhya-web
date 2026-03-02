@@ -50,8 +50,8 @@ export function FluidContentPanel({
         {content}
       </Panel>
 
-      <Separator className='group relative hidden lg:flex w-2 items-center justify-center data-[separator]:cursor-col-resize p-2'>
-        <div className='w-0.5 h-12 rounded-full bg-border transition-colors group-hover:bg-primary/40 group-data-[dragging]:bg-primary/60' />
+      <Separator className='group relative flex w-2 items-center justify-center data-[separator]:cursor-col-resize p-2'>
+        <div className='h-0.5 w-12 rounded-full bg-border transition-colors group-hover:bg-primary/40 group-data-[dragging]:bg-primary/60' />
       </Separator>
 
       <Panel

@@ -17,6 +17,10 @@ export interface ActivityMetadata {
   icon?: string
   title?: string
   subtitle?: string
+  tinyText?: string
+  smallText?: string
+  mediumText?: string
+  largeText?: string | string[]
   snippet?: string
   description?: string
   paragraph1?: string
@@ -47,6 +51,7 @@ export interface ActivitiesResponse {
 export interface SubmitAnswerRequest {
   activityId: string
   optionValue: number
+  personId?: string
 }
 
 export interface SubmitAnswerResponse {
@@ -55,6 +60,12 @@ export interface SubmitAnswerResponse {
 }
 
 export interface IntelligencesResponse {
+  intelligences: Record<string, number>
+  [key: string]: unknown
+}
+
+export interface PhysicalResponse {
+  physical: Record<string, number>
   [key: string]: unknown
 }
 

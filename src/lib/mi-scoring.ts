@@ -10,20 +10,41 @@
  * - Default adjustments: 1=+5, 2=+2, 3=0, 4=-2, 5=-5
  */
 
+export type IntelligenceScores = Record<string, number>
+
+export interface MIQuestion {
+  id: number
+  intelligenceDomain: string
+}
+
+export interface MIQuestionsData {
+  metadata: {
+    intelligenceDomains: string[]
+  }
+  scoring?: {
+    baseScore?: number
+    scoreAdjustments?: Record<string, number>
+  }
+  questions: MIQuestion[]
+  answerOptions: Array<{ value: number }>
+}
+
+export type MIAnswers = Record<number, number | null | undefined>
+
 /**
  * Calculate intelligence domain scores from answers
  *
- * @param {Object} questionsData - The questions data object from JSON
- * @param {Object} answers - Object mapping question IDs to answer values (e.g., {1: 1, 2: 3, ...})
- * @param {Object} customScoring - Optional custom scoring configuration
- * @returns {Object} Object mapping intelligence domains to their calculated scores
+ * @param questionsData - The questions data object from JSON
+ * @param answers - Object mapping question IDs to answer values (e.g., {1: 1, 2: 3, ...})
+ * @param customScoring - Optional custom scoring configuration
+ * @returns Object mapping intelligence domains to their calculated scores
  */
 export function calculateMIScores(
-  questionsData,
-  answers,
-  customScoring = null
-) {
-  const scoring = customScoring || questionsData.scoring
+  questionsData: MIQuestionsData,
+  answers: MIAnswers,
+  customScoring: MIQuestionsData['scoring'] | null = null
+): IntelligenceScores {
+  const scoring = customScoring || questionsData.scoring || {}
   const baseScore = scoring.baseScore || 50
   const scoreAdjustments = scoring.scoreAdjustments || {
     1: 5,
@@ -34,7 +55,7 @@ export function calculateMIScores(
   }
 
   // Initialize all domains with base score
-  const domainScores = {}
+  const domainScores: IntelligenceScores = {}
   questionsData.metadata.intelligenceDomains.forEach(domain => {
     domainScores[domain] = baseScore
   })
@@ -53,15 +74,36 @@ export function calculateMIScores(
 }
 
 /**
+ * Normalise any known domain key variant to the UPPER_SNAKE canonical form.
+ */
+const DOMAIN_ALIAS = {
+  'intrapersonal': 'INTRAPERSONAL',
+  'bodily-kinesthetic': 'BODILY_KINESTHETIC',
+  'logical-mathematical': 'LOGICAL_MATHEMATICAL',
+  'linguistic': 'LINGUISTIC',
+  'musical': 'MUSICAL',
+  'spatial': 'SPATIAL',
+  'naturalistic': 'NATURALISTIC',
+  'interpersonal': 'INTERPERSONAL',
+}
+
+function normaliseDomain(domain) {
+  return DOMAIN_ALIAS[domain] ?? domain
+}
+
+/**
  * Get top N intelligence domains by score
  *
- * @param {Object} domainScores - Object mapping domains to scores
- * @param {number} topN - Number of top domains to return (default: 3)
- * @returns {Array} Array of {domain, score} objects sorted by score (descending)
+ * @param domainScores - Object mapping domains to scores
+ * @param topN - Number of top domains to return (default: 3)
+ * @returns Array of {domain, score} objects sorted by score (descending)
  */
-export function getTopIntelligences(domainScores, topN = 3) {
+export function getTopIntelligences(
+  domainScores: IntelligenceScores,
+  topN = 3
+): Array<{ domain: string; score: number }> {
   return Object.entries(domainScores)
-    .map(([domain, score]) => ({ domain, score }))
+    .map(([domain, score]) => ({ domain: normaliseDomain(domain), score: Number(score) }))
     .sort((a, b) => b.score - a.score)
     .slice(0, topN)
 }
@@ -69,12 +111,29 @@ export function getTopIntelligences(domainScores, topN = 3) {
 /**
  * Get question statistics by domain
  *
- * @param {Object} questionsData - The questions data object from JSON
- * @param {Object} answers - Object mapping question IDs to answer values
- * @returns {Object} Statistics for each domain
+ * @param questionsData - The questions data object from JSON
+ * @param answers - Object mapping question IDs to answer values
+ * @returns Statistics for each domain
  */
-export function getDomainStatistics(questionsData, answers) {
-  const stats = {}
+export function getDomainStatistics(
+  questionsData: MIQuestionsData,
+  answers: MIAnswers
+): Record<
+  string,
+  {
+    totalQuestions: number
+    answeredQuestions: number
+    averageAnswer: number | null
+  }
+> {
+  const stats: Record<
+    string,
+    {
+      totalQuestions: number
+      answeredQuestions: number
+      averageAnswer: number | null
+    }
+  > = {}
 
   questionsData.metadata.intelligenceDomains.forEach(domain => {
     const domainQuestions = questionsData.questions.filter(
@@ -89,8 +148,10 @@ export function getDomainStatistics(questionsData, answers) {
       answeredQuestions: answeredQuestions.length,
       averageAnswer:
         answeredQuestions.length > 0
-          ? answeredQuestions.reduce((sum, q) => sum + answers[q.id], 0) /
-            answeredQuestions.length
+          ? answeredQuestions.reduce(
+              (sum, q) => sum + Number(answers[q.id]),
+              0
+            ) / answeredQuestions.length
           : null,
     }
   })
@@ -101,22 +162,25 @@ export function getDomainStatistics(questionsData, answers) {
 /**
  * Validate answers against questions data
  *
- * @param {Object} questionsData - The questions data object from JSON
- * @param {Object} answers - Object mapping question IDs to answer values
- * @returns {Object} Validation result with isValid flag and errors array
+ * @param questionsData - The questions data object from JSON
+ * @param answers - Object mapping question IDs to answer values
+ * @returns Validation result with isValid flag and errors array
  */
-export function validateAnswers(questionsData, answers) {
-  const errors = []
+export function validateAnswers(
+  questionsData: MIQuestionsData,
+  answers: MIAnswers
+) {
+  const errors: string[] = []
   const validAnswerValues = questionsData.answerOptions.map(opt => opt.value)
 
   // Check for invalid answer values
   Object.entries(answers).forEach(([questionId, answerValue]) => {
-    const questionIdNum = parseInt(questionId)
+    const questionIdNum = parseInt(questionId, 10)
     const question = questionsData.questions.find(q => q.id === questionIdNum)
 
     if (!question) {
       errors.push(`Question ID ${questionId} does not exist`)
-    } else if (!validAnswerValues.includes(answerValue)) {
+    } else if (!validAnswerValues.includes(Number(answerValue))) {
       errors.push(
         `Invalid answer value ${answerValue} for question ${questionId}`
       )
@@ -124,7 +188,7 @@ export function validateAnswers(questionsData, answers) {
   })
 
   // Check for missing required answers (optional - can be customized)
-  const answeredQuestionIds = Object.keys(answers).map(id => parseInt(id))
+  const answeredQuestionIds = Object.keys(answers).map(id => parseInt(id, 10))
   const allQuestionIds = questionsData.questions.map(q => q.id)
   const missingQuestions = allQuestionIds.filter(
     id => !answeredQuestionIds.includes(id)

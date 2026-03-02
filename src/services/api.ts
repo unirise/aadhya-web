@@ -4,8 +4,14 @@
 import { authService } from './authService'
 import type { User, Post, Stats, FetchOptions } from '@/types'
 
+const DEFAULT_API_BASE_URL = import.meta.env.PROD
+  ? 'https://api.urf.buildstack.space/api'
+  : 'http://localhost:3001/api'
+
 const _API_BASE_URL =
-  import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1'
+  import.meta.env.VITE_API_URL ||
+  import.meta.env.VITE_API_BASE_URL ||
+  DEFAULT_API_BASE_URL
 
 // Helper function to make authenticated requests
 const fetchWithAuth = async <T>(
@@ -53,8 +59,22 @@ export const apiService = {
     await new Promise(resolve => setTimeout(resolve, 100))
 
     return [
-      { id: 1, name: 'John Doe', email: 'john@example.com' },
-      { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
+      {
+        id: '1',
+        name: 'John Doe',
+        email: 'john@example.com',
+        username: 'johndoe',
+        yob: 1990,
+        role: 'user',
+      },
+      {
+        id: '2',
+        name: 'Jane Smith',
+        email: 'jane@example.com',
+        username: 'janesmith',
+        yob: 1992,
+        role: 'user',
+      },
     ]
   },
 
@@ -96,9 +116,12 @@ export const apiService = {
     await new Promise(resolve => setTimeout(resolve, 100))
 
     return {
-      id: userId,
+      id: String(userId),
       name: 'John Doe',
       email: 'john@example.com',
+      username: 'johndoe',
+      yob: 1990,
+      role: 'user',
     }
   },
 

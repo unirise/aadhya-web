@@ -1,10 +1,11 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Home, Zap, Moon, Sun, ZapIcon, HomeIcon } from 'lucide-react'
+import { Home, Zap, ZapIcon, HomeIcon } from 'lucide-react'
+import { themeDot } from '@/lib/themeDot'
 import { activitiesApi } from '@/services/activitiesApi'
 import { Header } from '@/components/sections/Header'
 import { Panel } from '@/components/sections/Panel'
-import { Footer, getFooterWindow } from '@/components/sections/Footer'
+import { Footer } from '@/components/sections/Footer'
 import { FluidLayout } from '@/components/sections/FluidLayout'
 import { FluidContentPanel } from '@/components/sections/FluidContentPanel'
 import { Dot } from '@/components/dots/Dot'
@@ -19,9 +20,19 @@ import {
 } from '@/hooks/useKeyboardNavigation'
 import { NavigationProvider } from '@/contexts/NavigationContext'
 import type { DotData, InputDotData } from '@/types/dot'
+import {
+  ACTIVITY_FLUID_SIZES,
+  ACTIVITY_FLUID_MIN_SIZES,
+  ACTIVITY_CONTENT_SIZES,
+  ACTIVITY_CONTENT_MIN_SIZES,
+  ACTIVITY_LAYOUT_PADDING,
+  ACTIVITY_MOBILE_GAP,
+  ACTIVITY_CONTENT_RADIUS,
+  ACTIVITY_MEDIA_STORAGE_ID,
+} from '@/config/activityLayout'
 
 export default function Activities() {
-  const { assessmentId } = useParams<{ assessmentId: string }>()
+  const { assessmentId, activityId } = useParams<{ assessmentId: string; activityId: string }>()
   const navigate = useNavigate()
   const { theme, toggleTheme } = useTheme()
 
@@ -29,6 +40,11 @@ export default function Activities() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [answers, setAnswers] = useState<Record<string, number>>({})
+  const [reloadKey, setReloadKey] = useState(0)
+  const activityStartTimesRef = useRef<Record<string, number>>({})
+  const setFocusRef = useRef<((pos: FocusPosition) => void) | undefined>(
+    undefined
+  )
 
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 1024)
   useEffect(() => {
@@ -92,7 +108,7 @@ export default function Activities() {
       }
     }
     load()
-  }, [assessmentId])
+  }, [assessmentId, reloadKey])
 
   const dotDataItems = useMemo(
     () => mapActivitiesToDotData(rawActivities),
@@ -102,18 +118,51 @@ export default function Activities() {
   const { currentSlideIndex, goToSlide, nextSlide, isVisited, resetState } =
     useSlideState(dotDataItems.length, `aadhya-activity-state-${assessmentId}`)
 
+  // If a specific activityId was requested in the URL, jump to it once activities load
+  const initialActivityIdRef = useRef(activityId ?? null)
+  useEffect(() => {
+    if (!initialActivityIdRef.current || rawActivities.length === 0) return
+    const idx = rawActivities.findIndex(a => a.id === initialActivityIdRef.current)
+    if (idx !== -1) {
+      goToSlide(idx)
+      initialActivityIdRef.current = null
+    }
+  }, [rawActivities, goToSlide])
+
+  // Record when each activity slide first becomes visible
+  useEffect(() => {
+    const activity = rawActivities[currentSlideIndex]
+    if (activity) {
+      activityStartTimesRef.current[activity.id] = Date.now()
+    }
+  }, [currentSlideIndex, rawActivities])
+
   const activeItem = dotDataItems[currentSlideIndex]
 
   const onHome = useCallback(() => navigate('/'), [navigate])
 
-  const handleAnswerSelect = async (activityId: string, value: number) => {
-    setAnswers(prev => ({ ...prev, [activityId]: value }))
-    try {
-      await activitiesApi.submitAnswer(activityId, value)
-    } catch (err) {
-      console.error('Error submitting answer:', err)
-    }
-  }
+  const reloadActivities = useCallback(() => {
+    resetState()
+    setReloadKey(k => k + 1)
+    setAnswers({})
+  }, [resetState])
+
+  const handleAnswerSelect = useCallback(
+    async (activityId: string, value: number) => {
+      const startTime = activityStartTimesRef.current[activityId]
+      const timeSpentSeconds = startTime
+        ? Math.round((Date.now() - startTime) / 1000)
+        : undefined
+      setAnswers(prev => ({ ...prev, [activityId]: value }))
+      setFocusRef.current?.({ section: 'content', zone: 'main', index: 0 })
+      try {
+        await activitiesApi.submitAnswer(activityId, value, timeSpentSeconds)
+      } catch (err) {
+        console.error('Error submitting answer:', err)
+      }
+    },
+    []
+  )
 
   const handleComplete = useCallback(() => {
     if (assessmentId) navigate(`/assessment/${assessmentId}/thank-you`)
@@ -132,12 +181,36 @@ export default function Activities() {
     [rawActivities, answers]
   )
 
-  const { start: footerWindowStart, size: footerWindowSize } = useMemo(
-    () => getFooterWindow(dotDataItems.length, currentSlideIndex, isMobile),
-    [dotDataItems.length, currentSlideIndex, isMobile]
-  )
+  const windowSize = isMobile ? 5 : 7
+  const windowStartRef = useRef(0)
+  // Sticky window: only re-centers when currentSlideIndex exits the visible window.
+  // Clicking a visible dot keeps the window stable; sequential nav advances it.
+  const footerWindowStart = useMemo(() => {
+    const prev = windowStartRef.current
+    const prevEnd = prev + windowSize - 1
+    const maxStart = Math.max(0, dotDataItems.length - windowSize)
+    let newStart: number
+    if (dotDataItems.length === 0) {
+      newStart = 0
+    } else if (
+      currentSlideIndex < prev ||
+      currentSlideIndex > Math.min(prevEnd, dotDataItems.length - 1)
+    ) {
+      // currentSlide exited the window — re-center
+      newStart = Math.max(
+        0,
+        Math.min(currentSlideIndex - Math.floor((windowSize - 1) / 2), maxStart)
+      )
+    } else {
+      // currentSlide still inside window — keep start
+      newStart = prev
+    }
+    windowStartRef.current = newStart
+    return newStart
+  }, [currentSlideIndex, windowSize, dotDataItems.length])
+
   const footerWindowEnd = Math.min(
-    footerWindowStart + footerWindowSize - 1,
+    footerWindowStart + windowSize - 1,
     dotDataItems.length - 1
   )
 
@@ -148,7 +221,7 @@ export default function Activities() {
     (position: FocusPosition) => {
       const { section, zone, index } = position
       if (section === 'header') {
-        ;[onHome, resetState, toggleTheme][index]?.()
+        ;[onHome, reloadActivities, toggleTheme][index]?.()
       } else if (section === 'content' && zone === 'main') {
         if (!canAdvance(currentSlideIndex)) return
         if (currentSlideIndex >= dotDataItems.length - 1) {
@@ -170,7 +243,7 @@ export default function Activities() {
     },
     [
       onHome,
-      resetState,
+      reloadActivities,
       toggleTheme,
       canAdvance,
       currentSlideIndex,
@@ -193,6 +266,22 @@ export default function Activities() {
     isMobile,
     onActivate: handleActivate,
   })
+
+  setFocusRef.current = setFocus
+
+  // Auto-focus: middle option for MCQ activities, content dot otherwise
+  useEffect(() => {
+    if (panelCount > 0) {
+      setFocus({
+        section: 'content',
+        zone: 'panel',
+        index: Math.floor(panelCount / 2),
+      })
+    } else {
+      setFocus({ section: 'content', zone: 'main', index: 0 })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSlideIndex, panelCount])
 
   const inputDotItems: InputDotData[] = useMemo(() => {
     const activity = rawActivities[currentSlideIndex]
@@ -256,7 +345,7 @@ export default function Activities() {
         'Use the navigation below to explore different sections of the application.',
       ],
       buttonText: 'Go Home',
-      onClick: () => {},
+      onClick: onHome,
       isFocused: isFocused('header', 0),
     },
     {
@@ -267,29 +356,17 @@ export default function Activities() {
       subtitle: 'This button will Reset the content you have in front of you',
       tinyText: 'Reset',
       buttonText: 'Reset',
-      onClick: () => {},
+      onClick: reloadActivities,
       isFocused: isFocused('header', 1),
     },
-    {
-      id: 'theme',
-      icon: theme === 'light' ? Moon : Sun,
-      label: 'Theme',
-      title: theme === 'light' ? 'Dark Mode' : 'Light Mode',
-      subtitle: `Currently using ${theme} theme`,
-      tinyText: theme === 'light' ? 'Dark' : 'Light',
-      smallText: `Switch to ${theme === 'light' ? 'dark' : 'light'} mode for a different visual experience.`,
-      largeText: `Toggle between light and dark themes to match your preference. The current theme is ${theme}.`,
-      buttonText: 'Toggle Theme',
-      onClick: toggleTheme,
-      isFocused: isFocused('header', 2),
-    },
+    { ...themeDot(theme, toggleTheme), isFocused: isFocused('header', 2) },
   ]
 
   const footerDots: DotData[] = useMemo(
     () =>
       dotDataItems.map((item, i) => ({
         ...item,
-        // tinyText: `ACTIVITY ${i}`,
+        tinyText: `ACTIVITY ${i + 1}`,
         isActive: i === currentSlideIndex,
         isVisited: isVisited(i),
         isFocused: isFocused('footer', i),
@@ -307,12 +384,17 @@ export default function Activities() {
     return (
       <FluidLayout
         layoutId={`activities-${assessmentId}`}
-        defaultSizes={[10, 75, 15]}
+        defaultSizes={ACTIVITY_FLUID_SIZES}
+        minSizes={ACTIVITY_FLUID_MIN_SIZES}
         header={<Header items={headerActions} />}
         footer={<Footer items={[]} />}
-        className='p-2 sm:p-4'
+        className={ACTIVITY_LAYOUT_PADDING}
       >
-        <div className='flex items-center justify-center h-full'>
+        <div
+          role='status'
+          aria-live='polite'
+          className='flex items-center justify-center h-full'
+        >
           <p className='text-muted-foreground'>Loading activities...</p>
         </div>
       </FluidLayout>
@@ -323,13 +405,17 @@ export default function Activities() {
     return (
       <FluidLayout
         layoutId={`activities-${assessmentId}`}
-        defaultSizes={[10, 75, 15]}
+        defaultSizes={ACTIVITY_FLUID_SIZES}
+        minSizes={ACTIVITY_FLUID_MIN_SIZES}
         header={<Header items={headerActions} />}
         footer={<Footer items={[]} />}
-        className='p-2 sm:p-4'
+        className={ACTIVITY_LAYOUT_PADDING}
       >
-        <div className='flex flex-col items-center justify-center h-full gap-4'>
-          <p className='text-red-600'>Error: {error}</p>
+        <div
+          role='alert'
+          className='flex flex-col items-center justify-center h-full gap-4'
+        >
+          <p className='text-destructive font-medium'>Error: {error}</p>
           <button
             type='button'
             onClick={() => window.location.reload()}
@@ -346,12 +432,17 @@ export default function Activities() {
     return (
       <FluidLayout
         layoutId={`activities-${assessmentId}`}
-        defaultSizes={[10, 75, 15]}
+        defaultSizes={ACTIVITY_FLUID_SIZES}
+        minSizes={ACTIVITY_FLUID_MIN_SIZES}
         header={<Header items={headerActions} />}
         footer={<Footer items={[]} />}
-        className='p-2 sm:p-4'
+        className={ACTIVITY_LAYOUT_PADDING}
       >
-        <div className='flex items-center justify-center h-full'>
+        <div
+          role='status'
+          aria-live='polite'
+          className='flex items-center justify-center h-full'
+        >
           <p className='text-muted-foreground'>No activities available.</p>
         </div>
       </FluidLayout>
@@ -363,18 +454,21 @@ export default function Activities() {
 
   const contentDot: DotData = {
     id: activeItem?.id ?? 'content',
+    mediaStorageId: ACTIVITY_MEDIA_STORAGE_ID,
     icon: activeItem?.icon ?? Home,
     label: activeItem?.label ?? '',
     title: activeItem?.title ?? '',
     subtitle: activeItem?.subtitle,
-    largeText: [],
+    largeText: activeItem?.largeText,
     media: activeItem ? (
       <Media
         item={{
           key: activeItem.key ?? activeItem.id,
-          label: activeItem.label,
+          label: activeItem.label ?? '',
           title: activeItem.title ?? '',
           icon: activeItem.icon,
+          diagram:
+            typeof activeItem.media === 'string' ? activeItem.media : undefined,
         }}
         onClick={handleNext}
         className='bg-transparent border-0 shadow-none rounded-none'
@@ -383,7 +477,7 @@ export default function Activities() {
     onClick: handleNext,
     isFocused: isFocused('content', 0, 'main'),
     canAdvance: canAdvance(currentSlideIndex),
-    buttonText: 'Next',
+    buttonText: 'Save & Next',
   }
 
   // --- Compose sections ---
@@ -392,20 +486,25 @@ export default function Activities() {
     <NavigationProvider value={navContextValue}>
       <FluidLayout
         layoutId={`activities-${assessmentId}`}
-        defaultSizes={[10, 75, 15]}
+        defaultSizes={ACTIVITY_FLUID_SIZES}
+        minSizes={ACTIVITY_FLUID_MIN_SIZES}
         header={<Header items={headerActions} />}
         footer={<Footer items={footerDots} currentIndex={currentSlideIndex} />}
-        className='p-2 sm:p-4'
+        className={ACTIVITY_LAYOUT_PADDING}
       >
         <main
           aria-label='Activity content'
           className='w-full h-full overflow-hidden min-h-0'
         >
           {isMobile ? (
-            <div className='flex flex-col w-full h-full overflow-hidden gap-2 sm:gap-4 min-h-0'>
+            <div
+              className={`flex flex-col w-full h-full overflow-hidden ${ACTIVITY_MOBILE_GAP} min-h-0`}
+            >
               {activeItem && (
-                <div className='w-full h-full rounded-2xl bg-card border divide-y lg:divide-y-0 lg:divide-x overflow-hidden'>
-                  <Dot data={contentDot} className='rounded-2xl' />
+                <div
+                  className={`w-full h-full ${ACTIVITY_CONTENT_RADIUS} bg-card border divide-y lg:divide-y-0 lg:divide-x overflow-hidden`}
+                >
+                  <Dot data={contentDot} className={ACTIVITY_CONTENT_RADIUS} />
                 </div>
               )}
               <div className='overflow-hidden min-h-0'>
@@ -423,8 +522,13 @@ export default function Activities() {
               layoutId={`activities-${assessmentId}`}
               content={
                 activeItem ? (
-                  <div className='w-full h-full rounded-2xl bg-card border divide-y lg:divide-y-0 lg:divide-x overflow-hidden'>
-                    <Dot data={contentDot} className='rounded-2xl' />
+                  <div
+                    className={`w-full h-full ${ACTIVITY_CONTENT_RADIUS} divide-y lg:divide-y-0 lg:divide-x overflow-hidden`}
+                  >
+                    <Dot
+                      data={contentDot}
+                      className={ACTIVITY_CONTENT_RADIUS}
+                    />
                   </div>
                 ) : null
               }
@@ -437,7 +541,8 @@ export default function Activities() {
                   }
                 />
               }
-              defaultSizes={[80, 20]}
+              defaultSizes={ACTIVITY_CONTENT_SIZES}
+              minSizes={ACTIVITY_CONTENT_MIN_SIZES}
             />
           )}
         </main>
