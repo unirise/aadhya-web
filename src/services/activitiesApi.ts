@@ -16,7 +16,7 @@ export const activitiesApi = {
     // If assessmentId is provided, fetch entity-based activities from database
     if (assessmentId) {
       const response = await axiosInstance.get(
-        `/activities/entity?assessmentId=${assessmentId}`
+        `/v1/activities/entity?assessmentId=${assessmentId}`
       )
       // Pass DB entities through as-is
       const questions = response.data.data || response.data
@@ -39,7 +39,7 @@ export const activitiesApi = {
       limit: limit.toString(),
       page: page.toString(),
     })
-    const response = await axiosInstance.get(`/activities?${params.toString()}`)
+    const response = await axiosInstance.get(`/v1/activities?${params.toString()}`)
     return response.data.data
   },
 
@@ -50,7 +50,7 @@ export const activitiesApi = {
    * @returns Promise with submission response
    */
   submitAnswer: async (activityId: string, optionValue: number, timeSpentSeconds?: number) => {
-    const response = await axiosInstance.post('/responses/submit-answer', {
+    const response = await axiosInstance.post('/v1/responses/submit-answer', {
       activityId,
       optionValue,
       ...(timeSpentSeconds !== undefined && { timeSpentSeconds }),
@@ -63,7 +63,7 @@ export const activitiesApi = {
    * @returns Promise with intelligences data
    */
   fetchIntelligences: async (_personId?: string) => {
-    const response = await axiosInstance.get('/activities/intelligences')
+    const response = await axiosInstance.get('/v1/activities/intelligences')
     return response.data.data
   },
 
@@ -72,7 +72,7 @@ export const activitiesApi = {
    * @returns Promise with physical data
    */
   fetchPhysical: async () => {
-    const response = await axiosInstance.get('/activities/physical')
+    const response = await axiosInstance.get('/v1/activities/physical')
     return response.data.data
   },
 
@@ -81,7 +81,7 @@ export const activitiesApi = {
    * @returns Promise with responses data
    */
   fetchMyResponses: async () => {
-    const response = await axiosInstance.get('/responses/my-responses')
+    const response = await axiosInstance.get('/v1/responses/my-responses')
     return response.data.data || response.data
   },
 }

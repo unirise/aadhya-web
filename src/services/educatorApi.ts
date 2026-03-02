@@ -17,13 +17,13 @@ export interface ChildStats {
 
 export const educatorApi = {
   fetchMyChildren: async (): Promise<Child[]> => {
-    const response = await axiosInstance.get('/persons/my-children')
+    const response = await axiosInstance.get('/v1/persons/my-children')
     const result = response.data.data ?? response.data
     return Array.isArray(result) ? result : []
   },
 
   addChild: async (data: { name: string; yob: number }): Promise<Child> => {
-    const response = await axiosInstance.post('/persons/add-child', data)
+    const response = await axiosInstance.post('/v1/persons/add-child', data)
     return response.data.data ?? response.data
   },
 
@@ -31,45 +31,45 @@ export const educatorApi = {
     childId: string,
     data: { name?: string; yob?: number }
   ): Promise<Child> => {
-    const response = await axiosInstance.put(`/persons/${childId}`, data)
+    const response = await axiosInstance.put(`/v1/persons/${childId}`, data)
     return response.data.data ?? response.data
   },
 
   deleteChild: async (childId: string): Promise<void> => {
-    await axiosInstance.delete(`/persons/${childId}`)
+    await axiosInstance.delete(`/v1/persons/${childId}`)
   },
 
   fetchChildById: async (childId: string) => {
-    const response = await axiosInstance.get(`/persons/${childId}`)
+    const response = await axiosInstance.get(`/v1/persons/${childId}`)
     return response.data.data ?? response.data
   },
 
   fetchChildStats: async (personId: string): Promise<ChildStats> => {
     const response = await axiosInstance.get(
-      `/responses/person/${personId}/stats`
+      `/v1/responses/person/${personId}/stats`
     )
     return response.data.data || response.data
   },
 
   fetchChildResponses: async (personId: string) => {
-    const response = await axiosInstance.get(`/responses/person/${personId}`)
+    const response = await axiosInstance.get(`/v1/responses/person/${personId}`)
     return response.data.data || response.data
   },
 
   fetchChildIntelligences: async (personId: string) => {
     const response = await axiosInstance.get(
-      `/activities/intelligences/${personId}`
+      `/v1/activities/intelligences/${personId}`
     )
     return response.data.data || response.data
   },
 
   fetchAssessments: async () => {
-    const response = await axiosInstance.get('/assessments')
+    const response = await axiosInstance.get('/v1/assessments')
     return response.data.data || response.data
   },
 
   fetchAssessmentById: async (assessmentId: string) => {
-    const response = await axiosInstance.get(`/assessments/${assessmentId}`)
+    const response = await axiosInstance.get(`/v1/assessments/${assessmentId}`)
     return response.data.data || response.data
   },
 
@@ -79,7 +79,7 @@ export const educatorApi = {
     introduction?: string
     conclusion?: string
   }) => {
-    const response = await axiosInstance.post('/assessments', data)
+    const response = await axiosInstance.post('/v1/assessments', data)
     return response.data.data || response.data
   },
 
@@ -93,19 +93,19 @@ export const educatorApi = {
     }
   ) => {
     const response = await axiosInstance.patch(
-      `/assessments/${assessmentId}`,
+      `/v1/assessments/${assessmentId}`,
       data
     )
     return response.data.data || response.data
   },
 
   deleteAssessment: async (assessmentId: string): Promise<void> => {
-    await axiosInstance.delete(`/assessments/${assessmentId}`)
+    await axiosInstance.delete(`/v1/assessments/${assessmentId}`)
   },
 
   fetchActivities: async (assessmentId: string) => {
     const response = await axiosInstance.get(
-      `/activities/entity?assessmentId=${assessmentId}`
+      `/v1/activities/entity?assessmentId=${assessmentId}`
     )
     return response.data.data || response.data
   },
@@ -127,7 +127,7 @@ export const educatorApi = {
     media?: string
     metadata?: Record<string, unknown>
   }) => {
-    const response = await axiosInstance.post('/activities/entity', data)
+    const response = await axiosInstance.post('/v1/activities/entity', data)
     return response.data.data || response.data
   },
 
@@ -151,13 +151,13 @@ export const educatorApi = {
     }
   ) => {
     const response = await axiosInstance.patch(
-      `/activities/entity/${activityId}`,
+      `/v1/activities/entity/${activityId}`,
       data
     )
     return response.data.data || response.data
   },
 
   deleteActivity: async (activityId: string): Promise<void> => {
-    await axiosInstance.delete(`/activities/entity/${activityId}`)
+    await axiosInstance.delete(`/v1/activities/entity/${activityId}`)
   },
 }

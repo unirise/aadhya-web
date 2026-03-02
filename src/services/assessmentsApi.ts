@@ -10,7 +10,7 @@ export const assessmentsApi = {
    * @returns Promise with assessments array
    */
   fetchAssessments: async () => {
-    const response = await axiosInstance.get('/assessments')
+    const response = await axiosInstance.get('/v1/assessments')
     return response.data.data
   },
 
@@ -20,7 +20,7 @@ export const assessmentsApi = {
    * @returns Promise with assessment data
    */
   fetchAssessmentById: async (assessmentId: string) => {
-    const response = await axiosInstance.get(`/assessments/${assessmentId}`)
+    const response = await axiosInstance.get(`/v1/assessments/${assessmentId}`)
     return response.data.data
   },
 }

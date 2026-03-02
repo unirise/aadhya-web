@@ -34,20 +34,20 @@ const ASSESSMENTS_KEYS = {
 const assessmentsApi = {
   fetchAssessments: async (): Promise<Assessment[]> => {
     const response =
-      await axiosInstance.get<ApiResponse<Assessment[]>>('/assessments')
+      await axiosInstance.get<ApiResponse<Assessment[]>>('/v1/assessments')
     return response.data.data
   },
 
   fetchAssessmentById: async (assessmentId: string): Promise<Assessment> => {
     const response = await axiosInstance.get<ApiResponse<Assessment>>(
-      `/assessments/${assessmentId}`
+      `/v1/assessments/${assessmentId}`
     )
     return response.data.data
   },
 
   fetchMyResponses: async (): Promise<UserResponse[]> => {
     const response = await axiosInstance.get<ApiResponse<UserResponse[]>>(
-      '/responses/my-responses'
+      '/v1/responses/my-responses'
     )
     return response.data.data
   },

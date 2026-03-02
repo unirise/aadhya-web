@@ -5,8 +5,8 @@ const TOKEN_KEY = 'auth_token'
 
 // Get base URL from environment variable
 const DEFAULT_API_BASE_URL = import.meta.env.PROD
-  ? 'https://api.urf.buildstack.space/api/v1'
-  : 'http://localhost:3001/api/v1'
+  ? 'https://api.urf.buildstack.space/api'
+  : 'http://localhost:3001/api'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || DEFAULT_API_BASE_URL
 
