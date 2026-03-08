@@ -8,6 +8,7 @@ import {
   LogOut,
   BookOpen,
   ZapIcon,
+  Sparkles,
 } from 'lucide-react'
 import {
   Header,
@@ -78,7 +79,11 @@ function Home() {
         if (index === 1) handleReset()
         else if (index === 2) toggleTheme()
       } else if (section === 'content') {
-        const assessment = assessments[index]
+        if (index === 0) {
+          navigate('/vision')
+          return
+        }
+        const assessment = assessments[index - 1]
         if (assessment) navigate(`/assessment/${assessment.id}/start`)
       } else if (section === 'footer') {
         if (index === 0) navigate('/pehachan')
@@ -99,7 +104,7 @@ function Home() {
 
   const { isFocused } = useKeyboardNavigation({
     headerCount: 3,
-    contentCount: assessments.length,
+    contentCount: assessments.length + 1,
     panelCount: 0,
     footerCount: 3,
     onActivate: handleActivate,
@@ -189,16 +194,30 @@ function Home() {
     },
   ]
 
-  const contentItems: DotData[] = assessments.map((assessment, index) => ({
-    id: assessment.id,
-    icon: BookOpen,
-    label: assessment.introduction,
-    title: assessment.name,
-    largeText: assessment.description,
-    ariaLabel: assessment.name,
-    isFocused: isFocused('content', index),
-    onClick: () => handleAssessmentClick(assessment.id),
-  }))
+  const visionDot: DotData = {
+    id: 'vision',
+    icon: Sparkles,
+    label: 'Showcase',
+    title: 'Vision',
+    largeText: 'Explore what Aadhya wants to become — a walkthrough of every capability we are building.',
+    ariaLabel: 'Vision Showcase',
+    isFocused: isFocused('content', 0),
+    onClick: () => navigate('/vision'),
+  }
+
+  const contentItems: DotData[] = [
+    visionDot,
+    ...assessments.map((assessment, index) => ({
+      id: assessment.id,
+      icon: BookOpen,
+      label: assessment.introduction,
+      title: assessment.name,
+      largeText: assessment.description,
+      ariaLabel: assessment.name,
+      isFocused: isFocused('content', index + 1),
+      onClick: () => handleAssessmentClick(assessment.id),
+    })),
+  ]
 
   return (
     <FluidLayout
@@ -221,13 +240,7 @@ function Home() {
           </div>
         )}
 
-        {!loading && !error && assessments.length === 0 && (
-          <div role='status' aria-live='polite' className='flex items-center justify-center h-full'>
-            <p className='text-muted-foreground'>No assessments available</p>
-          </div>
-        )}
-
-        {!loading && !error && assessments.length > 0 && (
+        {!loading && !error && (
           <ContentSection
             title='Explore'
             description='Choose an assessment to begin'

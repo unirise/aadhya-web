@@ -68,7 +68,10 @@ export function FluidLayout({
           {header}
         </Panel>
 
-        <Separator onClick={(e) => e.stopPropagation()} className='group relative h-2 flex items-center justify-center data-[separator]:cursor-row-resize p-2'>
+        <Separator
+          onClick={e => e.stopPropagation()}
+          className='group relative h-2 flex items-center justify-center data-[separator]:cursor-row-resize p-2'
+        >
           <div className='h-0.5 w-12 rounded-full bg-border transition-colors group-hover:bg-primary/40 group-data-[dragging]:bg-primary/60' />
         </Separator>
 
@@ -77,10 +80,15 @@ export function FluidLayout({
           defaultSize={`${defaultSizes[1]}%`}
           minSize={`${minSizes[1]}%`}
         >
-          <div id='main-content' className='h-full w-full overflow-hidden'>{children}</div>
+          <div id='main-content' className='h-full w-full overflow-hidden'>
+            {children}
+          </div>
         </Panel>
 
-        <Separator onClick={(e) => e.stopPropagation()} className='group relative h-2 flex items-center justify-center data-[separator]:cursor-row-resize p-2'>
+        <Separator
+          onClick={e => e.stopPropagation()}
+          className='group relative h-2 flex items-center justify-center data-[separator]:cursor-row-resize p-2'
+        >
           <div className='h-0.5 w-12 rounded-full bg-border transition-colors group-hover:bg-primary/40 group-data-[dragging]:bg-primary/60' />
         </Separator>
 

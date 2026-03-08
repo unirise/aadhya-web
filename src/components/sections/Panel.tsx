@@ -39,7 +39,7 @@ export function Panel({
       >
         <Container title='Answer Options' rounded='rounded-2xl'>
           {inputItems.length > 0 ? (
-            <div className='flex flex-col gap-4 flex-1 justify-around'>
+            <div className='flex flex-row md:flex-col gap-4 flex-1 min-h-0 justify-around overflow-x-auto md:overflow-x-visible'>
               {inputItems.map(item => (
                 <InputDot key={item.id} data={item} />
               ))}
@@ -62,7 +62,7 @@ export function Panel({
       className='h-full flex flex-col overflow-hidden'
     >
       <Container title='Explore' rounded='rounded-2xl'>
-        <div className='flex flex-col gap-4 flex-1'>
+        <div className='flex flex-row md:flex-col gap-4 flex-1 min-h-0 overflow-x-auto md:overflow-x-visible'>
           {items.map(item => (
             <Dot key={item.key ?? item.id} data={item} />
           ))}

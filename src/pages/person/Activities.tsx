@@ -496,55 +496,32 @@ export default function Activities() {
           aria-label='Activity content'
           className='w-full h-full overflow-hidden min-h-0'
         >
-          {isMobile ? (
-            <div
-              className={`flex flex-col w-full h-full overflow-hidden ${ACTIVITY_MOBILE_GAP} min-h-0`}
-            >
-              {activeItem && (
+          <FluidContentPanel
+            layoutId={`activities-${assessmentId}`}
+            content={
+              activeItem ? (
                 <div
-                  className={`w-full h-full ${ACTIVITY_CONTENT_RADIUS} bg-card border divide-y lg:divide-y-0 lg:divide-x overflow-hidden`}
+                  className={`w-full h-full ${ACTIVITY_CONTENT_RADIUS} divide-y lg:divide-y-0 lg:divide-x overflow-hidden`}
                 >
-                  <Dot data={contentDot} className={ACTIVITY_CONTENT_RADIUS} />
+                  <Dot
+                    data={contentDot}
+                    className={ACTIVITY_CONTENT_RADIUS}
+                  />
                 </div>
-              )}
-              <div className='overflow-hidden min-h-0'>
-                <Panel
-                  inputItems={inputDotItems}
-                  groupValue={answers[activity?.id]?.toString()}
-                  onValueChange={v =>
-                    handleAnswerSelect(activity.id, Number(v))
-                  }
-                />
-              </div>
-            </div>
-          ) : (
-            <FluidContentPanel
-              layoutId={`activities-${assessmentId}`}
-              content={
-                activeItem ? (
-                  <div
-                    className={`w-full h-full ${ACTIVITY_CONTENT_RADIUS} divide-y lg:divide-y-0 lg:divide-x overflow-hidden`}
-                  >
-                    <Dot
-                      data={contentDot}
-                      className={ACTIVITY_CONTENT_RADIUS}
-                    />
-                  </div>
-                ) : null
-              }
-              panel={
-                <Panel
-                  inputItems={inputDotItems}
-                  groupValue={answers[activity?.id]?.toString()}
-                  onValueChange={v =>
-                    handleAnswerSelect(activity.id, Number(v))
-                  }
-                />
-              }
-              defaultSizes={ACTIVITY_CONTENT_SIZES}
-              minSizes={ACTIVITY_CONTENT_MIN_SIZES}
-            />
-          )}
+              ) : null
+            }
+            panel={
+              <Panel
+                inputItems={inputDotItems}
+                groupValue={answers[activity?.id]?.toString()}
+                onValueChange={v =>
+                  handleAnswerSelect(activity.id, Number(v))
+                }
+              />
+            }
+            defaultSizes={ACTIVITY_CONTENT_SIZES}
+            minSizes={ACTIVITY_CONTENT_MIN_SIZES}
+          />
         </main>
       </FluidLayout>
     </NavigationProvider>

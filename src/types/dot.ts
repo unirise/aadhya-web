@@ -1,6 +1,12 @@
 import type React from 'react'
 import type { LucideIcon } from 'lucide-react'
 
+export type MediaItem =
+  | { type: 'icon'; icon: LucideIcon | React.ReactNode; category?: string }
+  | { type: 'image'; src: string; alt?: string; category?: string }
+  | { type: 'diagram'; diagram: string; id: string; category?: string }
+  | { type: 'video'; src: string; alt?: string; category?: string }
+
 export interface DotData {
   id: string
   icon: LucideIcon | React.ReactNode
@@ -12,7 +18,7 @@ export interface DotData {
   smallText?: string
   mediumText?: string
   largeText?: string | string[]
-  media?: string | React.ReactNode
+  media?: string | React.ReactNode | MediaItem[]
   onClick?: () => void
   to?: string
   isFocused?: boolean
@@ -27,6 +33,12 @@ export interface DotData {
   canAdvance?: boolean
   mediaDefaultSizes?: [number, number]
   mediaStorageId?: string
+  textInput?: {
+    storageKey: string
+    placeholder?: string
+    onValue?: (value: string) => void
+  }
+  isInputFocused?: boolean
 }
 
 export interface InputDotData {

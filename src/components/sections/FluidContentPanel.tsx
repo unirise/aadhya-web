@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react'
+import { type ReactNode, useState, useEffect } from 'react'
 import {
   Group,
   Panel,
@@ -21,7 +21,16 @@ export function FluidContentPanel({
   defaultSizes = [80, 20],
   minSizes = [30, 10],
 }: FluidContentPanelProps) {
-  const storageId = `aadhya-content-${layoutId}`
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 1024)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 1023px)')
+    const handler = () => setIsMobile(mq.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
+  const orientation = isMobile ? 'vertical' : 'horizontal'
+  const storageId = `aadhya-content-${layoutId}-${orientation}`
   const panelIds = [`${storageId}-main`, `${storageId}-side`]
 
   const { defaultLayout, onLayoutChanged } = useDefaultLayout({
@@ -37,7 +46,8 @@ export function FluidContentPanel({
 
   return (
     <Group
-      orientation='horizontal'
+      key={orientation}
+      orientation={orientation}
       defaultLayout={defaultLayout ?? fallback}
       onLayoutChanged={onLayoutChanged}
       className='h-full'
@@ -50,8 +60,20 @@ export function FluidContentPanel({
         {content}
       </Panel>
 
-      <Separator className='group relative flex w-2 items-center justify-center data-[separator]:cursor-col-resize p-2'>
-        <div className='h-0.5 w-12 rounded-full bg-border transition-colors group-hover:bg-primary/40 group-data-[dragging]:bg-primary/60' />
+      <Separator
+        onClick={e => e.stopPropagation()}
+        style={isMobile ? undefined : { flexBasis: '0.5rem' }}
+        className={
+          isMobile
+            ? 'group relative h-2 flex items-center justify-center data-[separator]:cursor-row-resize p-2'
+            : 'group relative flex items-center justify-center data-[separator]:cursor-col-resize p-2'
+        }
+      >
+        <div
+          className={`rounded-full bg-border transition-colors group-hover:bg-primary/40 group-data-[dragging]:bg-primary/60 ${
+            isMobile ? 'h-0.5 w-12' : 'w-0.5 h-12'
+          }`}
+        />
       </Separator>
 
       <Panel

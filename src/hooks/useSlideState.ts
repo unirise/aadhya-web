@@ -67,10 +67,12 @@ export function useSlideState(
   )
 
   const getPanelSlides = useCallback((): number[] => {
-    const unvisited = Array.from({ length: totalSlides }, (_, i) => i).filter(
-      i => !visitedSlides.has(i) && i !== currentSlide
+    const others = Array.from({ length: totalSlides }, (_, i) => i).filter(
+      i => i !== currentSlide
     )
-    const shuffled = [...unvisited].sort(() => Math.random() - 0.5)
+    const unvisited = others.filter(i => !visitedSlides.has(i))
+    const pool = unvisited.length > 0 ? unvisited : others
+    const shuffled = [...pool].sort(() => Math.random() - 0.5)
     return shuffled.slice(0, 3)
   }, [totalSlides, visitedSlides, currentSlide])
 
