@@ -20,6 +20,7 @@ import PlanAllStrengths from '../pages/person/pehchan/plan/AllStrengths'
 import Sajag from '../pages/person/Sajag'
 import Login from '../pages/common/Login'
 import Presentation from '../pages/common/Presentation'
+import Vision from '../pages/person/Vision'
 import NotFound from '../pages/common/NotFound'
 import ProtectedRoute from '../components/auth/ProtectedRoute'
 import EducatorRoute from '../components/auth/EducatorRoute'
@@ -235,6 +236,7 @@ function AppRouter() {
           </ProtectedRoute>
         }
       />
+      <Route path='/vision' element={<Vision />} />
       <Route path='/presentation' element={<Presentation />} />
       <Route path='*' element={<NotFound />} />
     </Routes>

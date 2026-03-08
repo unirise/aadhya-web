@@ -29,6 +29,7 @@ interface PresentationLayoutProps {
   storageKey?: string
   assessmentName?: string
   renderPanel?: (currentIndex: number) => ReactNode
+  panelDotsPerSlide?: DotData[][]
   getCanAdvance?: (currentIndex: number) => boolean
   onComplete?: () => void
 }
@@ -38,6 +39,7 @@ export function PresentationLayout({
   storageKey = 'aadhya-activity-state',
   assessmentName,
   renderPanel: customRenderPanel,
+  panelDotsPerSlide,
   getCanAdvance,
   onComplete,
 }: PresentationLayoutProps) {
@@ -67,26 +69,44 @@ export function PresentationLayout({
 
   const panelItems: DotData[] = useMemo(() => {
     if (customRenderPanel) return []
+    if (panelDotsPerSlide?.[currentSlideIndex]) {
+      return panelDotsPerSlide[currentSlideIndex]
+    }
     const indices = getPanelSlides()
     return indices.map(index => ({
       ...activities[index],
       isVisited: isVisited(index),
     }))
-  }, [getPanelSlides, activities, customRenderPanel, isVisited])
+  }, [
+    getPanelSlides,
+    activities,
+    customRenderPanel,
+    isVisited,
+    panelDotsPerSlide,
+    currentSlideIndex,
+  ])
+
+  const hasTextInput = activeItem?.textInput !== undefined
+  const contentCount = hasTextInput ? 2 : 1
 
   const handleActivate = useCallback(
     (position: FocusPosition) => {
       const { section, zone, index } = position
       if (section === 'header') {
         ;[onHome, resetState, toggleTheme][index]?.()
-      } else if (section === 'content' && zone === 'main') {
+      } else if (section === 'content' && zone === 'main' && index === 0) {
         if (getCanAdvance?.(currentSlideIndex) === false) return
         if (currentSlideIndex >= activities.length - 1) {
           onComplete?.()
         } else {
           nextSlide()
         }
+      } else if (section === 'content' && zone === 'main' && index === 1) {
+        // Trigger the focused input button
+        const el = document.activeElement
+        if (el instanceof HTMLElement) el.click()
       } else if (section === 'content' && zone === 'panel') {
+        if (panelDotsPerSlide?.[currentSlideIndex]) return
         const panelIndices = getPanelSlides()
         const targetIndex = panelIndices[index]
         if (targetIndex !== undefined) goToSlide(targetIndex)
@@ -105,6 +125,7 @@ export function PresentationLayout({
       onComplete,
       currentSlideIndex,
       activities.length,
+      panelDotsPerSlide,
     ]
   )
 
@@ -123,7 +144,7 @@ export function PresentationLayout({
 
   const { focus, setFocus, isFocused } = useKeyboardNavigation({
     headerCount: 3,
-    contentCount: 1,
+    contentCount,
     panelCount: panelItems.length,
     footerCount: activities.length,
     footerWindowStart,
@@ -171,6 +192,10 @@ export function PresentationLayout({
         id: 'presentation-focus-start',
         label: 'Home',
         icon: <Home className='w-5 h-5' />,
+        title: 'Home',
+        subtitle: 'Return to home page',
+        largeText:
+          'Go back to the homepage to explore other activities and features.',
         ariaLabel: 'Home \u2014 return to home page',
         isFocused: isFocused('header', 0),
         onClick: () => {
@@ -182,6 +207,9 @@ export function PresentationLayout({
         id: 'logo',
         label: 'Logo',
         icon: <Zap className='w-5 h-5' />,
+        title: 'Reset',
+        subtitle: 'Reset to the beginning',
+        largeText: 'Reset the presentation to the beginning.',
         ariaLabel: 'Reset to the beginning',
         isFocused: isFocused('header', 1),
         onClick: () => {
@@ -192,7 +220,15 @@ export function PresentationLayout({
       {
         id: 'theme',
         label: 'Theme',
-        icon: { morning: <Sunrise className='w-5 h-5' />, afternoon: <Sun className='w-5 h-5' />, evening: <Sunset className='w-5 h-5' />, night: <Moon className='w-5 h-5' /> }[theme],
+        icon: {
+          morning: <Sunrise className='w-5 h-5' />,
+          afternoon: <Sun className='w-5 h-5' />,
+          evening: <Sunset className='w-5 h-5' />,
+          night: <Moon className='w-5 h-5' />,
+        }[theme],
+        title: 'Toggle Theme',
+        subtitle: `Current theme: ${theme}. Click to switch.`,
+        largeText: `Switch between themes. Current theme is ${theme}.`,
         ariaLabel: `Current theme: ${theme}. Click to switch.`,
         isFocused: isFocused('header', 2),
         onClick: () => {
@@ -220,6 +256,16 @@ export function PresentationLayout({
   )
 
   const panelDotsWithFocus: DotData[] = useMemo(() => {
+    if (panelDotsPerSlide?.[currentSlideIndex]) {
+      return panelItems.map((item, i) => ({
+        ...item,
+        isFocused: isFocused('content', i, 'panel'),
+        onClick: () => {
+          setFocus({ section: 'content', zone: 'panel', index: i })
+          item.onClick?.()
+        },
+      }))
+    }
     const panelIndices = getPanelSlides()
     return panelItems.map((item, i) => ({
       ...item,
@@ -229,7 +275,15 @@ export function PresentationLayout({
         goToSlide(panelIndices[i])
       },
     }))
-  }, [panelItems, isFocused, setFocus, goToSlide, getPanelSlides])
+  }, [
+    panelItems,
+    isFocused,
+    setFocus,
+    goToSlide,
+    getPanelSlides,
+    panelDotsPerSlide,
+    currentSlideIndex,
+  ])
 
   if (activities.length === 0) {
     return (
@@ -260,22 +314,13 @@ export function PresentationLayout({
     title: activeItem?.title ?? '',
     subtitle: activeItem?.subtitle,
     largeText: activeItem?.largeText ?? [],
-    media: activeItem ? (
-      <Media
-        item={{
-          key: activeItem.key ?? activeItem.id,
-          label: activeItem.label,
-          title: activeItem.title ?? '',
-          subtitle: activeItem.subtitle,
-          icon: activeItem.icon,
-          diagram: typeof activeItem.media === 'string' ? activeItem.media : undefined,
-        }}
-        onClick={handleNext}
-        className='bg-transparent border-0 shadow-none rounded-none'
-      />
-    ) : undefined,
+    media: hasTextInput ? undefined : activeItem.media,
+    mediaStorageId: activeItem?.mediaStorageId,
+    mediaDefaultSizes: activeItem?.mediaDefaultSizes,
+    textInput: activeItem?.textInput,
     onClick: handleNext,
     isFocused: isFocused('content', 0, 'main'),
+    isInputFocused: isFocused('content', 1, 'main'),
     canAdvance: getCanAdvance?.(currentSlideIndex) ?? true,
     buttonText: 'Next',
   }
@@ -318,31 +363,19 @@ export function PresentationLayout({
             }
           />
         }
-        footer={
-          <Footer
-            items={footerDots}
-            currentIndex={currentSlideIndex}
-          />
-        }
+        footer={<Footer items={footerDots} currentIndex={currentSlideIndex} />}
         className='p-2 sm:p-4'
       >
         <main
           aria-label='Activity content'
           className='w-full h-full overflow-hidden min-h-0'
         >
-          {isMobile ? (
-            <div className='flex flex-col w-full h-full overflow-hidden gap-2 sm:gap-4 min-h-0'>
-              {contentJsx}
-              {panelJsx}
-            </div>
-          ) : (
-            <FluidContentPanel
-              layoutId='presentation'
-              content={contentJsx}
-              panel={panelJsx}
-              defaultSizes={[80, 20]}
-            />
-          )}
+          <FluidContentPanel
+            layoutId='presentation'
+            content={contentJsx}
+            panel={panelJsx}
+            defaultSizes={[80, 20]}
+          />
         </main>
       </FluidLayout>
     </NavigationProvider>
