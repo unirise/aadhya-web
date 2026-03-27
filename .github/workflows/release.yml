@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - release
+      - develop
 
 env:
   NODE_VERSION: 20
