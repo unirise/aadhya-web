@@ -41,7 +41,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build app
-        run: pnpm build
+        run: pnpm exec vite build
 
       - name: Validate production compose config
         run: docker compose -f docker/prod/docker-compose.yml config
