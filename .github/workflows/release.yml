@@ -9,6 +9,8 @@ on:
 
 env:
   NODE_VERSION: 20
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
   VITE_API_BASE_URL: https://api.urf.buildstack.space/api/v1
   VITE_API_URL: https://api.urf.buildstack.space/api/v1
   VPS_DOCKER_CONTEXT: vps
@@ -19,38 +21,42 @@ permissions:
   contents: write
   actions: read
   deployments: write
+  packages: write
 
 jobs:
-  build:
-    name: Build
+  build-and-push:
+    name: Build & Push Image
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Enable corepack
-        run: corepack enable
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build app
-        run: pnpm exec vite build
-
-      - name: Validate production compose config
-        run: docker compose -f docker/prod/docker-compose.yml config
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/prod/Dockerfile
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          build-args: |
+            VITE_API_BASE_URL=${{ env.VITE_API_BASE_URL }}
+            VITE_API_URL=${{ env.VITE_API_URL }}
 
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    needs: [build]
-    timeout-minutes: 30
+    needs: [build-and-push]
+    timeout-minutes: 10
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
@@ -83,20 +89,12 @@ jobs:
 
           if ! ssh-keygen -y -f ~/.ssh/id_rsa >/dev/null 2>&1; then
             echo "Invalid SSH private key in KEY secret."
-            echo "Store either raw private key content or base64-encoded private key."
             exit 1
           fi
 
           if [ -z "${SSH_PORT:-}" ]; then SSH_PORT=22; fi
           ssh-keyscan -p "$SSH_PORT" -H "${{ secrets.HOST }}" > ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
-
-      - name: Verify SSH access to VPS
-        env:
-          SSH_PORT: ${{ secrets.SSH_PORT }}
-        run: |
-          if [ -z "${SSH_PORT:-}" ]; then SSH_PORT=22; fi
-          ssh -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes "${{ secrets.USERNAME }}@${{ secrets.HOST }}" "docker --version && docker compose version"
 
       - name: Configure Docker SSH context
         env:
@@ -105,14 +103,18 @@ jobs:
           if [ -z "${SSH_PORT:-}" ]; then SSH_PORT=22; fi
           docker context rm "${{ env.VPS_DOCKER_CONTEXT }}" || true
           docker context create "${{ env.VPS_DOCKER_CONTEXT }}" --docker "host=ssh://${{ secrets.USERNAME }}@${{ secrets.HOST }}:$SSH_PORT"
-          docker --context "${{ env.VPS_DOCKER_CONTEXT }}" info
 
-      - name: Build and deploy on VPS
+      - name: Pull and deploy on VPS
         run: |
           docker --context "${{ env.VPS_DOCKER_CONTEXT }}" compose \
             --project-name "${{ env.COMPOSE_PROJECT_NAME }}" \
             -f docker/prod/docker-compose.yml \
-            up -d --build --remove-orphans
+            pull
+
+          docker --context "${{ env.VPS_DOCKER_CONTEXT }}" compose \
+            --project-name "${{ env.COMPOSE_PROJECT_NAME }}" \
+            -f docker/prod/docker-compose.yml \
+            up -d --remove-orphans
 
       - name: Show deployed services
         run: |

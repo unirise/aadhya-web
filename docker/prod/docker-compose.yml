@@ -1,13 +1,6 @@
 services:
   aadhya-web:
-    image: aadhya-web:prod
-    build:
-      context: ../..
-      dockerfile: docker/prod/Dockerfile
-      args:
-        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://api.urf.buildstack.space/api/v1}
-        VITE_API_URL: ${VITE_API_URL:-https://api.urf.buildstack.space/api/v1}
-        NODE_OPTIONS: ${NODE_OPTIONS:---max-old-space-size=1024}
+    image: ghcr.io/unirise-research-foundation/aadhya-web:latest
     restart: unless-stopped
     expose:
       - '80'
