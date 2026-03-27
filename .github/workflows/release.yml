@@ -10,7 +10,7 @@ on:
 env:
   NODE_VERSION: 20
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: unirise-research-foundation/aadhya-web
   VITE_API_BASE_URL: https://api.urf.buildstack.space/api/v1
   VITE_API_URL: https://api.urf.buildstack.space/api/v1
   VPS_DOCKER_CONTEXT: vps
